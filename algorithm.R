@@ -13,7 +13,7 @@ algorithm <- function(services, candidate_cities){
 	#	Crossover distribution index, don't know how it works either*
 	#	cprob is Crossover probability
 	#	mprob is Mutation probability
-
+#======================initialize parameters==================================
 	candidate_cities_num <- length(candidate_cities)
 	services_num <- length(services)
 	popSize <- 30
@@ -21,24 +21,36 @@ algorithm <- function(services, candidate_cities){
 	varNo <- services_num * candidate_cities_num
 	tourSize <- 10
 	MutDistIdx <- 20
-	#upperBounds <- rep(4095, 30)
-	#upperBounds <- rep(1, 30)
-	#lowerBounds <- rep(0, 30)
 	mprob <- 0.2
 	XoverDistIdx <- 20
 	cprob <- 0.7
+	generations <- 50
+#=============================================================================
 
+#========================Algorithm Starts=====================================
 	#	step 1, initialize the population
 	pop <- generate_population(candidate_cities_num, services_num, popSize)
 	#print(pop)
 
 
+
+
+
+
+#====================unNormalized Fitness================================
 	#	step 2, calculate the fitness
 	#unNormalized <- t(apply(pop, 1, fitness))
 	#pop <- cbind(pop, normalize(unNormalized))
 	pop <- cbind(pop, t(apply(pop, 1, fitness)))
+	#origin_range <- range(c(min(pop[, varNo + 1]), max(pop[, varNo + 1])))
+	origin_range_y <- range(0, max(pop[, varNo + 2]))
+	origin_range_x <- range(0, max(pop[, varNo + 1]))
+	plot(pop[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'blue', xlab = 'cost', ylab = 'latency')
+
+
 	#	step 3, rank it
 	ranking <- fastNonDominatedSorting(pop[, (varNo + 1):(varNo + objDim)])
+	#print(ranking)
 	rnkIndex <- integer(popSize)
 	i <- 1
 	while (i <= length(ranking)){
@@ -54,18 +66,49 @@ algorithm <- function(services, candidate_cities){
 
 	#	step 5, selection
 	pop <- cbind(pop, apply(cd, 1, sum))
-	print(pop)
-	matingPool <- tournamentSelection(pop, popSize, tourSize)
-	print(matingPool)
 
-	#	step 6, Crossover
-	#mating <- apply(matingPool[, 1:varNo], 1, binary2decimal)
-	childAfterX <- boundedSBXover(matingPool[, 1:varNo], lowerBounds, upperBounds, cprob, XoverDistIdx)
-	#print(childAfterX)
 
-	#	step 7 Mutation
-	#childAfterM <- boundedPolyMutation(childAfterX, lowerBounds, upperBounds, mprob, MutDistIdx)
-	#print(childAfterM)
+	for(iter in 1:generations){
+		matingPool <- tournamentSelection(pop, popSize, tourSize)
+		#print(matingPool)
+	
+		#	step 6, Crossover
+		#mating <- apply(matingPool[, 1:varNo], 1, binary2decimal)
+		#childAfterX <- boundedSBXover(matingPool[, 1:varNo], lowerBounds, upperBounds, cprob, XoverDistIdx)
+		childAfterX <- crossover(matingPool[, 1:varNo], cprob)
+		#print(childAfterX)
+	
+		#	step 7 Mutation
+		#childAfterM <- boundedPolyMutation(childAfterX, lowerBounds, upperBounds, mprob, MutDistIdx)
+		childAfterM <- mutation(childAfterX, mprob)
+		#print(childAfterM)
+		childAfterM <- cbind(childAfterM, t(apply(childAfterM, 1, fitness)))
+		par(new = T)
+		#print(childAfterM)
+		parentNext <- rbind(pop[, 1:(varNo + objDim)], childAfterM)
+		#print(parentNext)
+		ranking <- fastNonDominatedSorting(parentNext[, (varNo + 1) : (varNo + objDim)])
+		i <- 1
+		while (i <= length(ranking)){
+			rnkIndex[ranking[[i]]] <- i
+			i <- i + 1
+		}
+		parentNext <- cbind(parentNext, rnkIndex)
+		objRange <- apply(pop[, (varNo + 1) : (varNo + objDim)], 2, max) - apply(pop[, (varNo + 1) : (varNo + objDim)], 2, min)
+		#print(objRange)
+		cd <- crowdingDist4frnt(parentNext, ranking, objRange)
+		parentNext <- cbind(parentNext, apply(cd, 1, sum))
+		parentNext.sort <- parentNext[order(parentNext[, varNo + objDim + 1], -parentNext[, varNo + objDim + 2]), ]
+		parent <- parentNext.sort[1:popSize, ]
+		plot(parent[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red')
+	}
+
+	result = list(functions = fitness, parameterDim = varNo, objectiveDim = objDim, popSize = popSize,
+				  tournamentSize = tourSize, generations = generations, XoverProb = cprob, mutationProb = mprob,
+				  parameters = parent[,1:varNo], objectives = parent[, (varNo + 1):(varNo + objDim)], 
+				  paretoFrontRank = parent[, varNo + objDim + 1], crowdingDistance = parent[, varNo + objDim + 2])
+	class(result) = "nsga2R"
+	return(result)
 }
 
 generate_population <- function(row, col, size){
@@ -78,6 +121,7 @@ generate_population <- function(row, col, size){
 	#				S2	0	1	0	0
 	#				S3	0	0	1	0
 	pop <- vector()
+	set.seed(1)
 	for(i in 1:size) {
 		#change binary to decimal
 		#pop <- rbind(pop, binary2decimal(rbinom(row * col, 1, 0.5)))
@@ -90,6 +134,46 @@ fitness <- function(chromosome) {
 	cost <- cost_fitness(chromosome)
 	latency <- latency_fitness(chromosome)
 	return(c(cost, latency))
+}
+
+crossover <- function(parent_chromosome, cprob){
+	popSize = nrow(parent_chromosome)
+	varNo = ncol(parent_chromosome)
+	new_pop <- vector()
+	p <- 1
+	for (i in 1:(popSize / 2)){
+		if(runif(1) < cprob){
+			cutPoint <- floor(runif(1, 1, varNo))
+			child_1 <- parent_chromosome[p, 1:cutPoint]
+			child_1 <- c(child_1, parent_chromosome[p + 1, (cutPoint + 1):varNo])
+			child_2 <- parent_chromosome[p + 1, 1:cutPoint]
+			child_2 <- c(child_2, parent_chromosome[p, (cutPoint + 1):varNo])
+		}
+		else{
+			child_1 <- parent_chromosome[p, ]
+			child_2 <- parent_chromosome[p + 1, ]
+		}
+		new_pop <- rbind(new_pop, child_1)
+		new_pop <- rbind(new_pop, child_2)
+		p <- p + 2
+	}
+	new_pop
+}
+
+mutation <- function(parent_chromosome, mprob){
+	popSize = nrow(parent_chromosome)
+	varNo = ncol(parent_chromosome)
+	new_pop <- vector()
+	for(i in 1:popSize){
+		child <- parent_chromosome[i, ]
+		for(j in 1:varNo){
+			if(runif(1) < mprob){
+				child[j] <- !child[j]
+			}
+		}
+		new_pop <- rbind(new_pop, child)
+	}
+	new_pop
 }
 
 cost_fitness <- function(chromosome){
