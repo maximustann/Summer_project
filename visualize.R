@@ -30,8 +30,9 @@ Visualize <- function(num){
 	par(new = T)
 	plot(archive, xlim = c(0, 13), ylim = c(0, 1), col = 'red', pch = 25, bg = 'red')
 	for(iter in 1:nrow(connection)){
-		arrows(x0 = particle[connection[iter, 1], 1], y0 = particle[connection[iter, 1], 2],
-			   x1 = archive[connection[iter, 2], 1], y1 = archive[connection[iter, 2], 2], code = 0, col = 'gray')
+		arrows(x0 = as.numeric(particle[connection[iter, 1], 1]), y0 = as.numeric(particle[connection[iter, 1], 2]),
+			   x1 = as.numeric(archive[connection[iter, 2], 1]), y1 = as.numeric(archive[connection[iter, 2], 2]),
+			   code = 0, col = 'gray')
 		#par(new = T)
 	}
 }
