@@ -16,15 +16,15 @@ algorithm <- function(services, candidate_cities){
 #======================initialize parameters==================================
 	candidate_cities_num <- length(candidate_cities)
 	services_num <- length(services)
-	popSize <- 30
+	popSize <- 100
 	objDim <- 2		
 	varNo <- services_num * candidate_cities_num
 	tourSize <- 10
 	MutDistIdx <- 20
-	mprob <- 0.2
+	mprob <- 0.3
 	XoverDistIdx <- 20
 	cprob <- 0.7
-	generations <- 50
+	generations <- 1000
 #=============================================================================
 
 #========================Algorithm Starts=====================================
@@ -32,19 +32,14 @@ algorithm <- function(services, candidate_cities){
 	pop <- generate_population(candidate_cities_num, services_num, popSize)
 	#print(pop)
 
-
-
-
-
-
 #====================unNormalized Fitness================================
 	#	step 2, calculate the fitness
-	#unNormalized <- t(apply(pop, 1, fitness))
-	#pop <- cbind(pop, normalize(unNormalized))
-	pop <- cbind(pop, t(apply(pop, 1, fitness)))
+	unNormalized <- t(apply(pop, 1, fitness))
+	pop <- cbind(pop, normalize(unNormalized))
+	#pop <- cbind(pop, t(apply(pop, 1, fitness)))
 	#origin_range <- range(c(min(pop[, varNo + 1]), max(pop[, varNo + 1])))
-	origin_range_y <- range(0, max(pop[, varNo + 2]))
-	origin_range_x <- range(0, max(pop[, varNo + 1]))
+	origin_range_y <- range(0, 1)
+	origin_range_x <- range(0, 1)
 	plot(pop[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'blue', xlab = 'cost', ylab = 'latency')
 
 
@@ -82,8 +77,9 @@ algorithm <- function(services, candidate_cities){
 		#childAfterM <- boundedPolyMutation(childAfterX, lowerBounds, upperBounds, mprob, MutDistIdx)
 		childAfterM <- mutation(childAfterX, mprob)
 		#print(childAfterM)
-		childAfterM <- cbind(childAfterM, t(apply(childAfterM, 1, fitness)))
-		par(new = T)
+		#childAfterM <- cbind(childAfterM, t(apply(childAfterM, 1, fitness)))
+		unNormalized <- t(apply(childAfterM, 1, fitness))
+		childAfterM <- cbind(childAfterM, normalize(unNormalized))
 		#print(childAfterM)
 		parentNext <- rbind(pop[, 1:(varNo + objDim)], childAfterM)
 		#print(parentNext)
@@ -100,15 +96,29 @@ algorithm <- function(services, candidate_cities){
 		parentNext <- cbind(parentNext, apply(cd, 1, sum))
 		parentNext.sort <- parentNext[order(parentNext[, varNo + objDim + 1], -parentNext[, varNo + objDim + 2]), ]
 		parent <- parentNext.sort[1:popSize, ]
-		plot(parent[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red')
+		parent_1 <- parent[parent[, 15] == 1, ]
+		par(new = T)
+		plot(parent_1[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red', pch = 3)
+		#plot(parent[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'green')
 	}
+	par(new = T)
+	parent_1 <- parent[parent[, 15] == 1, ]
+	#plot(parent[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red', pch = 3)
+	plot(parent_1[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, bg = 'black', pch = 24)
+	#dev.off()
+	#pdf("plot.pdf")
 
 	result = list(functions = fitness, parameterDim = varNo, objectiveDim = objDim, popSize = popSize,
 				  tournamentSize = tourSize, generations = generations, XoverProb = cprob, mutationProb = mprob,
 				  parameters = parent[,1:varNo], objectives = parent[, (varNo + 1):(varNo + objDim)], 
 				  paretoFrontRank = parent[, varNo + objDim + 1], crowdingDistance = parent[, varNo + objDim + 2])
 	class(result) = "nsga2R"
-	return(result)
+	for(iter in 1:nrow(parent_1)){
+		print(matrix(parent_1[iter, 1:varNo], nrow = 3, ncol = 4))
+	}
+	#return(parent)
+	#return(paretoFront(result))
+	#return(result)
 }
 
 generate_population <- function(row, col, size){
@@ -121,7 +131,6 @@ generate_population <- function(row, col, size){
 	#				S2	0	1	0	0
 	#				S3	0	0	1	0
 	pop <- vector()
-	set.seed(1)
 	for(i in 1:size) {
 		#change binary to decimal
 		#pop <- rbind(pop, binary2decimal(rbinom(row * col, 1, 0.5)))
@@ -185,15 +194,34 @@ cost_fitness <- function(chromosome){
 
 latency_fitness <- function(chromosome){
 	#chromosome <- decimal2binary(chromosome, 12)
+	latency <- vector()
 	chromosome <- matrix(chromosome, nrow = 3, ncol = 4)
-	latency <- sum(chromosome * latency_matrix * frequency_matrix)
+	frequency <- colSums(frequency_matrix)
+	total <- rowSums(chromosome)
+	for(iter in 1:length(total)){
+		if(total[iter] == 0){
+			latency[iter] <- sum((frequency[iter])) * sum(latency_matrix[iter, ] * chromosome[iter, ]) + 2000
+			#latency[iter] <- 10000
+		}
+		else{
+			latency[iter] <- sum((frequency[iter]) / total[iter]) * sum(latency_matrix[iter, ] * chromosome[iter, ])
+		}
+	}
+	#latency <- sum((frequency / total) * rowSums(latency_matrix * chromosome))
+	#latency <- sum(chromosome * latency_matrix * frequency_matrix)
+	latency <- sum(latency)
 	latency
 }
 
 normalize <- function(data){
 	normalized_data <- vector()
 	for(i in 1:ncol(data)){
-		normalized_data <- cbind(normalized_data, (data[, i] - mean(data[, i])) / sd(data[, i]))
+		min_value <- min(data[, i])
+		max_value <- max(data[, i])
+		a <- 1
+		b <- 0
+		#normalized_data <- cbind(normalized_data, (data[, i] - mean(data[, i])) / sd(data[, i]))
+		normalized_data <- cbind(normalized_data, (a + (data[, i] - max_value) * (b - a)) / (max_value - min_value))
 	}
 	normalized_data
 }
