@@ -24,19 +24,21 @@ algorithm <- function(services, candidate_cities){
 	mprob <- 0.3
 	XoverDistIdx <- 20
 	cprob <- 0.7
-	generations <- 4
+	generations <- 50
+	cost_limitation <- 700
 	front <- vector()
 #=============================================================================
-set.seed(1)
+#set.seed(1)
 #========================Algorithm Starts=====================================
 	#	step 1, initialize the population
-	pop <- generate_population(candidate_cities_num, services_num, popSize)
+	parent <- generate_population(candidate_cities_num, services_num, popSize, cost_limitation)
 	#print(pop)
 
 #====================Normalized Fitness================================
 	#	step 2, calculate the fitness
-	unNormalized <- t(apply(pop, 1, fitness))
-	pop <- cbind(pop, normalize(unNormalized))
+	unNormalized <- t(apply(parent, 1, fitness))
+	#calculate_mean_cost(unNormalized)
+	parent <- cbind(parent, normalize(unNormalized))
 
 	#pop <- cbind(pop, t(apply(pop, 1, fitness)))
 	#origin_range <- range(c(min(pop[, varNo + 1]), max(pop[, varNo + 1])))
@@ -44,11 +46,11 @@ set.seed(1)
 
 	origin_range_y <- range(0, 1)
 	origin_range_x <- range(0, 1)
-	plot(pop[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'blue', xlab = 'cost', ylab = 'latency')
+	plot(parent[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'blue', xlab = 'cost', ylab = 'latency')
 
 
 	#	step 3, rank it
-	ranking <- fastNonDominatedSorting(pop[, (varNo + 1):(varNo + objDim)])
+	ranking <- fastNonDominatedSorting(parent[, (varNo + 1):(varNo + objDim)])
 	#print(ranking)
 	rnkIndex <- integer(popSize)
 	i <- 1
@@ -56,19 +58,19 @@ set.seed(1)
 		rnkIndex[ranking[[i]]] <- i
 		i <- i + 1
 	}
-	pop <- cbind(pop, rnkIndex)
+	parent <- cbind(parent, rnkIndex)
 
 	
 	#	step 4, calculate the crowding value
-	objRange <- apply(pop[, (varNo + 1) : (varNo + objDim)], 2, max) - apply(pop[, (varNo + 1) : (varNo + objDim)], 2, min)
-	cd <- crowdingDist4frnt(pop, ranking, objRange)
+	objRange <- apply(parent[, (varNo + 1) : (varNo + objDim)], 2, max) - apply(parent[, (varNo + 1) : (varNo + objDim)], 2, min)
+	cd <- crowdingDist4frnt(parent, ranking, objRange)
 
 	#	step 5, selection
-	pop <- cbind(pop, apply(cd, 1, sum))
-	#print(pop)
+	parent <- cbind(parent, apply(cd, 1, sum))
+	#print(parent)
 
 	for(iter in 1:generations){
-		matingPool <- tournamentSelection(pop, popSize, tourSize)
+		matingPool <- tournamentSelection(parent, popSize, tourSize)
 		#print(matingPool)
 	
 		#	step 6, Crossover
@@ -80,10 +82,17 @@ set.seed(1)
 		#	step 7 Mutation
 		#childAfterM <- boundedPolyMutation(childAfterX, lowerBounds, upperBounds, mprob, MutDistIdx)
 		childAfterM <- mutation(childAfterX, mprob)
+		#Check for validation
 		for(j in 1:nrow(childAfterM)){
-			chromosome <- constraints_filter(childAfterM[j, ])
+			chromosome <- services_constraint_check(childAfterM[j, ])
 			if(is.logical(chromosome)){
 				childAfterM[j, ] <- repair_service_minimum(childAfterM[j, ])
+			}
+			chromosome <- cost_constraint_check(childAfterM[j, ], cost_limitation)
+			if(is.logical(chromosome)){
+				#print(childAfterM[j, ])
+				childAfterM[j, ] <- repair_cost_maximum(childAfterM[j, ])
+				#print(childAfterM[j, ])
 			}
 		}
 
@@ -91,9 +100,10 @@ set.seed(1)
 		#childAfterM <- cbind(childAfterM, t(apply(childAfterM, 1, fitness)))
 		
 		unNormalized <- t(apply(childAfterM, 1, fitness))
+		calculate_mean_cost(unNormalized)
 		childAfterM <- cbind(childAfterM, normalize(unNormalized))
 		#print(childAfterM)
-		parentNext <- rbind(pop[, 1:(varNo + objDim)], childAfterM)
+		parentNext <- rbind(parent[, 1:(varNo + objDim)], childAfterM)
 		#print(parentNext)
 		ranking <- fastNonDominatedSorting(parentNext[, (varNo + 1) : (varNo + objDim)])
 		i <- 1
@@ -102,7 +112,7 @@ set.seed(1)
 			i <- i + 1
 		}
 		parentNext <- cbind(parentNext, rnkIndex)
-		objRange <- apply(pop[, (varNo + 1) : (varNo + objDim)], 2, max) - apply(pop[, (varNo + 1) : (varNo + objDim)], 2, min)
+		objRange <- apply(parent[, (varNo + 1) : (varNo + objDim)], 2, max) - apply(parent[, (varNo + 1) : (varNo + objDim)], 2, min)
 		#print(objRange)
 		cd <- crowdingDist4frnt(parentNext, ranking, objRange)
 		parentNext <- cbind(parentNext, apply(cd, 1, sum))
@@ -110,14 +120,9 @@ set.seed(1)
 		#print(parentNext.sort)
 		parent <- parentNext.sort[1:popSize, ]
 		front <- parent[parent[, 15] == 1, ]
+		#print(apply(front[, 1:varNo], 1, fitness))
 		par(new = T)
-		if(iter == 3){
-			plot(front[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'green', pch = 3)
-		}
-		else{
-			plot(front[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red', pch = 3)
-		}
-		#plot(parent[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'green')
+		plot(front[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red', pch = 4)
 	}
 	par(new = T)
 	#plot(parent[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red', pch = 3)
@@ -133,13 +138,13 @@ set.seed(1)
 	for(iter in 1:nrow(front)){
 		print(matrix(front[iter, 1:varNo], nrow = 3, ncol = 4))
 	}
-	print(front)
+	#print(front)
 	#return(parent)
 	#return(paretoFront(result))
 	#return(result)
 }
 
-generate_population <- function(row, col, size){
+generate_population <- function(row, col, size, cost_limitation){
 	#	population is a list, every index contains a matrix, which is a chromosome
 	#	col		candidate_cities:	A B C D
 	#	row		services			S1 S2 S3
@@ -148,24 +153,32 @@ generate_population <- function(row, col, size){
 	#				S1	1	0	0	1
 	#				S2	0	1	0	0
 	#				S3	0	0	1	0
-	pop <- vector()
+	parent <- vector()
 	count <- 0
 	repeat {
+		check <- 1
 		if(count > size - 1){
 			break
 		}
 		chromosome <- rbinom(row * col, 1, 0.5)
 		
 		#The if the chromosome is valid
-		chromosome <- constraints_filter(chromosome)
-		if(is.logical(chromosome)){
+		check <- services_constraint_check(chromosome)
+		if(is.logical(check)){
 			#If the chromosome is invalid, then fix it
 			chromosome <- repair_service_minimum(chromosome)
+			check <- 1
 		}
-		pop <- rbind(pop, chromosome)
+		check <- cost_constraint_check(chromosome, cost_limitation)
+		if(is.logical(chromosome)){
+			#If the chromosome is invalid, then fix it
+			chromosome <- repair_cost_maximum(chromosome)
+		}
+
+		parent <- rbind(parent, chromosome)
 		count <- count + 1
 	}
-	pop
+	parent
 }
 
 fitness <- function(chromosome) {
@@ -257,7 +270,7 @@ normalize <- function(data){
 }
 
 
-constraints_filter <- function(chromosome){
+services_constraint_check <- function(chromosome){
 	chromosome_m <- matrix(chromosome, nrow = 3, ncol = 4)
 	if(prod(apply(chromosome_m, 1, services_minimum)) == 0) return(F)
 	return(chromosome)
@@ -286,4 +299,38 @@ repair_service_minimum <- function(chromosome){
 	chromosome
 }
 
+#Limitation of cost
+cost_constraint_check <- function(chromosome, limitation){
+	chromosome_m <- matrix(chromosome, nrow = 3, ncol = 4)
+	cost <- sum(chromosome_m * cost_matrix)
+	if(cost > limitation) return(F)
+	return(chromosome)
+}
+repair_cost_maximum <- function(chromosome){
+	chromosome_m <- matrix(chromosome, nrow = 3, ncol = 4)
+	row <- nrow(chromosome_m)
+	col <- ncol(chromosome_m)
+	row_num <- vector()
+	candidate_chromosome <- vector()
+	for(iter in 1:row){
+		if(sum(chromosome_m[iter, ]) > 1){
+			row_num <- c(row_num, iter)
+		}
+	}
+	for(j in 1:length(row_num)){
+		candidate_chromosome <- c(candidate_chromosome, chromosome_m[row_num[j], ])
+	}
+	candidate_index <- which(candidate_chromosome %in% 1)
+	selected_num <- sample(candidate_index, 1, replace = F)
+	candidate_chromosome[selected_num] <- 0
+	candidate_chromosome <- matrix(candidate_chromosome, byrow = T, nrow = length(row_num), ncol = 4)
+	for(k in 1:length(row_num)){
+		chromosome_m[row_num[k], ] <- chromosome_m[row_num[k], ] & candidate_chromosome[k, ]
+	}
+	return(as.vector(chromosome_m))
+}
 
+
+calculate_mean_cost <- function(unNormalized){
+	print(mean(unNormalized[, 1]))
+}
