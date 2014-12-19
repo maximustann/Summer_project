@@ -17,12 +17,9 @@ algorithm <- function(services, candidate_cities){
 	candidate_cities_num <- length(candidate_cities)
 	services_num <- length(services)
 	popSize <- 100
-	objDim <- 2		
 	varNo <- services_num * candidate_cities_num
 	tourSize <- 10
-	MutDistIdx <- 20
 	mprob <- 0.3
-	XoverDistIdx <- 20
 	cprob <- 0.7
 	generations <- 100
 	cost_limitation <- 1000
@@ -33,7 +30,6 @@ algorithm <- function(services, candidate_cities){
 	#	step 1, initialize the population
 	parent <- generate_population(candidate_cities_num, services_num, popSize, cost_limitation)
 	#print(pop)
-
 #====================Normalized Fitness================================
 	#	step 2, calculate the fitness
 	unNormalized <- t(apply(parent, 1, fitness))
@@ -100,26 +96,26 @@ algorithm <- function(services, candidate_cities){
 		#childAfterM <- cbind(childAfterM, t(apply(childAfterM, 1, fitness)))
 		
 		unNormalized <- t(apply(childAfterM, 1, fitness))
-		calculate_mean_cost(unNormalized)
+		#calculate_mean_cost(unNormalized)
 		childAfterM <- cbind(childAfterM, normalize(unNormalized))
 		#print(childAfterM)
 		parentNext <- rbind(parent[, 1:(varNo + objDim)], childAfterM)
 		#print(parentNext)
-		ranking <- fastNonDominatedSorting(parentNext[, (varNo + 1) : (varNo + objDim)])
-		i <- 1
-		while (i <= length(ranking)){
-			rnkIndex[ranking[[i]]] <- i
-			i <- i + 1
-		}
-		parentNext <- cbind(parentNext, rnkIndex)
-		objRange <- apply(parent[, (varNo + 1) : (varNo + objDim)], 2, max) - apply(parent[, (varNo + 1) : (varNo + objDim)], 2, min)
+		#ranking <- fastNonDominatedSorting(parentNext[, (varNo + 1) : (varNo + objDim)])
+		#i <- 1
+		#while (i <= length(ranking)){
+			#rnkIndex[ranking[[i]]] <- i
+			#i <- i + 1
+		#}
+		#parentNext <- cbind(parentNext, rnkIndex)
+		#objRange <- apply(parent[, (varNo + 1) : (varNo + objDim)], 2, max) - apply(parent[, (varNo + 1) : (varNo + objDim)], 2, min)
 		#print(objRange)
-		cd <- crowdingDist4frnt(parentNext, ranking, objRange)
-		parentNext <- cbind(parentNext, apply(cd, 1, sum))
-		parentNext.sort <- parentNext[order(parentNext[, varNo + objDim + 1]), ]
+		#cd <- crowdingDist4frnt(parentNext, ranking, objRange)
+		#parentNext <- cbind(parentNext, apply(cd, 1, sum))
+		#parentNext.sort <- parentNext[order(parentNext[, varNo + objDim + 1]), ]
 		#print(parentNext.sort)
-		parent <- parentNext.sort[1:popSize, ]
-		front <- parent[parent[, 15] == 1, ]
+		#parent <- parentNext.sort[1:popSize, ]
+		#front <- parent[parent[, 15] == 1, ]
 		#print(apply(front[, 1:varNo], 1, fitness))
 		par(new = T)
 		plot(front[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red', pch = 4)
@@ -134,7 +130,7 @@ algorithm <- function(services, candidate_cities){
 				  tournamentSize = tourSize, generations = generations, XoverProb = cprob, mutationProb = mprob,
 				  parameters = parent[,1:varNo], objectives = parent[, (varNo + 1):(varNo + objDim)], 
 				  paretoFrontRank = parent[, varNo + objDim + 1], crowdingDistance = parent[, varNo + objDim + 2])
-	class(result) = "nsga2R"
+	#class(result) = "nsga2R"
 	for(iter in 1:nrow(front)){
 		print(matrix(front[iter, 1:varNo], nrow = 3, ncol = 4))
 	}

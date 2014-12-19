@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d (Web2C 2012)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: SWEN424Report.aux
+The style file: acm.bst
+Database file #1: SWEN424ReportBibliography.bib
+Warning--to sort, need author or key in nzPost
+Warning--to sort, need author or key in gmeSite
+Warning--to sort, need author or key in bpmWiki
+You've used 14 entries,
+            2253 wiz_defined-function locations,
+            622 strings with 6379 characters,
+and the built_in function-call counts, 4721 in all, are:
+= -- 456
+> -- 210
+< -- 0
++ -- 90
+- -- 74
+* -- 345
+:= -- 731
+add.period$ -- 43
+call.type$ -- 14
+change.case$ -- 78
+chr.to.int$ -- 0
+cite$ -- 17
+duplicate$ -- 179
+empty$ -- 407
+format.name$ -- 74
+if$ -- 1007
+int.to.chr$ -- 0
+int.to.str$ -- 14
+missing$ -- 12
+newline$ -- 73
+num.names$ -- 22
+pop$ -- 110
+preamble$ -- 1
+purify$ -- 65
+quote$ -- 0
+skip$ -- 115
+stack$ -- 0
+substring$ -- 279
+swap$ -- 47
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 54
+warning$ -- 3
+while$ -- 41
+width$ -- 16
+write$ -- 144
+(There were 3 warnings)

@@ -1,0 +1,46 @@
+@article{Ran:2003:MWS:844357.844360,
+	author = {Ran, Shuping},
+	title = {A Model for Web Services Discovery with QoS},
+	journal = {SIGecom Exch.},
+	issue_date = {Spring, 2003},
+	volume = {4},
+	number = {1},
+	month = mar,
+	year = {2003},
+	issn = {1551-9031},
+	pages = {1--10},
+	numpages = {10},
+	url = {http://doi.acm.org/10.1145/844357.844360},
+	doi = {10.1145/844357.844360},
+	acmid = {844360},
+	publisher = {ACM},
+	address = {New York, NY, USA},
+	keywords = {UDDI, UDDI extension, model, quality of services, tModel, web services discovery},
+} 
+
+@incollection{
+	year={2005},
+	isbn={978-3-540-29498-6},
+	booktitle={Stochastic Algorithms: Foundations and Applications},
+	volume={3777},
+	series={Lecture Notes in Computer Science},
+	editor={Lupanov, OlegB. and Kasim-Zade, OktayM. and Chaskin, AlexanderV. and Steinhöfel, Kathleen},
+	doi={10.1007/11571155_5},
+	title={Recent Advances in Multiobjective Optimization},
+	url={http://dx.doi.org/10.1007/11571155_5},
+	publisher={Springer Berlin Heidelberg},
+	author={Zaroliagis, Christos},
+	pages={45-47},
+	language={English}
+}
+@incollection{
+	year={2008},
+		isbn={978-1-84800-381-1},
+		booktitle={Multi-objective Management in Freight Logistics},
+		doi={10.1007/978-1-84800-382-8_2},
+		title={Multi-objective Optimization},
+		url={http://dx.doi.org/10.1007/978-1-84800-382-8_2},
+		publisher={Springer London},
+		pages={11-36},
+		language={English}
+}

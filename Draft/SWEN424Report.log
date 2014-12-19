@@ -1,0 +1,76 @@
+This is TeX, Version 3.1415926 (Web2C 2013) (format=tex 2014.6.21)  10 OCT 2014 09:26
+**SWEN424Report.tex
+(./SWEN424Report.tex
+! Undefined control sequence.
+l.6 \documentclass
+                  [11pt, a4paper, oneside, openright]{article}
+? 
+! Undefined control sequence.
+l.8 \usepackage
+               {float} % lets you have non-floating floats
+? 
+! Undefined control sequence.
+l.9 \usepackage
+               {url} % for typesetting urls
+? 
+! Undefined control sequence.
+l.10 \usepackage
+                {graphicx} % for including images
+? 
+! Undefined control sequence.
+l.12 \newfloat
+              {fig}{thp}{lof}[section]
+? 
+! Undefined control sequence.
+l.13 \floatname
+               {fig}{Figure}
+? 
+! Undefined control sequence.
+l.16 \title
+           {A Domain-Customised Business Process Model for Postal Services}
+? 
+! Undefined control sequence.
+l.17 \author
+            {Ashleigh Cains (300198169) \\ Alexandre Sawczuk da Silva (30019...
+
+? 
+! Argument of \\ has an extra }.
+<inserted text> 
+                \par 
+<to be read again> 
+                   }
+l.17 ...\\ Alexandre Sawczuk da Silva (300193950)}
+                                                  
+? 
+Runaway argument?
+ Alexandre Sawczuk da Silva (300193950)
+! Paragraph ended before \\ was complete.
+<to be read again> 
+                   \par 
+<to be read again> 
+                   }
+l.17 ...\\ Alexandre Sawczuk da Silva (300193950)}
+                                                  
+? 
+! Undefined control sequence.
+l.19 \usepackage
+                [font,ecs]{vuwproject}
+? 
+! Undefined control sequence.
+l.23    \otherdegree
+                    {SWEN424 --- Model-Driven Development}
+? 
+! Undefined control sequence.
+l.29 \begin
+           {document}
+? 
+! Undefined control sequence.
+l.32 \frontmatter
+                 
+? 
+! Undefined control sequence.
+l.36 \begin
+           {abstract}
+? 
+[1] )
+Output written on SWEN424Report.dvi (1 page, 1532 bytes).

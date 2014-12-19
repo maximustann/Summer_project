@@ -1,0 +1,83 @@
+\begin{thebibliography}{10}
+
+\bibitem{bpmWiki}
+{B}usiness {P}rocess {M}odel and {N}otation.
+\newblock
+  \url{http://en.wikipedia.org/wiki/Business_Process_Model_and_Notation}.
+\newblock Accessed on 28 September 2013.
+
+\bibitem{gmeSite}
+{GME} {D}ocumentation and {D}ownloads {P}age.
+\newblock \url{https://forge.isis.vanderbilt.edu/gme/}.
+\newblock Accessed on 28 September 2013.
+
+\bibitem{nzPost}
+{P}roducts and {S}ervices {O}ffered by {N}ew {Z}ealand {P}ost.
+\newblock \url{http://www.nzpost.co.nz/products-services}.
+\newblock Accessed on 28 September 2013.
+
+\bibitem{communication}
+{\sc Al-Rawas, A., and Easterbrook, S.~M.}
+\newblock {\em Communication problems in requirements engineering: a field
+  study}.
+\newblock National Aeronautics and Space Administration, 1996.
+
+\bibitem{gmeJava}
+{\sc B{\'e}zivin, J., Brunette, C., Chevrel, R., Jouault, F., and Kurtev, I.}
+\newblock Bridging the generic modeling environment (gme) and the eclipse
+  modeling framework (emf).
+\newblock In {\em Proceedings of the Best Practices for Model Driven Software
+  Development at OOPSLA\/} (2005), vol.~5, Citeseer.
+
+\bibitem{goodBadUgly}
+{\sc Hailpern, B., and Tarr, P.}
+\newblock Model-driven development: The good, the bad, and the ugly.
+\newblock {\em IBM systems journal 45}, 3 (2006), 451--461.
+
+\bibitem{bpmSim}
+{\sc Hook, G.}
+\newblock Business process modeling and simulation.
+\newblock In {\em Simulation Conference (WSC), Proceedings of the 2011
+  Winter\/} (2011), IEEE, pp.~773--778.
+
+\bibitem{bpmBenefits}
+{\sc Indulska, M., Green, P., Recker, J., and Rosemann, M.}
+\newblock Business process modeling: Perceived benefits.
+\newblock In {\em Conceptual Modeling-ER 2009}. Springer, 2009, pp.~458--471.
+
+\bibitem{bpmImp}
+{\sc Koehler, J., Tirenni, G., and Kumaran, S.}
+\newblock From business process model to consistent implementation: A case for
+  formal verification methods.
+\newblock In {\em Enterprise Distributed Object Computing Conference, 2002.
+  EDOC'02. Proceedings. Sixth International\/} (2002), IEEE, pp.~96--106.
+
+\bibitem{gmePaper}
+{\sc Ledeczi, A., Maroti, M., Bakay, A., Karsai, G., Garrett, J., Thomason, C.,
+  Nordstrom, G., Sprinkle, J., and Volgyesi, P.}
+\newblock The generic modeling environment.
+\newblock In {\em Workshop on Intelligent Signal Processing, Budapest,
+  Hungary\/} (2001), vol.~17.
+
+\bibitem{mdd}
+{\sc Mellor, S.~J., Clark, A.~N., and Futagami, T.}
+\newblock Model-driven development.
+\newblock {\em IEEE software\/} (2003), 14--18.
+
+\bibitem{mddPragmatics}
+{\sc Selic, B.}
+\newblock The pragmatics of model-driven development.
+\newblock {\em Software, IEEE 20}, 5 (2003), 19--25.
+
+\bibitem{bpmCorrectness}
+{\sc van~der Aalst, W.~M., Dumas, M., Gottschalk, F., ter Hofstede, A.~H.,
+  La~Rosa, M., and Mendling, J.}
+\newblock Preserving correctness during business process model configuration.
+\newblock {\em Formal Aspects of Computing 22}, 3-4 (2010), 459--482.
+
+\bibitem{bpmnIntro}
+{\sc White, S.~A.}
+\newblock Introduction to bpmn.
+\newblock {\em IBM Cooperation\/} (2004), 2008--029.
+
+\end{thebibliography}
