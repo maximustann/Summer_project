@@ -7,9 +7,9 @@
 \usepackage{program}
 \usepackage{tabularx}
 \usepackage{colortbl}
-\usepackage{mathtools}
 
-\usepackage{amsmath}
+\usepackage{amsmath,amssymb}
+%\usepackage{mathtools}
 \usepackage{etoolbox}
 \usepackage{hhline}
 \usepackage{subcaption}
@@ -75,7 +75,7 @@ The network latency could also vary with the network topology changes.
 The only way to reduce the network latency is move the service to a location where has smaller network latency to the user center. 
 Hence, the WSPs need to consider which physical location to deploy their services so that it could minimize the cost as well as ensure the QoS.
 
-The Web service location-allocation problem is essentially a multiobjective optimization problem \cite{Multiobjective}.
+The Web service location-allocation problem is essentially a multi-objective optimization problem \cite{Multiobjective}.
 Because of the confliction between service quality and deployment cost. 
 Ideally, WSP could deploy their services to each user center in order to provide the best quality.
 That is, the more services deployed, the better the quality and the higher cost. 
@@ -90,7 +90,7 @@ Evolutionary algorithms (EAs) have been used in solving multi objective optimiza
 EAs are ideal for solving multi objective optimization problems \cite{key:article}, since EA works with a population of solutions, a simple EA can be extended to maintain a diverse set of solutions.
 With an emphasis for moving toward the true Pareto-optimal region, an EA can be used to find multiple Pareto-optimal solutions in one single simulation run \cite{OptimizationElectrical}.
 
-Hai \cite{EnhancedGenetic} proposed an enhanced genetic algorithm-based approach which make use of the integer scalarization technique to solve the multiobjective problem.
+Hai \cite{EnhancedGenetic} proposed an enhanced genetic algorithm-based approach which make use of the integer scalarization technique to solve the multi-objective problem.
 The genetic algorithm (GA) is an EA that uses genetic operators to obtain optimal solutions without any assumptions about the search space.
 This algorithm solve the scalability problem in the dataset, however the integer scalarization technique \cite{Multiobjective} has some disadvantages: 
 
@@ -135,7 +135,8 @@ The main objectives are:
 
 \section{Problem Description}
 \subsection{Model formulation}
-The problem is determine which facility locations that could maximus WSPs’ profit as well as ensure low network latency. 
+The problem is to determine which facility locations that could maximus WSPs’ profit 
+as well as ensure low network latency. 
 Let $S = \{ 1, 2, ..., s\}$ be the set of services. We assume that the demand for service is concentrated at $i$ 
 demand nodes $I = \{ 1, 2, ..., i \}$. Let $J = \{ 1, 2, ..., j \}$ be the set of $j$ candidate facility locations.
 To model the service location-allocation problem we use four matrices: service network latency matrix $L$, service location
@@ -153,8 +154,8 @@ L = \bbordermatrix{~ & j_{1} & j_{2} & j_{3} & j_{4} \cr
 					i_{3}	&2.74 &1.2 &5.3	&0.95 \cr} 
 $
 \end{center}
-These data could be retrieved from implementing a network latency experiment or using existed dataset \cite{5552800, 6076756}.
 The service location matrix $A = [y_{sj}]$ represents the actual service location-allocation, where $y_{sj}$  is a binary value ( i.e., 1 or 0) shows whether a service $s$ is deployed in candidate location $j$ or not.
+We use the service location matrix A as the representation of chromosome that evolve itself during the progress.
 \begin{center}
 $
 A = \bbordermatrix{~ & j_{1} & j_{2} & j_{3} & j_{4} \cr
@@ -220,7 +221,9 @@ The objective functions of this entire problem are following:
 \begin{itemize}
 	\item Minimize the total cost of services. n is the number of service, m is the number of candidate location.
 		\begin{center}
-			$CostFitness = \sum\limits_{s \in S} \sum\limits_{j \in J} C_{sj} \times A_{sj}$
+			\begin{equation}
+				CostFitness = \sum\limits_{s \in S} \sum\limits_{j \in J} C_{sj} \times A_{sj}
+			\end{equation}
 		\end{center}
 	\item Minimize the network total latency of the services.
 		\begin{itemize}
@@ -237,15 +240,128 @@ The objective functions of this entire problem are following:
 					$AverageInvocation_{i} = Invocation_{s} \div ServiceNo_{s}$
 				\end{center}
 
-			\item Calculate the latency of each service by multiply latency matrix by service allocation matrix (chromosome).
+			\item Calculate the latency of each service by multiply latency matrix $L$ by service allocation matrix $A$(chromosome).
+				\begin{center}
+					$LocationLatency_{i} = \sum\limits_{i \in I} L_{ij} \times A_{sj}$
+				\end{center}
+
 			\item Calculate the total latency of the multiplication of AverageInvocationi and $LocationLatency_{i}$.
+				\begin{center}
+					\begin{equation}
+						LatencyFitness = \sum\limits_{i \in I} AverageInvocation_{i} \times LocationLatency_{i}
+					\end{equation}
+				\end{center}
 		\end{itemize}
 \end{itemize}
 The population is initialized based on the problem range and constraints. 
 In our problem, we have two constraints, the cost constraint and latency constraint. 
 If the initialized chromosome does not satisfy the constraints, then repair operators will attempt to 
 recover from possible constraint violations. The detail of repair operators will be discuss in section 2.5.2.
-\section{General Instructions}
+\subsection{Constraints}
+The our approach, each chromosome have to satisfy two constraints to be a feasible solution.
+The first constraint controls the service number which is make sure that each service is deployed in at 
+least one location.
+\begin{center}
+	\begin{equation}
+		\sum\limits_{s \in S} A_{sj} \geq 1
+	\end{equation}
+\end{center}
+
+The second constraint is cost constraint which predefined the upper boundary of the total cost.
+An integer number CostLimitation is defined. This constraint will try to constraints
+\begin{center}
+	\begin{equation}
+		\sum\limits_{s \in S} \sum\limits_{j \in J} C_{sj} \times A_{sj} \leq CostLimitation
+	\end{equation}
+\end{center}
+The constraint is implemented by repair operators which is introduced in the next section.
+
+\subsection{Genetic operators}
+Specific selection, mutation and crossover operators were implemented. It is important to note that mutation and 
+crossover operators can produce solutions that might violate the constraints. Therefore, repair 
+operators are needed to try to maintain feasible solutions. The original NSGA-II use a simulated 
+binary crossover (SBX) \cite{930314} and polynomial mutation \cite{Raghuwanshi04} to cope with continuous problem. 
+However, our problem is discretized, therefore we use the regular GA mutation and crossover.
+
+
+\subsubsection{Mutation}
+The mutation operator works as follows: Initially choose one random location from the chromosome. 
+Then, reverse the bit, e.g. 0 to 1 or 1 to 0. 
+
+In this study, a chromosome in a population will be selected based on mutation possibility $P_{m}$. 
+As shown in below, a random position will be selected and replaced by a reversed number.
+\begin{figure}[ht]
+\centering
+	\includegraphics[width=0.5\textwidth]{pics/mutation.png}
+\caption{}
+\label{graph1}
+\end{figure}
+\subsubsection{Crossover}
+The crossover operator in this paper is the single point crossover. 
+The crossover is controlled by crossover probability $P_{c}$. 
+The crossover point is created randomly within the length of the chromosome. 
+As in the example below, two parents crossover at point X, then two offspring were generated.
+\begin{figure}[ht]
+\centering
+	\includegraphics[width=0.3\textwidth]{pics/crossover.png}
+\caption{}
+\label{graph1}
+\end{figure}
+
+
+\subsubsection{Repair operators}
+Since mutation and crossover are very likely to generate offspring that violate the constraints, therefore, 
+repair operators are necessary. Normally, each constraint would has an unique repair operator 
+in order to recover different types of violation.
+
+After the process of mutation and crossover, the repair operators are examine each chromosome. 
+If there is violation found in the chromosome, then it will try to repair it. 
+In our problem, we have two repair operators: service number and cost.
+
+\begin{flushleft}\textbf{Service number repair operator}\end{flushleft}
+\begin{center}
+		$\sum\limits_{s \in S} A_{sj} \geq 1$ \\
+		service number constraint
+\end{center}
+The operator will go through each row of the Location Allocation matrix A, if the number of each 
+service is less than one, then randomly choose one location and reverse the selected bit. 
+Although the randomness does not necessarily provide an optimal solution, the computation time is 
+better than exhaustively compare all solutions. 
+
+
+\begin{flushleft}\textbf{Cost repair operator}\end{flushleft}
+	\begin{center} 
+		$\sum\limits_{s \in S} \sum\limits_{j \in J} C_{sj} \times A_{sj} \leq CostLimitation$ \\
+		cost constraint
+\end{center}
+
+If the cost exceed the predefined limitation. Then the operator would iteratively check if any service has 
+been deployed in more than one location. After found one service has been deployed multiple locations, 
+the operator will randomly select one of them and change to zero. That means, cancel the deployment of 
+that service in this location. After doing that, re-examine the chromosome, if it is still exceed the 
+limitation then repeat this process until there is no redundant services or it satisfies the constraint.
+
+This algorithm will try its best to reduce the cost regardless of other factors. Although the modified 
+chromosome may end up with higher network latency, however the cost constraint has higher priority than network latency.
+
+Worth noting that this algorithm may not provide a strictly correct solution that satisfied the constraint, 
+partially because the randomly chosen of canceling deployment. On the other hand, it may also indicate that 
+the predefined upper boundary of cost limitation is too low.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 This document%
 \footnote{Originally written by Darrell Whitley, and only later
