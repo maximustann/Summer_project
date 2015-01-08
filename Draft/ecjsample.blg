@@ -4,45 +4,45 @@ The top-level auxiliary file: ecjsample.aux
 The style file: apalike.bst
 Database file #1: ecjsample.bib
 Warning--I didn't find a database entry for "Smith"
-You've used 19 entries,
+You've used 21 entries,
             1935 wiz_defined-function locations,
-            620 strings with 8161 characters,
-and the built_in function-call counts, 9139 in all, are:
-= -- 906
-> -- 356
-< -- 16
-+ -- 129
-- -- 119
-* -- 766
-:= -- 1489
-add.period$ -- 63
-call.type$ -- 19
-change.case$ -- 152
-chr.to.int$ -- 19
-cite$ -- 19
-duplicate$ -- 372
-empty$ -- 671
-format.name$ -- 142
-if$ -- 1892
+            632 strings with 8497 characters,
+and the built_in function-call counts, 10055 in all, are:
+= -- 1001
+> -- 382
+< -- 19
++ -- 137
+- -- 127
+* -- 837
+:= -- 1631
+add.period$ -- 69
+call.type$ -- 21
+change.case$ -- 166
+chr.to.int$ -- 21
+cite$ -- 21
+duplicate$ -- 413
+empty$ -- 743
+format.name$ -- 156
+if$ -- 2088
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 19
-newline$ -- 99
-num.names$ -- 59
-pop$ -- 151
+missing$ -- 21
+newline$ -- 109
+num.names$ -- 65
+pop$ -- 165
 preamble$ -- 1
-purify$ -- 152
+purify$ -- 166
 quote$ -- 0
-skip$ -- 279
+skip$ -- 312
 stack$ -- 0
-substring$ -- 696
-swap$ -- 91
-text.length$ -- 11
+substring$ -- 773
+swap$ -- 102
+text.length$ -- 12
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 114
+type$ -- 126
 warning$ -- 0
-while$ -- 75
+while$ -- 83
 width$ -- 0
-write$ -- 261
+write$ -- 287
 (There was 1 warning)

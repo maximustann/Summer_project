@@ -7,9 +7,9 @@
 \usepackage{program}
 \usepackage{tabularx}
 \usepackage{colortbl}
-\usepackage{mathtools}
 
-\usepackage{amsmath}
+\usepackage{amsmath,amssymb}
+%\usepackage{mathtools}
 \usepackage{etoolbox}
 \usepackage{hhline}
 \usepackage{subcaption}
@@ -54,16 +54,18 @@ contains references.
 
 \begin{keywords}
 
-Genetic algorithms, 
-evolutionary programming,
+multi-objective,
 NSGA-II,
-multiobjective.
+genetic algorithms, 
+evolutionary programming
 
 \end{keywords}
 \section{Introduction}
 Web Services are considered as self-contained, self-describing, modular applications that can be published, located, and invoked across the Web \cite{Ran:2003:MWS:844357.844360}. 
 In recent years, web services technology is becoming increasingly popular because the convenience, low cost and capacity to be composed into high-level business processes \cite{Aboolian200964}.
-
+Because of modularization and open interfaces, Web services facilitate the development of highly 
+customizable and adaptable applications to meet business demand. Furthermore, Web services offer a 
+convenient registration, search  and discovery system. e.g. Universal Description, Discovery and Integration (UDDI). 
 
 With the ever increasing number of functional similar web services being available on the Internet, the web service providers (WSPs) are trying to improve the quality of service (QoS) to become competitive in the market.  
 QoS also known as non-functional requirements to  web services, is the degree to which a service meets specified requirements or user needs \cite{4061431}, such as response time, security and availability. 
@@ -75,7 +77,7 @@ The network latency could also vary with the network topology changes.
 The only way to reduce the network latency is move the service to a location where has smaller network latency to the user center. 
 Hence, the WSPs need to consider which physical location to deploy their services so that it could minimize the cost as well as ensure the QoS.
 
-The Web service location-allocation problem is essentially a multiobjective optimization problem \cite{Multiobjective}.
+The Web service location-allocation problem is essentially a multi-objective optimization problem \cite{Multiobjective}.
 Because of the confliction between service quality and deployment cost. 
 Ideally, WSP could deploy their services to each user center in order to provide the best quality.
 That is, the more services deployed, the better the quality and the higher cost. 
@@ -90,7 +92,7 @@ Evolutionary algorithms (EAs) have been used in solving multi objective optimiza
 EAs are ideal for solving multi objective optimization problems \cite{key:article}, since EA works with a population of solutions, a simple EA can be extended to maintain a diverse set of solutions.
 With an emphasis for moving toward the true Pareto-optimal region, an EA can be used to find multiple Pareto-optimal solutions in one single simulation run \cite{OptimizationElectrical}.
 
-Hai \cite{EnhancedGenetic} proposed an enhanced genetic algorithm-based approach which make use of the integer scalarization technique to solve the multiobjective problem.
+Hai \cite{EnhancedGenetic} proposed an enhanced genetic algorithm-based approach which make use of the integer scalarization technique to solve the multi-objective problem.
 The genetic algorithm (GA) is an EA that uses genetic operators to obtain optimal solutions without any assumptions about the search space.
 This algorithm solve the scalability problem in the dataset, however the integer scalarization technique \cite{Multiobjective} has some disadvantages: 
 
@@ -135,7 +137,8 @@ The main objectives are:
 
 \section{Problem Description}
 \subsection{Model formulation}
-The problem is determine which facility locations that could maximus WSPs’ profit as well as ensure low network latency. 
+The problem is to determine which facility locations that could maximus WSPs’ profit 
+as well as ensure low network latency. 
 Let $S = \{ 1, 2, ..., s\}$ be the set of services. We assume that the demand for service is concentrated at $i$ 
 demand nodes $I = \{ 1, 2, ..., i \}$. Let $J = \{ 1, 2, ..., j \}$ be the set of $j$ candidate facility locations.
 To model the service location-allocation problem we use four matrices: service network latency matrix $L$, service location
@@ -153,8 +156,8 @@ L = \bbordermatrix{~ & j_{1} & j_{2} & j_{3} & j_{4} \cr
 					i_{3}	&2.74 &1.2 &5.3	&0.95 \cr} 
 $
 \end{center}
-These data could be retrieved from implementing a network latency experiment or using existed dataset \cite{5552800, 6076756}.
 The service location matrix $A = [y_{sj}]$ represents the actual service location-allocation, where $y_{sj}$  is a binary value ( i.e., 1 or 0) shows whether a service $s$ is deployed in candidate location $j$ or not.
+We use the service location matrix A as the representation of chromosome that evolve itself during the progress.
 \begin{center}
 $
 A = \bbordermatrix{~ & j_{1} & j_{2} & j_{3} & j_{4} \cr
@@ -220,7 +223,9 @@ The objective functions of this entire problem are following:
 \begin{itemize}
 	\item Minimize the total cost of services. n is the number of service, m is the number of candidate location.
 		\begin{center}
-			$CostFitness = \sum\limits_{s \in S} \sum\limits_{j \in J} C_{sj} \times A_{sj}$
+			\begin{equation}
+				CostFitness = \sum\limits_{s \in S} \sum\limits_{j \in J} C_{sj} \times A_{sj}
+			\end{equation}
 		\end{center}
 	\item Minimize the network total latency of the services.
 		\begin{itemize}
@@ -237,157 +242,115 @@ The objective functions of this entire problem are following:
 					$AverageInvocation_{i} = Invocation_{s} \div ServiceNo_{s}$
 				\end{center}
 
-			\item Calculate the latency of each service by multiply latency matrix by service allocation matrix (chromosome).
+			\item Calculate the latency of each service by multiply latency matrix $L$ by service allocation matrix $A$(chromosome).
+				\begin{center}
+					$LocationLatency_{i} = \sum\limits_{i \in I} L_{ij} \times A_{sj}$
+				\end{center}
+
 			\item Calculate the total latency of the multiplication of AverageInvocationi and $LocationLatency_{i}$.
+				\begin{center}
+					\begin{equation}
+						LatencyFitness = \sum\limits_{i \in I} AverageInvocation_{i} \times LocationLatency_{i}
+					\end{equation}
+				\end{center}
 		\end{itemize}
 \end{itemize}
-The population is initialized based on the problem range and constraints if any. 
+The population is initialized based on the problem range and constraints. 
 In our problem, we have two constraints, the cost constraint and latency constraint. 
 If the initialized chromosome does not satisfy the constraints, then repair operators will attempt to 
 recover from possible constraint violations. The detail of repair operators will be discuss in section 2.5.2.
-\section{General Instructions}
-
-This document%
-\footnote{Originally written by Darrell Whitley, and only later
-  modified by Marc Schoenauer, especially regarding the bibliography style,
-  latest update by Hans-Georg Beyer (\today).} 
-is a template which you can use to format your paper in 
-preparation for publishing in the journal {\em Evolutionary Computation} 
-(ECJ) and for submitting your paper to the journal. Our style file 
-``ecj.sty'' is compatible with \LaTeX{} version 2e. Please note, also the 
-first submission must be typeset using ECJ's \LaTeX{} style. {\em Documents 
-typeset by MS Word or other office programs are not accepted.}   
-
-Please make sure your paper is as complete and accurate as possible. You 
-should typeset your paper as you would like to see it 
-in its finally printed journal version (no double spacing; figures, tables 
-should be embedded in the text at the most desirable locations). 
-
-Please provide author(s) first initial and last name(s) for the even-page 
-running headline. Also provide a brief paper title (45 characters/spaces or 
-less) for the odd-page running headline.  See the ecjHeader section at the 
-top of this document for placement of these items.
-
-The rest of the document provides a few examples of references and 
-citations, how to set up figures, discusses common problems, and provides some
-general advice on writing your paper.
-
-\begin{enumerate} 
-    
-\item
-Give full names for authors.  (T. Bones should be Tom Bones or Thomas, 
-unless your first name is a military secret and everyone calls you ``T''.)  
-
-\item
-Be sure to provide 5 to 10 keywords for your paper.  See ``keywords'' 
-section above.
-
-\item
-Use the {\em Evolutionary Computation} format for references. In text 
-citations should use the authors names (Smith, 1997) or ``Smith (1997) 
-states ...''   The references at the back of the paper should also follow 
-the {\em Evolutionary Computation} format. Using a bitex file, with
-{\bf natbib.sty} and {\bf  apalike.bst}  is highly recommended. You
-should then use 
-\begin{itemize}
-\item {\tt $\backslash$cite\{Smith\} states that \ldots} to obtain ``\cite{Smith} states that \ldots''
-\item {\tt as stated in  $\backslash$citep\{Smith\}, \ldots} to obtain ``as stated in \citep{Smith} \ldots''
-\end{itemize}
-
-If you don't use natbib, be sure to follow the rules:
-
-\begin{itemize}
-\item 1 author: (Antonisse, 1989)
-\item 2 authors: (Juliany and Vose, 1994)
-\item multiple authors: (Reeves et al., 1990)
-\item multiple citations: (Antonisse, 1989; Juliany and Vose, 1994) 
-\end{itemize}
-
-
-\item
-If you use a bibtex file, please submit your bibtex file. In any case,
-please completely 
-spell out journal and institution titles.  Abbreviations may not be 
-understood by all readers. Be sure to provide beginning {\em and} ending 
-page numbers. Include editor(s) initials and last names(s), volume numbers, 
-page ranges, publisher name and location.
-
-See the Reference section of this paper for specific examples.
-
-\end{enumerate}
-
-\section{About Figures}
-
-\begin{figure}[t]
+\subsection{Constraints}
+The our approach, each chromosome have to satisfy two constraints to be a feasible solution.
+The first constraint controls the service number which is make sure that each service is deployed in at 
+least one location.
 \begin{center}
-\centerline{
-% \includegraphics[width=0.8\textwidth]{yourfigure.eps}
-%  UNCOMMENT the above line and add yourfigure.eps
-%  AND delete or comment-out the framebox
-\framebox(375,50)
-}
+	\begin{equation}
+		\sum\limits_{s \in S} A_{sj} \geq 1
+	\end{equation}
 \end{center}
-\caption{This is a caption below a framebox where a figure might appear.  
-         Use epsfig in the {\tt $\backslash$usepackage\{epsfig,ecj...\}} 
-         command to help to insure that we can process your figure.}
+
+The second constraint is cost constraint which predefined the upper boundary of the total cost.
+An integer number CostLimitation is defined. This constraint will try to constraints
+\begin{center}
+	\begin{equation}
+		\sum\limits_{s \in S} \sum\limits_{j \in J} C_{sj} \times A_{sj} \leq CostLimitation
+	\end{equation}
+\end{center}
+The constraint is implemented by repair operators which is introduced in the next section.
+
+\subsection{Genetic operators}
+Specific selection, mutation and crossover operators were implemented. It is important to note that mutation and 
+crossover operators can produce solutions that might violate the constraints. Therefore, repair 
+operators are needed to try to maintain feasible solutions. The original NSGA-II use a simulated 
+binary crossover (SBX) \cite{930314} and polynomial mutation \cite{Raghuwanshi04} to cope with continuous problem. 
+However, our problem is discretized, therefore we use the regular GA mutation and crossover.
+
+
+\subsubsection{Mutation}
+The mutation operator works as follows: Initially choose one random location from the chromosome. 
+Then, reverse the bit, e.g. 0 to 1 or 1 to 0. 
+
+In this study, a chromosome in a population will be selected based on mutation possibility $P_{m}$. 
+As shown in below, a random position will be selected and replaced by a reversed number.
+\begin{figure}[ht]
+\centering
+	\includegraphics[width=0.5\textwidth]{pics/mutation.png}
+\caption{}
+\label{graph1}
+\end{figure}
+\subsubsection{Crossover}
+The crossover operator in this paper is the single point crossover. 
+The crossover is controlled by crossover probability $P_{c}$. 
+The crossover point is created randomly within the length of the chromosome. 
+As in the example below, two parents crossover at point X, then two offspring were generated.
+\begin{figure}[ht]
+\centering
+	\includegraphics[width=0.3\textwidth]{pics/crossover.png}
+\caption{}
 \label{graph1}
 \end{figure}
 
-Figures potentially cause the most serious problems when processing \LaTeX{}
-files. Image files should be in EPS (encapsulated postscript) or 
-PNG format (both formats produce better outcome when enlarged). However, JPEG 
-can be used as well. Make sure that no unusual files are required for 
-processing your figures.
-The use of the ``epsfig'' or the related ``graphicx'' \LaTeX{} package is 
-strongly recommended as well as the
-format found in ecjsample.tex used for generating Figure 1 above.
-The use of the ``includegraphics'' command is commented out in the \LaTeX{} 
-file;
-but you can remove the ``comment'' symbols and use the
-commands shown in ecjsample.tex.\\
 
-Make sure you provide an in-text reference to each of your figures.  An 
-example is Figure 1.\\
+\subsubsection{Repair operators}
+Since mutation and crossover are very likely to generate offspring that violate the constraints, therefore, 
+repair operators are necessary. Normally, each constraint would has an unique repair operator 
+in order to recover different types of violation.
 
-Make sure figures are clear and fit within the margins specified in the 
-style file.  Small figures with hard to read labels or hard to see lines are 
-a common problem.  Also make sure that labels and terms used in figures are
-defined in either the caption or the text. (It is best if they
-are defined in the caption.)
+After the process of mutation and crossover, the repair operators are examine each chromosome. 
+If there is violation found in the chromosome, then it will try to repair it. 
+In our problem, we have two repair operators: service number and cost.
 
-\section{Common Problems and Advice}
+\begin{flushleft}\textbf{Service number repair operator}\end{flushleft}
+\begin{center}
+		$\sum\limits_{s \in S} A_{sj} \geq 1$ \\
+		service number constraint
+\end{center}
+The operator will go through each row of the Location Allocation matrix A, if the number of each 
+service is less than one, then randomly choose one location and reverse the selected bit. 
+Although the randomness does not necessarily provide an optimal solution, the computation time is 
+better than exhaustively compare all solutions. 
 
-Avoid the use of too many acronyms. You may know the meaning and 
-significance of BARF (e.g., Beer, Aspirin, Recreation, and Food), but this, 
-in effect, amounts to the invention of a personal language that makes 
-reading your paper more difficult.  Define each acronym on its first 
-occurrence it the text; thereafter, you may use the acronym alone.\\
 
-Avoid run-on sentences.  Typically these are very hard to parse. This is 
-also one of the most common problems. While you are at it, use a spelling 
-tool such as ispell.\\
+\begin{flushleft}\textbf{Cost repair operator}\end{flushleft}
+	\begin{center} 
+		$\sum\limits_{s \in S} \sum\limits_{j \in J} C_{sj} \times A_{sj} \leq CostLimitation$ \\
+		cost constraint
+\end{center}
 
-Avoid paraphrases - ``i.e.'', ``e.g.'', ``in other words...'', or 
-parenthetical information is often unnecessarily redundant.\\
+If the cost exceed the predefined limitation. Then the operator would iteratively check if any service has 
+been deployed in more than one location. After found one service has been deployed multiple locations, 
+the operator will randomly select one of them and change to zero. That means, cancel the deployment of 
+that service in this location. After doing that, re-examine the chromosome, if it is still exceed the 
+limitation then repeat this process until there is no redundant services or it satisfies the constraint.
 
-Minimize the use of prepositions and adverbs to begin a sentence (``On the other hand...'', ``Conversely...'', ``Obviously...'').  Vary your sentence 
-structure.\\
+This algorithm will try its best to reduce the cost regardless of other factors. Although the modified 
+chromosome may end up with higher network latency, however the cost constraint has higher priority than network latency.
 
-Avoid using excessive supporting information/documentation.  Select only the 
-material that will strengthen your paper and is relevant and necessary.\\
+Worth noting that this algorithm may not provide a strictly correct solution that satisfied the constraint, 
+partially because the randomly chosen of canceling deployment. On the other hand, it may also indicate that 
+the predefined upper boundary of cost limitation is too low.
 
-For paper submission and the reviewing process, only the manuscript in 
-PDF format is needed. After final acceptance, we will need all your files 
-in electronic form.  This package should include at least the following 
-files:  .tex, .bib, .bbl, .eps, .pdf, and any 
-special style files you have used to create your paper.  We also need to be 
-able to \LaTeX{} and generate camera-ready PDF of your paper. Following 
-the examples given in ecjsample.tex will help ensure your \LaTeX{} file can be 
-processed without error.\\ 
 
-Thank you for submitting your work to {\em Evolutionary Computation}.
-
-\small
 
 \bibliographystyle{apalike}
 \bibliography{ecjsample}

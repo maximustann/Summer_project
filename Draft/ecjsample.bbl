@@ -6,6 +6,11 @@ Aboolian, R., Sun, Y., and Koehler, G.~J. (2009).
   competitive market.
 \newblock {\em European Journal of Operational Research}, 194(1):64 -- 77.
 
+\bibitem[Beyer and Deb, 2001]{930314}
+Beyer, H.-G. and Deb, K. (2001).
+\newblock On self-adaptive features in real-parameter evolutionary algorithms.
+\newblock {\em Evolutionary Computation, IEEE Transactions on}, 5(3):250--270.
+
 \bibitem[Caramia, 2008]{Multiobjective}
 Caramia, M. (2008).
 \newblock Multi-objective optimization.
@@ -81,6 +86,13 @@ Kanagarajan, D., Karthikeyan, R., Palanikumar, K., and Davim, J. (2008).
   wc/co composites using non-dominated sorting genetic algorithm (nsga-ii).
 \newblock {\em The International Journal of Advanced Manufacturing Technology},
   36(11-12):1124--1132.
+
+\bibitem[Raghuwanshi and Kakde, 2004]{Raghuwanshi04}
+Raghuwanshi, M.~M. and Kakde, O.~G. (2004).
+\newblock {Survey on multiobjective evolutionary and real coded genetic
+  algorithms}.
+\newblock In {\em Proceedings of the 8th Asia Pacific symposium on intelligent
+  and evolutionary systems}, pages 150--161.
 
 \bibitem[Ran, 2003]{Ran:2003:MWS:844357.844360}
 Ran, S. (2003).
