@@ -242,7 +242,7 @@ latency_fitness <- function(chromosome){
 	frequency <- colSums(frequency_matrix)
 	total <- rowSums(chromosome)
 	for(iter in 1:length(total)){
-		latency[iter] <- sum((frequency[iter]) / total[iter]) * sum(latency_matrix[iter, ] * chromosome[iter, ])
+		latency[iter] <- sum(frequency[iter] / total[iter]) * sum(latency_matrix[iter, ] * chromosome[iter, ])
 	}
 	#latency <- sum((frequency / total) * rowSums(latency_matrix * chromosome))
 	#latency <- sum(chromosome * latency_matrix * frequency_matrix)
@@ -306,32 +306,60 @@ repair_cost_maximum <- function(chromosome, limitation){
 	col <- ncol(chromosome_m)
 	repeat {
 		row_num <- vector()
-		candidate_chromosome <- vector()
+		#firstly, we check which row has more than one service deployed
 		for(iter in 1:row){
 			if(sum(chromosome_m[iter, ]) > 1){
 				row_num <- c(row_num, iter)
 			}
 		}
+		#Secondly, we check if there is no more improvement we can make
 		if(length(row_num) == 1 && row_num == 0){
 			return(as.vector(chromosome_m))
 		}
-		for(j in 1:length(row_num)){
-			candidate_chromosome <- c(candidate_chromosome, chromosome_m[row_num[j], ])
-		}
+
+		#Thirdly, find the multiple deployment, vectorized them and then randomly select one of them to drop
+		#After that, do AND operation with the original chromosome so that it will change the original one
+		candidate_chromosome <- chromosome_m[row_num, ]
+		candidate_chromosome <- as.vector(candidate_chromosome)
 		candidate_index <- which(candidate_chromosome %in% 1)
 		selected_num <- sample(candidate_index, 1, replace = F)
 		candidate_chromosome[selected_num] <- 0
-		#print(length(row_num))
-		candidate_chromosome <- matrix(candidate_chromosome, byrow = T, nrow = length(row_num), ncol = 4)
-		for(k in 1:length(row_num)){
-			chromosome_m[row_num[k], ] <- chromosome_m[row_num[k], ] & candidate_chromosome[k, ]
-		}
+		chromosome_m[row_num, ] <- chromosome_m[row_num, ] & candidate_chromosome
+		
 		chromosome <- as.vector(chromosome_m)
 		check <- cost_constraint_check(chromosome, limitation)
-		if(is.logical(check) != T){
+		if(is.logical(check) != T) {
 			return(chromosome)
 		}
 	}
+	#repeat {
+		#row_num <- vector()
+		#candidate_chromosome <- vector()
+		#for(iter in 1:row){
+			#if(sum(chromosome_m[iter, ]) > 1){
+				#row_num <- c(row_num, iter)
+			#}
+		#}
+		#if(length(row_num) == 1 && row_num == 0){
+			#return(as.vector(chromosome_m))
+		#}
+		#for(j in 1:length(row_num)){
+			#candidate_chromosome <- c(candidate_chromosome, chromosome_m[row_num[j], ])
+		#}
+		#candidate_index <- which(candidate_chromosome %in% 1)
+		#selected_num <- sample(candidate_index, 1, replace = F)
+		#candidate_chromosome[selected_num] <- 0
+		##print(length(row_num))
+		#candidate_chromosome <- matrix(candidate_chromosome, byrow = T, nrow = length(row_num), ncol = 4)
+		#for(k in 1:length(row_num)){
+			#chromosome_m[row_num[k], ] <- chromosome_m[row_num[k], ] & candidate_chromosome[k, ]
+		#}
+		#chromosome <- as.vector(chromosome_m)
+		#check <- cost_constraint_check(chromosome, limitation)
+		#if(is.logical(check) != T){
+			#return(chromosome)
+		#}
+	#}
 }
 
 calculate_mean_cost <- function(unNormalized){
