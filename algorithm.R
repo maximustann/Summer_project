@@ -8,16 +8,17 @@ algorithm <- function(services, candidate_cities){
 	#	first get the number of candidate_cities and services
 	#	The population size is 30
 	#	We only have two objectives, so objDim = 2
-	#	varNo is the variable Number, we have 12 = 3 rows * 4 candidate cities
+	#	varNo is the variable Number,
 	#	Mutation distribution index, don't know how it works yet*
 	#	Crossover distribution index, don't know how it works either*
 	#	cprob is Crossover probability
 	#	mprob is Mutation probability
 #======================initialize parameters==================================
 	candidate_cities_num <- length(candidate_cities)
+	row_col <- return_row_col(cost_matrix)
 	services_num <- length(services)
 	popSize <- 100
-	objDim <- 2		
+	objDim <- 2
 	varNo <- services_num * candidate_cities_num
 	tourSize <- 10
 	MutDistIdx <- 20
@@ -25,14 +26,14 @@ algorithm <- function(services, candidate_cities){
 	XoverDistIdx <- 20
 	cprob <- 0.7
 	generations <- 100
-	cost_limitation <- 1000
+	cost_limitation <- 700
 	front <- vector()
 #=============================================================================
 #set.seed(1)
 #========================Algorithm Starts=====================================
 	#	step 1, initialize the population
 	parent <- generate_population(candidate_cities_num, services_num, popSize, cost_limitation)
-	#print(pop)
+	#print(parent)
 
 #====================Normalized Fitness================================
 	#	step 2, calculate the fitness
@@ -119,7 +120,8 @@ algorithm <- function(services, candidate_cities){
 		parentNext.sort <- parentNext[order(parentNext[, varNo + objDim + 1]), ]
 		#print(parentNext.sort)
 		parent <- parentNext.sort[1:popSize, ]
-		front <- parent[parent[, 15] == 1, ]
+		#row * col + cost_fitness + network_latency_fitness, then next one is ranking
+		front <- parent[parent[, row_col[1] * row_col[2] + 3] == 1, ]
 		#print(apply(front[, 1:varNo], 1, fitness))
 		par(new = T)
 		plot(front[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red', pch = 4)
@@ -135,13 +137,27 @@ algorithm <- function(services, candidate_cities){
 				  parameters = parent[,1:varNo], objectives = parent[, (varNo + 1):(varNo + objDim)], 
 				  paretoFrontRank = parent[, varNo + objDim + 1], crowdingDistance = parent[, varNo + objDim + 2])
 	class(result) = "nsga2R"
-	for(iter in 1:nrow(front)){
-		print(matrix(front[iter, 1:varNo], nrow = 3, ncol = 4))
-	}
+	#for(iter in 1:nrow(front)){
+		#print(matrix(front[iter, 1:varNo], nrow = 4, ncol = 4))
+	#}
 	#print(front)
+	print(front[, 1:(row_col[1] * row_col[2])])
+	unNormalized <- t(apply(front[, 1:(row_col[1] * row_col[2])], 1, fitness))
+	print(unNormalized)
 	#return(parent)
 	#return(paretoFront(result))
-	return(result)
+	#return(result)
+}
+
+return_row_col <- function(chromosome){
+	if(is.matrix(chromosome) != T){
+		nRow <- sqrt(length(chromosome))
+		nCol <- nRow
+		return(c(nRow, nCol))
+	}
+	nRow <- nrow(chromosome)
+	nCol <- ncol(chromosome)
+	c(nRow, nCol)
 }
 
 generate_population <- function(row, col, size, cost_limitation){
@@ -153,6 +169,7 @@ generate_population <- function(row, col, size, cost_limitation){
 	#				S1	1	0	0	1
 	#				S2	0	1	0	0
 	#				S3	0	0	1	0
+	#				S4	0	0	1	0
 	parent <- vector()
 	count <- 0
 	repeat {
@@ -230,15 +247,17 @@ mutation <- function(parent_chromosome, mprob){
 
 cost_fitness <- function(chromosome){
 	#chromosome <- decimal2binary(chromosome, 12)
-	chromosome <- matrix(chromosome, nrow = 3, ncol = 4)
+	row_col <- return_row_col(chromosome)
+	chromosome <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
 	cost <- sum(chromosome * cost_matrix)
 	cost
 }
 
 latency_fitness <- function(chromosome){
 	#chromosome <- decimal2binary(chromosome, 12)
+	row_col <- return_row_col(chromosome)
 	latency <- vector()
-	chromosome <- matrix(chromosome, nrow = 3, ncol = 4)
+	chromosome <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
 	frequency <- colSums(frequency_matrix)
 	total <- rowSums(chromosome)
 	for(iter in 1:length(total)){
@@ -265,7 +284,8 @@ normalize <- function(data){
 
 
 services_constraint_check <- function(chromosome){
-	chromosome_m <- matrix(chromosome, nrow = 3, ncol = 4)
+	row_col <- return_row_col(chromosome)
+	chromosome_m <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
 	if(prod(apply(chromosome_m, 1, services_minimum)) == 0) return(F)
 	return(chromosome)
 }
@@ -278,14 +298,13 @@ services_minimum <- function(chromosome){
 #If the minimum service number is not achieved, then 
 #randomly choose a point add 1 service deployment
 repair_service_minimum <- function(chromosome){
+	row_col <- return_row_col(chromosome)
 	#temp_pop <- vector()
-	chromosome_m <- matrix(chromosome, nrow = 3, ncol = 4)
-	row <- nrow(chromosome_m)
-	col <- ncol(chromosome_m)
-	for(iter in 1:row){
+	chromosome_m <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
+	for(iter in 1:row_col[1]){
 		if(sum(chromosome_m[iter, ]) == 0){
 			#set.seed(1)
-			cutPoint <- floor(runif(1, 1, col))
+			cutPoint <- floor(runif(1, 1, row_col[2]))
 			chromosome_m[iter, cutPoint] <- 1
 		}
 	}
@@ -295,19 +314,19 @@ repair_service_minimum <- function(chromosome){
 
 #Limitation of cost
 cost_constraint_check <- function(chromosome, limitation){
-	chromosome_m <- matrix(chromosome, nrow = 3, ncol = 4)
+	row_col <- return_row_col(chromosome)
+	chromosome_m <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
 	cost <- sum(chromosome_m * cost_matrix)
 	if(cost > limitation) return(F)
 	return(chromosome)
 }
 repair_cost_maximum <- function(chromosome, limitation){
-	chromosome_m <- matrix(chromosome, nrow = 3, ncol = 4)
-	row <- nrow(chromosome_m)
-	col <- ncol(chromosome_m)
+	row_col <- return_row_col(chromosome)
+	chromosome_m <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
 	repeat {
 		row_num <- vector()
 		#firstly, we check which row has more than one service deployed
-		for(iter in 1:row){
+		for(iter in 1:row_col[1]){
 			if(sum(chromosome_m[iter, ]) > 1){
 				row_num <- c(row_num, iter)
 			}
