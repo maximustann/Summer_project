@@ -3,51 +3,63 @@ library(foreach)
 library(GA)
 library(mco)
 library(nsga2R)
-algorithm <- function(services, candidate_cities){
-	#	assume candidate_cities and services are lists
-	#	first get the number of candidate_cities and services
-	#	The population size is 30
+
+run_algorithm <- function(matrixSize){
+	predata(matrixSize)
+	print(cost_matrix)
+	print(latency_matrix)
+	print(frequency_matrix)
+	ptm <- proc.time()
+	front <- algorithm(matrixSize)
+	print(proc.time() - ptm)
+	evaluate_front(front, matrixSize)
+}
+
+algorithm <- function(matrixSize){
+	#	The population size is 100
 	#	We only have two objectives, so objDim = 2
-	#	varNo is the variable Number,
+	#	varNo is the variable Number, which is matrixSize * matrixSize
 	#	Mutation distribution index, don't know how it works yet*
 	#	Crossover distribution index, don't know how it works either*
 	#	cprob is Crossover probability
 	#	mprob is Mutation probability
 #======================initialize parameters==================================
-	candidate_cities_num <- length(candidate_cities)
-	row_col <- return_row_col(cost_matrix)
-	services_num <- length(services)
-	popSize <- 100
+	#candidate_cities_num <- length(candidate_cities)
+	#services_num <- length(services)
+	#candidate_cities_num <- matrixSize
+	#services_num <- matrixSize
+
+	popSize <- 50
 	objDim <- 2
-	varNo <- services_num * candidate_cities_num
+	varNo <- matrixSize * matrixSize
 	tourSize <- 10
 	MutDistIdx <- 20
-	mprob <- 0.3
+	mprob <- 0.2
 	XoverDistIdx <- 20
-	cprob <- 0.7
-	generations <- 100
-	cost_limitation <- 700
+	cprob <- 0.8
+	generations <- 50
+	cost_limitation <- 300
 	front <- vector()
+	front_pool <- vector()
 #=============================================================================
-#set.seed(1)
+set.seed(NULL)
 #========================Algorithm Starts=====================================
 	#	step 1, initialize the population
-	parent <- generate_population(candidate_cities_num, services_num, popSize, cost_limitation)
+	parent <- generate_population(matrixSize, matrixSize, popSize, cost_limitation, matrixSize)
 	#print(parent)
 
 #====================Normalized Fitness================================
 	#	step 2, calculate the fitness
-	unNormalized <- t(apply(parent, 1, fitness))
+	unNormalized <- t(apply(parent, 1, fitness, matrixSize = matrixSize))
 	#calculate_mean_cost(unNormalized)
 	parent <- cbind(parent, normalize(unNormalized))
-
 	#pop <- cbind(pop, t(apply(pop, 1, fitness)))
 	#origin_range <- range(c(min(pop[, varNo + 1]), max(pop[, varNo + 1])))
 #====================Normalization Ends================================
 
-	origin_range_y <- range(0, 1)
-	origin_range_x <- range(0, 1)
-	plot(parent[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'blue', xlab = 'cost', ylab = 'latency')
+	#origin_range_y <- range(0, 1)
+	#origin_range_x <- range(0, 1)
+	#plot(parent[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'blue', xlab = 'cost', ylab = 'latency')
 
 
 	#	step 3, rank it
@@ -61,14 +73,14 @@ algorithm <- function(services, candidate_cities){
 	}
 	parent <- cbind(parent, rnkIndex)
 
-	
 	#	step 4, calculate the crowding value
 	objRange <- apply(parent[, (varNo + 1) : (varNo + objDim)], 2, max) - apply(parent[, (varNo + 1) : (varNo + objDim)], 2, min)
 	cd <- crowdingDist4frnt(parent, ranking, objRange)
 
 	#	step 5, selection
 	parent <- cbind(parent, apply(cd, 1, sum))
-	#print(parent)
+	#initialize the front_pool
+	front_pool <- parent[parent[, varNo + 3] == 1, ]
 
 	for(iter in 1:generations){
 		matingPool <- tournamentSelection(parent, popSize, tourSize)
@@ -85,14 +97,14 @@ algorithm <- function(services, candidate_cities){
 		childAfterM <- mutation(childAfterX, mprob)
 		#Check for validation
 		for(j in 1:nrow(childAfterM)){
-			chromosome <- services_constraint_check(childAfterM[j, ])
+			chromosome <- services_constraint_check(childAfterM[j, ], matrixSize)
 			if(is.logical(chromosome)){
-				childAfterM[j, ] <- repair_service_minimum(childAfterM[j, ])
+				childAfterM[j, ] <- repair_service_minimum(childAfterM[j, ], matrixSize)
 			}
-			chromosome <- cost_constraint_check(childAfterM[j, ], cost_limitation)
+			chromosome <- cost_constraint_check(childAfterM[j, ], cost_limitation, matrixSize)
 			if(is.logical(chromosome)){
 				#print(matrix(childAfterM[j, ], nrow = 3, ncol = 4))
-				childAfterM[j, ] <- repair_cost_maximum(childAfterM[j, ], cost_limitation)
+				childAfterM[j, ] <- repair_cost_maximum(childAfterM[j, ], cost_limitation, matrixSize)
 				#print(matrix(childAfterM[j, ], nrow = 3, ncol = 4))
 			}
 		}
@@ -100,9 +112,14 @@ algorithm <- function(services, candidate_cities){
 		#print(childAfterM)
 		#childAfterM <- cbind(childAfterM, t(apply(childAfterM, 1, fitness)))
 		
-		unNormalized <- t(apply(childAfterM, 1, fitness))
-		calculate_mean_cost(unNormalized)
-		childAfterM <- cbind(childAfterM, normalize(unNormalized))
+		#check existed
+		childAfterMutation <- check_existed(childAfterM, front_pool, varNo)
+		#print(mode(childAfterMutation[[1]]))
+		unNormalized <- t(apply(childAfterMutation[[1]], 1, fitness, matrixSize))
+		#calculate_mean_cost(unNormalized)
+		childAfterMutation[[1]] <- cbind(childAfterMutation[[1]], normalize(unNormalized))
+		#print(childAfterMutation[[2]])
+		childAfterM <- rbind(childAfterMutation[[1]], childAfterMutation[[2]])
 		#print(childAfterM)
 		parentNext <- rbind(parent[, 1:(varNo + objDim)], childAfterM)
 		#print(parentNext)
@@ -121,14 +138,18 @@ algorithm <- function(services, candidate_cities){
 		#print(parentNext.sort)
 		parent <- parentNext.sort[1:popSize, ]
 		#row * col + cost_fitness + network_latency_fitness, then next one is ranking
-		front <- parent[parent[, row_col[1] * row_col[2] + 3] == 1, ]
+		front <- parent[parent[, varNo + 3] == 1, ]
+		#update front_pool
+		front_pool <- front
+		#print("it's front pool")
+		#front_pool <- rbind(front_pool, check_existed_front(front, front_pool, varNo))
 		#print(apply(front[, 1:varNo], 1, fitness))
-		par(new = T)
-		plot(front[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red', pch = 4)
+		#par(new = T)
+		#plot(front[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red', pch = 4)
 	}
-	par(new = T)
+	#par(new = T)
 	#plot(parent[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, col = 'red', pch = 3)
-	plot(front[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, bg = 'black', pch = 24)
+	#plot(front[, (varNo + 1):(varNo + objDim)], xlim = origin_range_x, ylim = origin_range_y, bg = 'black', pch = 24)
 	#dev.off()
 	#pdf("plot.pdf")
 
@@ -138,29 +159,68 @@ algorithm <- function(services, candidate_cities){
 				  paretoFrontRank = parent[, varNo + objDim + 1], crowdingDistance = parent[, varNo + objDim + 2])
 	class(result) = "nsga2R"
 	#for(iter in 1:nrow(front)){
-		#print(matrix(front[iter, 1:varNo], nrow = 4, ncol = 4))
+		#print(matrix(front[iter, 1:varNo], nrow = matrixSize, ncol = matrixSize))
 	#}
 	#print(front)
-	print(front[, 1:(row_col[1] * row_col[2])])
-	unNormalized <- t(apply(front[, 1:(row_col[1] * row_col[2])], 1, fitness))
-	print(unNormalized)
+	#print(front[, 1:(row_col[1] * row_col[2])])
+	#print("The number of the candidate in the front")
+	#print(nrow(front))
+	#unNormalized <- t(apply(front[, 1:(row_col[1] * row_col[2])], 1, fitness))
+	#print(unNormalized)
 	#return(parent)
 	#return(paretoFront(result))
 	#return(result)
+	front
 }
 
-return_row_col <- function(chromosome){
-	if(is.matrix(chromosome) != T){
-		nRow <- sqrt(length(chromosome))
-		nCol <- nRow
-		return(c(nRow, nCol))
+check_existed_front <- function(front, front_pool, varNo){
+	front_non_existed <- vector()
+	num_in_front <- nrow(front)
+	num_in_front_pool <- nrow(front_pool)
+	for(i in 1:num_in_front){
+		for(j in 1:num_in_front_pool){
+			if(identical(front[i, 1:varNo], front_pool[j, 1:varNo]) == F){
+				front_non_existed <- rbind(front_non_existed, front[i, ])
+			}
+		}
 	}
-	nRow <- nrow(chromosome)
-	nCol <- ncol(chromosome)
-	c(nRow, nCol)
+	front_non_existed
 }
 
-generate_population <- function(row, col, size, cost_limitation){
+
+
+
+
+check_existed <- function(childAfterM, front_pool, varNo){
+	child_existed <- vector()
+	child_non_existed <- vector()
+	num_in_children <- nrow(childAfterM)
+	num_in_front <- nrow(front_pool)
+	for(i in 1:num_in_children){
+		for(j in 1:num_in_front){
+			if(identical(childAfterM[i, ], front_pool[j, 1:varNo])) {
+				child_existed <- rbind(child_existed, front_pool[j, 1:(varNo + 2)])
+				break
+			}
+			if(j == num_in_front){
+				child_non_existed <- rbind(childAfterM[i, ], child_non_existed)
+			}
+		}
+	}
+	list(child_non_existed, child_existed)
+}
+
+evaluate_front <- function(front, matrixSize){
+	
+	#for(iter in 1:nrow(front)){
+		#print(matrix(front[iter, 1:(matrixSize * matrixSize)], nrow = matrixSize, ncol = matrixSize))
+	#}
+	unNormalized <- t(apply(front[, 1:(matrixSize * matrixSize)], 1, fitness, matrixSize))
+	print(unNormalized)
+}
+
+
+generate_population <- function(row, col, size, cost_limitation, matrixSize){
 	#	population is a list, every index contains a matrix, which is a chromosome
 	#	col		candidate_cities:	A B C D
 	#	row		services			S1 S2 S3
@@ -180,16 +240,16 @@ generate_population <- function(row, col, size, cost_limitation){
 		chromosome <- rbinom(row * col, 1, 0.5)
 		
 		#Check the chromosome is valid
-		check <- services_constraint_check(chromosome)
+		check <- services_constraint_check(chromosome, matrixSize)
 		if(is.logical(check)){
 			#If the chromosome is invalid, then fix it
-			chromosome <- repair_service_minimum(chromosome)
+			chromosome <- repair_service_minimum(chromosome, matrixSize)
 			check <- 1
 		}
-		check <- cost_constraint_check(chromosome, cost_limitation)
+		check <- cost_constraint_check(chromosome, cost_limitation, matrixSize)
 		if(is.logical(chromosome)){
 			#If the chromosome is invalid, then fix it
-			chromosome <- repair_cost_maximum(chromosome, cost_limitation)
+			chromosome <- repair_cost_maximum(chromosome, cost_limitation, matrixSize)
 		}
 		parent <- rbind(parent, chromosome)
 		count <- count + 1
@@ -197,9 +257,9 @@ generate_population <- function(row, col, size, cost_limitation){
 	parent
 }
 
-fitness <- function(chromosome) {
-	cost <- cost_fitness(chromosome)
-	latency <- latency_fitness(chromosome)
+fitness <- function(chromosome, matrixSize) {
+	cost <- cost_fitness(chromosome, matrixSize)
+	latency <- latency_fitness(chromosome, matrixSize)
 	return(c(cost, latency))
 }
 
@@ -245,27 +305,36 @@ mutation <- function(parent_chromosome, mprob){
 	new_pop
 }
 
-cost_fitness <- function(chromosome){
-	#chromosome <- decimal2binary(chromosome, 12)
-	row_col <- return_row_col(chromosome)
-	chromosome <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
+cost_fitness <- function(chromosome, matrixSize){
+	chromosome <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
 	cost <- sum(chromosome * cost_matrix)
 	cost
 }
 
-latency_fitness <- function(chromosome){
-	#chromosome <- decimal2binary(chromosome, 12)
-	row_col <- return_row_col(chromosome)
-	latency <- vector()
-	chromosome <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
+latency_fitness <- function(chromosome, matrixSize){
+	#latency <- vector()
+	chromosome <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
+	#frequency <- colSums(frequency_matrix)
+	#total <- rowSums(chromosome)
+	#for(iter in 1:length(total)){
+		#latency[iter] <- sum(frequency[iter] / total[iter]) * sum(latency_matrix[iter, ] * chromosome[iter, ])
+	#}
+	##latency <- sum((frequency / total) * rowSums(latency_matrix * chromosome))
+	##latency <- sum(chromosome * latency_matrix * frequency_matrix)
+	latency <- 0.0
 	frequency <- colSums(frequency_matrix)
-	total <- rowSums(chromosome)
-	for(iter in 1:length(total)){
-		latency[iter] <- sum(frequency[iter] / total[iter]) * sum(latency_matrix[iter, ] * chromosome[iter, ])
+	num_of_Usercenter <- matrixSize
+	for(service_iter in 1:matrixSize){
+		num_of_service <- sum(chromosome[service_iter, ])
+		deployed_service <- which(chromosome[service_iter, ] == 1)
+		latency <- latency + (frequency[service_iter] / (num_of_service * matrixSize)) * sum(latency_matrix[, deployed_service])
+		
 	}
-	#latency <- sum((frequency / total) * rowSums(latency_matrix * chromosome))
-	#latency <- sum(chromosome * latency_matrix * frequency_matrix)
-	latency <- sum(latency)
+	#total <- rowSums(chromosome)
+	#for(iter in 1:length(total)){
+		#latency[iter] <- sum(frequency[iter] / total[iter]) * sum(latency_matrix[iter, ] * chromosome[iter, ])
+	#}
+	#latency <- sum(latency)
 	latency
 }
 
@@ -283,9 +352,8 @@ normalize <- function(data){
 }
 
 
-services_constraint_check <- function(chromosome){
-	row_col <- return_row_col(chromosome)
-	chromosome_m <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
+services_constraint_check <- function(chromosome, matrixSize){
+	chromosome_m <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
 	if(prod(apply(chromosome_m, 1, services_minimum)) == 0) return(F)
 	return(chromosome)
 }
@@ -297,14 +365,13 @@ services_minimum <- function(chromosome){
 
 #If the minimum service number is not achieved, then 
 #randomly choose a point add 1 service deployment
-repair_service_minimum <- function(chromosome){
-	row_col <- return_row_col(chromosome)
+repair_service_minimum <- function(chromosome, matrixSize){
 	#temp_pop <- vector()
-	chromosome_m <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
-	for(iter in 1:row_col[1]){
+	chromosome_m <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
+	for(iter in 1:matrixSize){
 		if(sum(chromosome_m[iter, ]) == 0){
 			#set.seed(1)
-			cutPoint <- floor(runif(1, 1, row_col[2]))
+			cutPoint <- floor(runif(1, 1, matrixSize))
 			chromosome_m[iter, cutPoint] <- 1
 		}
 	}
@@ -313,26 +380,24 @@ repair_service_minimum <- function(chromosome){
 }
 
 #Limitation of cost
-cost_constraint_check <- function(chromosome, limitation){
-	row_col <- return_row_col(chromosome)
-	chromosome_m <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
+cost_constraint_check <- function(chromosome, limitation, matrixSize){
+	chromosome_m <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
 	cost <- sum(chromosome_m * cost_matrix)
 	if(cost > limitation) return(F)
 	return(chromosome)
 }
-repair_cost_maximum <- function(chromosome, limitation){
-	row_col <- return_row_col(chromosome)
-	chromosome_m <- matrix(chromosome, nrow = row_col[1], ncol = row_col[2])
+repair_cost_maximum <- function(chromosome, limitation, matrixSize){
+	chromosome_m <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
 	repeat {
 		row_num <- vector()
 		#firstly, we check which row has more than one service deployed
-		for(iter in 1:row_col[1]){
+		for(iter in 1:matrixSize){
 			if(sum(chromosome_m[iter, ]) > 1){
 				row_num <- c(row_num, iter)
 			}
 		}
 		#Secondly, we check if there is no more improvement we can make
-		if(length(row_num) == 1 && row_num == 0){
+		if(length(row_num) == 0){
 			return(as.vector(chromosome_m))
 		}
 
@@ -346,7 +411,7 @@ repair_cost_maximum <- function(chromosome, limitation){
 		chromosome_m[row_num, ] <- chromosome_m[row_num, ] & candidate_chromosome
 		
 		chromosome <- as.vector(chromosome_m)
-		check <- cost_constraint_check(chromosome, limitation)
+		check <- cost_constraint_check(chromosome, limitation, matrixSize)
 		if(is.logical(check) != T) {
 			return(chromosome)
 		}
