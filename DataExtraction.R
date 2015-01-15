@@ -27,23 +27,35 @@ extract <- function(num) {
 		#costMatrix <<- matrix(data = rnorm(3 * 4, mean = 100, sd = 20), nrow = 3, ncol = 4)
 		#colnames(costMatrix) <<- c("Argentina", "Australia", "Belgium", "United States")
 		#rownames(costMatrix) <<- c("S1", "S2", "S3")
+
+
+		#test case 1
 		latencyVector <- c(5.982, 2.130, 0.710, 5.776, 0, 0.760, 6.984, 2.035, 1.863)
+		#test case 2
+		#latencyVector <- c(0, 5.776, 6.984, 5.776, 0, 2.035, 6.984, 2.035, 0)
 		latencyMatrix <<- matrix(latencyVector, nrow = num, ncol = num)
 	}
 	else if(num == 5){
-		testList <<- userData[userData$Country == "United States", ][1, ]
-		testList <<- rbind(testList, userData[userData$Country == "Japan", ][1, ])
-		testList <<- rbind(testList, userData[userData$Country == "United Kingdom", ][1, ])
-		testList <<- rbind(testList, userData[userData$Country == "Canada", ][1, ])
-		testList <<- rbind(testList, userData[userData$Country == "Norway", ][1, ])
-		testService <<- serviceData[serviceData$Country == "Argentina", ][1, ]
-		testService <<- rbind(testService, serviceData[serviceData$Country == "Australia", ][1, ])
-		testService <<- rbind(testService, serviceData[serviceData$Country == "Belgium", ][1, ])
-		testService <<- rbind(testService, serviceData[serviceData$Country == "United States", ][1, ])
-		testService <<- rbind(testService, serviceData[serviceData$Country == "Brazil", ][1, ])
+		#testList <<- userData[userData$Country == "United States", ][1, ]
+		#testList <<- rbind(testList, userData[userData$Country == "Japan", ][1, ])
+		#testList <<- rbind(testList, userData[userData$Country == "United Kingdom", ][1, ])
+		#testList <<- rbind(testList, userData[userData$Country == "Canada", ][1, ])
+		#testList <<- rbind(testList, userData[userData$Country == "Norway", ][1, ])
+		#testService <<- serviceData[serviceData$Country == "Argentina", ][1, ]
+		#testService <<- rbind(testService, serviceData[serviceData$Country == "Australia", ][1, ])
+		#testService <<- rbind(testService, serviceData[serviceData$Country == "Belgium", ][1, ])
+		#testService <<- rbind(testService, serviceData[serviceData$Country == "United States", ][1, ])
+		#testService <<- rbind(testService, serviceData[serviceData$Country == "Brazil", ][1, ])
 
-		check_zero_label(testList, testService)
-		latencyMatrix <<- latencyData[testList$ID, paste("V", testService$ID, sep = '')]
+		#check_zero_label(testList, testService)
+
+		latencyVector <- c(0, 5.776, 6.984, 1.842, 5.569,
+						  5.776, 0, 2.035, 0.799, 0.684,
+						  0.684, 2.035, 0, 1.424, 0.519,
+						  0.639, 0.68, 0.672, 0.125, 0.812,
+						  5.569, 0.684, 0.519, 0.812, 0)
+		latencyMatrix <<- matrix(latencyVector, nrow = num, ncol = num)
+		#latencyMatrix <<- latencyData[testList$ID, paste("V", testService$ID, sep = '')]
 	}
 	else if(num == 10){
 		testList <<- userData[userData$Country == "United States", ][1, ]
