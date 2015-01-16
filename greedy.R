@@ -7,8 +7,9 @@ run_greedy <- function(matrixSize){
 	print(latency_matrix)
 	print(frequency_matrix)
 	ptm <- proc.time()
-	drop(10000, matrixSize)
+	solution <- drop(100000, matrixSize)
 	print(proc.time() - ptm)
+	evaluate_solution(solution, matrixSize)
 }
 
 latency_fitness <- function(chromosome, matrixSize){
@@ -58,7 +59,8 @@ drop <- function(cost_limitation = 300, matrixSize){
 	assign.costs <- chromosome
 	lp.assign(assign.costs)
 	initial_solution <- lp.assign(assign.costs)$solution
-	ala(initial_solution, cost_limitation, matrixSize)
+	solution <- ala(initial_solution, cost_limitation, matrixSize)
+	solution
 }
 
 ala <- function(initial_solution, cost_limitation, matrixSize){
@@ -76,9 +78,14 @@ ala <- function(initial_solution, cost_limitation, matrixSize){
 			}
 		}
 	}
-	print("Now is the solution:")
-	print(solution)
-	print(cost_fitness(solution, matrixSize))
-	print(latency_fitness(solution, matrixSize))
 	solution
+}
+
+evaluate_solution <- function(solution, matrixSize, weight_for_cost = 0.5){
+	#print("Now is the solution:")
+	print(solution)
+	cost_fit <- cost_fitness(solution, matrixSize)
+	latency_fit <- latency_fitness(solution, matrixSize)
+	dist <- sqrt((weight_for_cost * cost_fit)^2 + ((1 - weight_for_cost) * latency_fit)^2)
+	cat(cost_fit, latency_fit, dist, '\n')
 }

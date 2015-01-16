@@ -4,18 +4,22 @@ library(GA)
 library(mco)
 library(nsga2R)
 
-run_algorithm <- function(matrixSize){
+run_algorithm <- function(matrixSize, seed = 1){
 	predata(matrixSize)
 	print(cost_matrix)
 	print(latency_matrix)
 	print(frequency_matrix)
 	ptm <- proc.time()
-	front <- algorithm(matrixSize)
-	print(proc.time() - ptm)
-	evaluate_front(front, matrixSize)
+	front <- algorithm(matrixSize, seed)
+	print((proc.time() - ptm)[1])
+	unNormalized <- evaluate_front(front, matrixSize)
+	unNormalized <- cbind(unNormalized, (proc.time() - ptm)[1])
+	colnames(unNormalized) <- c("costF", "latencyF", "dist", "time")
+	filename <- paste(seed, ".csv", sep = "")
+	write.csv(unNormalized, filename, quote = F, row.names = F)
 }
 
-algorithm <- function(matrixSize){
+algorithm <- function(matrixSize, seed){
 	#	The population size is 100
 	#	We only have two objectives, so objDim = 2
 	#	varNo is the variable Number, which is matrixSize * matrixSize
@@ -38,11 +42,11 @@ algorithm <- function(matrixSize){
 	XoverDistIdx <- 20
 	cprob <- 0.8
 	generations <- 50
-	cost_limitation <- 10000
+	cost_limitation <- 100000
 	front <- vector()
 	front_pool <- vector()
 #=============================================================================
-set.seed(NULL)
+set.seed(seed)
 #========================Algorithm Starts=====================================
 	#	step 1, initialize the population
 	parent <- generate_population(matrixSize, matrixSize, popSize, cost_limitation, matrixSize)
@@ -161,7 +165,7 @@ set.seed(NULL)
 	#for(iter in 1:nrow(front)){
 		#print(matrix(front[iter, 1:varNo], nrow = matrixSize, ncol = matrixSize))
 	#}
-	#print(front)
+	#print(unique(front[, 1:varNo]))
 	#print(front[, 1:(row_col[1] * row_col[2])])
 	#print("The number of the candidate in the front")
 	#print(nrow(front))
@@ -170,7 +174,8 @@ set.seed(NULL)
 	#return(parent)
 	#return(paretoFront(result))
 	#return(result)
-	front
+	#front
+	unique(front[, 1:varNo])
 }
 
 check_existed_front <- function(front, front_pool, varNo){
@@ -212,13 +217,19 @@ check_existed <- function(childAfterM, front_pool, varNo){
 
 evaluate_front <- function(front, matrixSize){
 	
-	for(iter in 1:nrow(front)){
-		print(matrix(front[iter, 1:(matrixSize * matrixSize)], nrow = matrixSize, ncol = matrixSize))
-	}
+	#for(iter in 1:nrow(front)){
+		#print(matrix(front[iter, 1:(matrixSize * matrixSize)], nrow = matrixSize, ncol = matrixSize))
+	#}
 	unNormalized <- t(apply(front[, 1:(matrixSize * matrixSize)], 1, fitness, matrixSize))
-	print(unNormalized)
+	dist <- apply(unNormalized, 1, euclidean_distance)
+	unNormalized <- cbind(unNormalized, dist)
+	unNormalized
 }
 
+euclidean_distance <- function(vect, weight_for_cost = 0.5){
+	dist <- sqrt((weight_for_cost * vect[1])^2 + ((1 - weight_for_cost) * vect[2])^2)
+	dist
+}
 
 generate_population <- function(row, col, size, cost_limitation, matrixSize){
 	#	population is a list, every index contains a matrix, which is a chromosome
