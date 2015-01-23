@@ -1,15 +1,21 @@
-source("pre.R")
+library(foreach)
+library(GA)
+library(mco)
+library(nsga2R)
 library(lpSolve)
 
-run_greedy <- function(matrixSize){
+run_greedy <- function(matrixSize, cost_limitation){
 	predata(matrixSize)
-	print(cost_matrix)
-	print(latency_matrix)
-	print(frequency_matrix)
+	#print(cost_matrix)
+	#print(latency_matrix)
+	#print(frequency_matrix)
 	ptm <- proc.time()
-	solution <- drop(100000, matrixSize)
+	solution <- drop(cost_limitation, matrixSize)
 	print(proc.time() - ptm)
-	evaluate_solution(solution, matrixSize)
+	result <- evaluate_solution(solution, matrixSize)
+	result <- c(result, (proc.time() - ptm)[1])
+	#names(result) <- c("costF", "latencyF", "time")
+	result
 }
 
 latency_fitness <- function(chromosome, matrixSize){
@@ -86,6 +92,8 @@ evaluate_solution <- function(solution, matrixSize, weight_for_cost = 0.5){
 	print(solution)
 	cost_fit <- cost_fitness(solution, matrixSize)
 	latency_fit <- latency_fitness(solution, matrixSize)
-	dist <- sqrt((weight_for_cost * cost_fit)^2 + ((1 - weight_for_cost) * latency_fit)^2)
-	cat(cost_fit, latency_fit, dist, '\n')
+	#dist <- sqrt((weight_for_cost * cost_fit)^2 + ((1 - weight_for_cost) * latency_fit)^2)
+	#cat(cost_fit, latency_fit, dist, '\n')
+	result <- c(cost_fit, latency_fit)
+	result
 }

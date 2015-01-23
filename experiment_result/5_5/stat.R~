@@ -1,0 +1,76 @@
+read_ga_data <- function(){
+	data <- list()
+	for(iter in 1:40){
+		filename <- paste(iter, ".csv", sep = "")
+		temp <- read.csv(filename, sep = ',', header = T)
+		temp <- temp[1:nrow(temp) - 1, ]
+		filelist <- list(temp$dist)
+		data <- c(data, filelist)
+	}
+	data
+}
+
+read_lp_data <- function(){
+	data <- list()
+	for(iter in 1:40){
+		filename <- paste(iter, ".csv", sep = "")
+		temp <- read.csv(filename, sep = ',', header = T)
+		temp <- temp[nrow(temp), ]
+		filelist <- list(temp$dist)
+		data <- c(data, filelist)
+	}
+	data
+}
+
+read_ga_time <- function(){
+	time <- vector()
+	for(iter in 1:40){
+		filename <- paste(iter, ".csv", sep = "")
+		temp <- read.csv(filename, sep = ',', header = T)
+		temp <- temp[1:nrow(temp) - 1, ]
+		time <- c(time, temp$time[1])
+	}
+	time
+}
+read_lp_time <- function(){
+	time <- vector()
+	for(iter in 1:40){
+		filename <- paste(iter, ".csv", sep = "")
+		temp <- read.csv(filename, sep = ',', header = T)
+		temp <- temp[nrow(temp), ]
+		time <- c(time, temp$time[1])
+	}
+	time
+}
+
+statistic <- function(){
+	ga_data <- read_ga_data()
+	lp_data <- read_lp_data()
+	ga_time <- read_ga_time()
+	lp_time <- read_lp_time()
+
+	lp_data_vec <- vector()
+	print(lp_data[[1]])
+	#round <- vector()
+	minima <- vector()
+	#standard <- vector()
+	#gap <- vector()
+	#print(mean(time))
+	for(iter in 1:40){
+		#round <- c(round, mean(data[[iter]]))
+		minima <- c(minima, min(ga_data[[iter]]))
+		lp_data_vec <- c(lp_data_vec, lp_data[[iter]])
+		#gap <- c(gap, minima[iter] - ala_result)
+		}
+	cat("GA average time", mean(ga_time), '\n')
+	cat("Mean of minima", mean(minima), '\n')
+	cat("Mean of LP", mean(lp_time), '\n')
+	cat("Mean of LP data", mean(lp_data_vec), '\n')
+	cat("Max gap", mean(lp_data_vec) - min(minima), '\n')
+	cat("Sd", sd(minima), '\n')
+	#standard <- sd(gap)
+	#print(standard)
+	#mean_gap <- mean(gap)
+	#ciw <- mean_gap + c(-1, 1) * standard / sqrt(40)
+	#print(ciw)
+	}

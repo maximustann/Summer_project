@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (Web2C 2013) (format=pdflatex 2014.11.27)  19 DEC 2014 14:52
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (Web2C 2013) (format=pdflatex 2014.11.27)  6 JAN 2015 13:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**report
+**report.tex
 (./report.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8l> and hyphenation patterns for english, dumylang, nohyphenation, uk
@@ -455,28 +455,28 @@ File: omsppl.fd
 LaTeX Font Info:    Font shape `OMS/ppl/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 122.
 LaTeX Font Info:    Font shape `OT1/ppl/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 128.
+(Font)              Font shape `OT1/ppl/b/n' tried instead on input line 138.
 Missing character: There is no â in font pplr7t!
 Missing character: There is no € in font pplr7t!
 Missing character: There is no ™ in font pplr7t!
- [2] [3] (./report.bbl
+ [2] [3] [4]
+(./report.bbl
 Missing character: There is no â in font pplr7t!
 Missing character: There is no € in font pplr7t!
 Missing character: There is no “ in font pplr7t!
 Missing character: There is no Ã in font pplr7t!
 Missing character: There is no ¡ in font pplr7t!
+ [5
 
-[4
-
-]) [5] (./report.aux) ) 
+]) [6] (./report.aux) ) 
 Here is how much of TeX's memory you used:
- 4355 strings out of 493945
- 60092 string characters out of 6159095
- 132607 words of memory out of 5000000
+ 4356 strings out of 493945
+ 60098 string characters out of 6159095
+ 134607 words of memory out of 5000000
  7492 multiletter control sequences out of 15000+600000
- 32817 words of font info for 87 fonts, out of 8000000 for 9000
+ 33074 words of font info for 88 fonts, out of 8000000 for 9000
  774 hyphenation exceptions out of 8191
- 38i,7n,38p,786b,232s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 38i,7n,38p,790b,232s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/pkg/share/texmf-dist/fonts/enc/dvips/base/8r.enc}<
 /usr/pkg/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/pkg/s
 hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/pkg/share/texmf-
@@ -484,10 +484,10 @@ dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/pkg/share/texmf-dist/fonts
 /type1/urw/palatino/uplb8a.pfb></usr/pkg/share/texmf-dist/fonts/type1/urw/palat
 ino/uplr8a.pfb></usr/pkg/share/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
 </usr/pkg/share/texmf-dist/fonts/type1/vuw/vuw20.pfb>
-Output written on report.pdf (6 pages, 107036 bytes).
+Output written on report.pdf (7 pages, 109929 bytes).
 PDF statistics:
- 52 PDF objects out of 1000 (max. 8388607)
- 36 compressed objects within 1 object stream
+ 57 PDF objects out of 1000 (max. 8388607)
+ 40 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

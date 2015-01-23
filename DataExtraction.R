@@ -30,9 +30,9 @@ extract <- function(num) {
 
 
 		#test case 1
-		latencyVector <- c(5.982, 2.130, 0.710, 5.776, 0, 0.760, 6.984, 2.035, 1.863)
+		#latencyVector <- c(5.982, 2.130, 0.710, 5.776, 0, 0.760, 6.984, 2.035, 1.863)
 		#test case 2
-		#latencyVector <- c(0, 5.776, 6.984, 5.776, 0, 2.035, 6.984, 2.035, 0)
+		latencyVector <- c(0, 5.776, 6.984, 5.776, 0, 2.035, 6.984, 2.035, 0)
 		latencyMatrix <<- matrix(latencyVector, nrow = num, ncol = num)
 	}
 	else if(num == 5){

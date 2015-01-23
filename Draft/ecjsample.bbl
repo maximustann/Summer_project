@@ -68,6 +68,13 @@ Huffaker, B., Fomenkov, M., Plummer, D., Moore, D., and claffy, k. (2002).
 \newblock In {\em IEEE International Telecommunications Symposium (ITS)}, pages
   200--202, Brazil. IEEE.
 
+\bibitem[Ishibuchi et~al., 2006]{1688438}
+Ishibuchi, H., Nojima, Y., and Doi, T. (2006).
+\newblock Comparison between single-objective and multi-objective genetic
+  algorithms: Performance comparison and performance measures.
+\newblock In {\em Evolutionary Computation, 2006. CEC 2006. IEEE Congress on},
+  pages 1143--1150.
+
 \bibitem[Jamin et~al., 2001]{916684}
 Jamin, S., Jin, C., Kurc, A., Raz, D., and Shavitt, Y. (2001).
 \newblock Constrained mirror placement on the internet.
@@ -99,7 +106,7 @@ Ran, S. (2003).
 \newblock A model for web services discovery with qos.
 \newblock {\em SIGecom Exch.}, 4(1):1--10.
 
-\bibitem[Sun and Koehler, 2006]{Sun:2006:LMW:1217741.1217754}
+\bibitem[Sun and Koehler, 2006]{Sun}
 Sun, Y. and Koehler, G.~J. (2006).
 \newblock A location model for a web service intermediary.
 \newblock {\em Decis. Support Syst.}, 42(1):221--236.
@@ -111,6 +118,13 @@ Vanrompay, Y., Rigole, P., and Berbers, Y. (2008).
 \newblock In {\em Proceedings of the 3rd International Workshop on Services
   Integration in Pervasive Environments}, SIPE '08, pages 13--18, New York, NY,
   USA. ACM.
+
+\bibitem[Xue et~al., 2012]{Xue:2012:MPS:2330163.2330175}
+Xue, B., Zhang, M., and Browne, W.~N. (2012).
+\newblock Multi-objective particle swarm optimisation (pso) for feature
+  selection.
+\newblock In {\em Proceedings of the 14th Annual Conference on Genetic and
+  Evolutionary Computation}, GECCO '12, pages 81--88, New York, NY, USA. ACM.
 
 \bibitem[Zhang et~al., 2011]{6076756}
 Zhang, Y., Zheng, Z., and Lyu, M. (2011).
