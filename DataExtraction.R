@@ -1,3 +1,4 @@
+library(Matrix)
 extract <- function(num) {
 	#reading files
 	userData <<- read.table("userlist.txt", sep  = "\t", header = F)
@@ -152,7 +153,7 @@ extract <- function(num) {
 
 		
 	}
-	#else if(num == 20){
+	else if(num == 20){
 		#testList <<- userData[userData$Country == "United States", ][1, ]
 		#testList <<- rbind(testList, userData[userData$Country == "Japan", ][1, ])
 		#testList <<- rbind(testList, userData[userData$Country == "United Kingdom", ][1, ])
@@ -203,7 +204,21 @@ extract <- function(num) {
 
 		#check_zero_label(testList, testService)
 		#latencyMatrix <<- latencyData[testList$ID, paste("V", testService$ID, sep = '')]
-	#}
+		
+		tmp <- matrix(runif(num * num, 0, 10), ncol = num)
+		latencyMatrix <- forceSymmetric(tmp)
+		d <- diag(rep(1, num), ncol = num)
+		d <- !d
+		latencyMatrix <- latencyMatrix * d
+	}
+	else if(num == 30){
+		tmp <- matrix(runif(num * num, 0, 10), ncol = num)
+		latencyMatrix <- forceSymmetric(tmp)
+		d <- diag(rep(1, num), ncol = num)
+		d <- !d
+		latencyMatrix <- latencyMatrix * d
+	}
+
 	latencyMatrix
 }
 

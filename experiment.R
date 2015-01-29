@@ -1,16 +1,17 @@
 source("pre.R")
 source("algorithm.R")
 source("greedy.R")
-library(foreach)
 library(GA)
 library(mco)
 library(nsga2R)
 library(lpSolve)
-
+library(foreach)
+#library(doMC)
+#registerDoMC(8)
 
 run <- function(matrixSize, cost_limitation){
 	gadata <- vector()
-	for(iter in 1:40){
+	for(iter in 1:40) {
 		cat("Generation:", iter, '\n')
 		gadata <- rbind(gadata, run_algorithm(matrixSize, iter, cost_limitation))
 		lpdata <- run_greedy(matrixSize, cost_limitation)

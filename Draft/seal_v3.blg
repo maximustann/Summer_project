@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (Web2C 2013)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: seal_v3.aux
+The style file: splncs03.bst
+Database file #1: llncs.bib
+You've used 23 entries,
+            2785 wiz_defined-function locations,
+            752 strings with 9220 characters,
+and the built_in function-call counts, 14743 in all, are:
+= -- 1278
+> -- 397
+< -- 36
++ -- 167
+- -- 139
+* -- 910
+:= -- 1814
+add.period$ -- 39
+call.type$ -- 23
+change.case$ -- 161
+chr.to.int$ -- 0
+cite$ -- 23
+duplicate$ -- 1301
+empty$ -- 1303
+format.name$ -- 160
+if$ -- 3312
+int.to.chr$ -- 0
+int.to.str$ -- 23
+missing$ -- 254
+newline$ -- 74
+num.names$ -- 48
+pop$ -- 434
+preamble$ -- 1
+purify$ -- 113
+quote$ -- 0
+skip$ -- 466
+stack$ -- 0
+substring$ -- 958
+swap$ -- 785
+text.length$ -- 36
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 92
+warning$ -- 0
+while$ -- 126
+width$ -- 25
+write$ -- 245
