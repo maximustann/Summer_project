@@ -14,7 +14,7 @@ run_algorithm <- function(matrixSize, seed = 1, cost_limitation){
 	unNormalized <- evaluate_front(front, matrixSize)
 	unNormalized <- cbind(unNormalized, (proc.time() - ptm)[1])
 	#print(unNormalized)
-	#colnames(unNormalized) <- c("costF", "latencyF", "dist", "time")
+	colnames(unNormalized) <- c("costF", "latencyF", "time")
 	#filename <- paste(seed, ".csv", sep = "")
 	#write.csv(unNormalized, filename, quote = F, row.names = F)
 	unNormalized
@@ -91,6 +91,7 @@ set.seed(seed)
 	#initialize the front_pool
 	front_pool <- parent[parent[, varNo + 3] == 1, ]
 
+	repair_time <- 0.0
 	for(iter in 1:generations){
 		#step 5, selection
 		matingPool <- tournamentSelection(parent, popSize, tourSize)
@@ -122,7 +123,9 @@ set.seed(seed)
 		
 		#check existed
 		childAfterMutation <- check_existed(childAfterM, front_pool, varNo)
+	tmp_time <- proc.time()
 		unNormalized <- t(apply(childAfterMutation[[1]], 1, fitness, matrixSize))
+	repair_time <- repair_time + ((proc.time() - tmp_time)[1])
 		#print(childAfterMutation[[2]])
 		#calculate_mean_cost(unNormalized)
 		#Normalized data
@@ -169,6 +172,7 @@ set.seed(seed)
 				  paretoFrontRank = parent[, varNo + objDim + 1], crowdingDistance = parent[, varNo + objDim + 2])
 	class(result) = "nsga2R"
 	#print(unique(front))
+	cat("Repair time: ", repair_time, "\n", sep = "")
 	unique(front[, 1:varNo])
 }
 
@@ -291,8 +295,6 @@ mutation <- function(parent_chromosome, mprob){
 cost_fitness <- function(chromosome, matrixSize){
 	chromosome <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
 	cost <- sum(chromosome * cost_matrix)
-	#print(cost)
-	#print(chromosome)
 	cost
 }
 
@@ -302,19 +304,13 @@ latency_fitness <- function(chromosome, matrixSize){
 	latency <- 0.0
 	frequency <- colSums(frequency_matrix)
 	num_of_Usercenter <- matrixSize
-	#for(service_iter in 1:matrixSize){
-		#num_of_service <- sum(chromosome[service_iter, ])
-		#deployed_service <- which(chromosome[service_iter, ] == 1)
-		#latency <- latency + (frequency[service_iter] / (num_of_service * matrixSize)) * sum(latency_matrix[, deployed_service])
-		
-	#}
+
 	for(service_iter in 1:matrixSize){
 		num_of_service <- sum(chromosome[service_iter, ])
 		deployed_service <- which(chromosome[service_iter, ] != 0)
 		#cat("which(chromosome[service_iter, ] == 1)", which(chromosome[service_iter, ] == 1), '\n')
 		locationLatency <- 0.0
 		#the matrixSize here represent the number of user center
-		#latency <- latency + (frequency[service_iter] / (num_of_service * matrixSize)) * sum(latency_matrix[, deployed_service])
 		for(latency_iter in 1:matrixSize){
 			if(0 %in% latency_matrix[latency_iter, ]){
 				if(chromosome[service_iter, which(latency_matrix[latency_iter, ] == 0)] == 1){
@@ -330,12 +326,7 @@ latency_fitness <- function(chromosome, matrixSize){
 		}
 		latency <- latency + locationLatency
 	}
-	#total <- rowSums(chromosome)
-	#for(iter in 1:length(total)){
-		#latency[iter] <- sum(frequency[iter] / total[iter]) * sum(latency_matrix[iter, ] * chromosome[iter, ])
-	#}
-	#latency <- sum(latency)
-	#print(latency)
+
 	latency
 
 }

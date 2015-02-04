@@ -6,15 +6,12 @@ library(lpSolve)
 
 run_greedy <- function(matrixSize, cost_limitation){
 	predata(matrixSize)
-	#print(cost_matrix)
-	#print(latency_matrix)
-	#print(frequency_matrix)
 	ptm <- proc.time()
 	solution <- drop(cost_limitation, matrixSize)
 	print(proc.time() - ptm)
 	result <- evaluate_solution(solution, matrixSize)
 	result <- c(result, (proc.time() - ptm)[1])
-	#names(result) <- c("costF", "latencyF", "time")
+	names(result) <- c("costF", "latencyF", "time")
 	result
 }
 
@@ -45,12 +42,6 @@ latency_fitness <- function(chromosome, matrixSize){
 		}
 		latency <- latency + locationLatency
 	}
-	#total <- rowSums(chromosome)
-	#for(iter in 1:length(total)){
-		#latency[iter] <- sum(frequency[iter] / total[iter]) * sum(latency_matrix[iter, ] * chromosome[iter, ])
-	#}
-	#latency <- sum(latency)
-	#print(latency)
 	latency
 }
 
@@ -63,7 +54,9 @@ drop <- function(cost_limitation = 300, matrixSize){
 	chromosome <- rep(1, matrixSize * matrixSize) * cost_matrix
 	initial_solution <- chromosome
 	assign.costs <- chromosome
+	lp_time <- proc.time()
 	lp.assign(assign.costs)
+	cat("lp time: ", proc.time() - lp_time, "\n", sep = "")
 	initial_solution <- lp.assign(assign.costs)$solution
 	solution <- ala(initial_solution, cost_limitation, matrixSize)
 	solution
