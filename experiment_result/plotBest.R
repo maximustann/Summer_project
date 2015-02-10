@@ -9,8 +9,11 @@ plotme <- function(condition, number = 3){
 	else if(number == 10){
 		filename <- paste("10_10", "/", condition, "/", number, ".csv", sep = "")
 	}
-	else{
+	else if(number == 15){
 		filename <- paste("15_15", "/", condition, "/", number, ".csv", sep = "")
+	}
+	else if(number == 20){
+		filename <- paste("20_20", "/", condition, "/", number, ".csv", sep = "")
 	}
 	ga_data <- read_ga_data(filename)
 	lp_data <- read_lp_data(filename)
