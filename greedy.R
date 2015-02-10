@@ -23,10 +23,7 @@ latency_fitness <- function(chromosome, matrixSize){
 	for(service_iter in 1:matrixSize){
 		num_of_service <- sum(chromosome[service_iter, ])
 		deployed_service <- which(chromosome[service_iter, ] != 0)
-		#cat("which(chromosome[service_iter, ] == 1)", which(chromosome[service_iter, ] == 1), '\n')
 		locationLatency <- 0.0
-		#the matrixSize here represent the number of user center
-		#latency <- latency + (frequency[service_iter] / (num_of_service * matrixSize)) * sum(latency_matrix[, deployed_service])
 		for(latency_iter in 1:matrixSize){
 			if(0 %in% latency_matrix[latency_iter, ]){
 				if(chromosome[service_iter, which(latency_matrix[latency_iter, ] == 0)] == 1){
@@ -81,12 +78,9 @@ ala <- function(initial_solution, cost_limitation, matrixSize){
 }
 
 evaluate_solution <- function(solution, matrixSize, weight_for_cost = 0.5){
-	#print("Now is the solution:")
 	print(solution)
 	cost_fit <- cost_fitness(solution, matrixSize)
 	latency_fit <- latency_fitness(solution, matrixSize)
-	#dist <- sqrt((weight_for_cost * cost_fit)^2 + ((1 - weight_for_cost) * latency_fit)^2)
-	#cat(cost_fit, latency_fit, dist, '\n')
 	result <- c(cost_fit, latency_fit)
 	result
 }
