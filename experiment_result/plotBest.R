@@ -17,11 +17,12 @@ plotme <- function(condition, number = 3){
 	}
 	ga_data <- read_ga_data(filename)
 	lp_data <- read_lp_data(filename)
-	plot(ga_data[order(ga_data$latencyF),], xlim = 0:1, ylim = 0:1, col = 'blue', xlab = 'cost', ylab = 'latency',  pch = 4, type = 'b')
+	par(font.axis = 2)
+	plot(ga_data[order(ga_data$latencyF),], xlim = 0:1, ylim = 0:1, col = 'blue', xlab = 'cost', ylab = 'latency',  pch = 4, type = 'b', font.lab = 2)
 	par(new = T)
-	plot(lp_data, xlim = 0:1, ylim = 0:1, col = 'red',xlab = 'cost', ylab = 'latency', pch = 20)
+	plot(lp_data, xlim = 0:1, ylim = 0:1, col = 'red', xlab = '', ylab = '', pch = 20, cex = 2)
 
-	legend("topright", c("NSGA-II", "ALA"), col = c("blue", "red"),  pch = c(4, 20))
+	legend("topright", c("NSGA-II", "ALA"), col = c("blue", "red"), pch = c(4, 20))
 
 }
 
