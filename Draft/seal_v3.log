@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (Web2C 2013) (format=pdflatex 2014.11.27)  29 JAN 2015 16:41
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (Web2C 2013) (format=pdflatex 2015.2.6)  18 FEB 2015 12:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -692,75 +692,32 @@ LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (0.20943pt too wide) in paragraph at lines 91--96
-[]\OT1/cmr/m/n/10 Evolutionary multi ob-jec-tive op-ti-miza-tion (EMO) method-o
-lo-gies on the other
- []
+Underfull \vbox (badness 2158) has occurred while \output is active []
 
-[2] [3]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 191.
- [4] [5] [6] <pics/mutation.png, id=138, 513.04544pt x 138.1001pt>
+ [2]
+[3] [4] [5] [6] [7] <pics/mutation.png, id=177, 513.04544pt x 138.1001pt>
 File: pics/mutation.png Graphic file (type png)
 
 <use pics/mutation.png>
-Package pdftex.def Info: pics/mutation.png used on input line 313.
+Package pdftex.def Info: pics/mutation.png used on input line 347.
 (pdftex.def)             Requested size: 173.56177pt x 46.7195pt.
- <pics/crossover.png, id=140, 460.8107pt x 495.15683pt>
+
+<pics/crossover.png, id=179, 992.95969pt x 212.29312pt>
 File: pics/crossover.png Graphic file (type png)
 
 <use pics/crossover.png>
-Package pdftex.def Info: pics/crossover.png used on input line 324.
-(pdftex.def)             Requested size: 104.1381pt x 111.89658pt.
- [7 <./pics/mutation.png>] [8 <./pics/crossover.png>]
-<pics/1.png, id=168, 409.29149pt x 321.99506pt>
-File: pics/1.png Graphic file (type png)
- <use pics/1.png>
-Package pdftex.def Info: pics/1.png used on input line 398.
-(pdftex.def)             Requested size: 138.84729pt x 109.2312pt.
+Package pdftex.def Info: pics/crossover.png used on input line 358.
+(pdftex.def)             Requested size: 173.56177pt x 37.10649pt.
+ [8 <./pics/mutation.png> <./pics/crossover.png>]
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 419.
 
-<pics/2.png, id=169, 410.72258pt x 324.85722pt>
-File: pics/2.png Graphic file (type png)
- <use pics/2.png>
-Package pdftex.def Info: pics/2.png used on input line 402.
-(pdftex.def)             Requested size: 138.84729pt x 109.82045pt.
+Overfull \hbox (5.7232pt too wide) in paragraph at lines 417--452
+\OT1/cmr/m/n/10 Algorithm []1[] shows the pre-ce-dure of NSGA-II ap-plied on se
+r-vice location-allocation
+ []
 
-<pics/3.png, id=170, 387.82515pt x 319.13287pt>
-File: pics/3.png Graphic file (type png)
- <use pics/3.png>
-Package pdftex.def Info: pics/3.png used on input line 408.
-(pdftex.def)             Requested size: 138.84729pt x 114.25468pt.
-
-<pics/4.png, id=171, 406.4293pt x 318.41733pt>
-File: pics/4.png Graphic file (type png)
- <use pics/4.png>
-Package pdftex.def Info: pics/4.png used on input line 412.
-(pdftex.def)             Requested size: 138.84729pt x 108.78032pt.
- [9]
-
-! Package array Error:  Illegal pream-token (1): `c' used.
-
-See the array package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.441 ...{tabular}{ | l | l | l | 1 | 1 |p{2cm} |}
-                                                  
-? 
-
-! Package array Error:  Illegal pream-token (1): `c' used.
-
-See the array package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.441 ...{tabular}{ | l | l | l | 1 | 1 |p{2cm} |}
-                                                  
-? 
-
-Underfull \vbox (badness 8075) has occurred while \output is active []
-
- [10 <./pics/1.png> <./pics/2.png> <./pics/3.png> <./pics/4.png>]
+[9] [10]
 
 ! Package amsmath Error: Erroneous nesting of equation structures;
 (amsmath)                trying to recover with `aligned'.
@@ -769,72 +726,156 @@ See the amsmath package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.470      \end{align}
+l.479      \end{align}
                       
 ? 
+! Missing } inserted.
+<inserted text> 
+                }
+l.479      \end{align}
+                      
+? 
+! Incomplete \ifodd; all text was ignored after line 479.
+<inserted text> 
+                \fi 
+l.479      \end{align}
+                      
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+l.479      \end{align}
+                      
+? 
+! Extra \fi.
+\math@cr@@@ ...ef \next@ {&\kern -\alignsep@ }\fi 
+                                                  \next@ \cr 
+l.479      \end{align}
+                      
+? 
+! Undefined control sequence.
+\math@cr@@@ ...t@ {&\kern -\alignsep@ }\fi \next@ 
+                                                  \cr 
+l.479      \end{align}
+                      
+? 
+! Missing { inserted.
+<inserted text> 
+                {
+l.479      \end{align}
+                      
+? 
+[11]
 
-Overfull \hbox (2.05554pt too wide) in paragraph at lines 488--546
-[]$[]$ []$[]$
- []
+! Package array Error:  Illegal pream-token (1): `c' used.
 
+See the array package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.526 ...{tabular}{ | l | l | l | 1 | 1 |p{2cm} |}
+                                                  
+? 
 
-Overfull \hbox (2.05554pt too wide) in paragraph at lines 488--546
-[]$[]$ []$[]$
- []
+! Package array Error:  Illegal pream-token (1): `c' used.
 
-[11] <pics/105.png, id=210, 480.84595pt x 442.20653pt>
-File: pics/105.png Graphic file (type png)
- <use pics/105.png>
-Package pdftex.def Info: pics/105.png used on input line 566.
-(pdftex.def)             Requested size: 138.84729pt x 127.69005pt.
+See the array package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.526 ...{tabular}{ | l | l | l | 1 | 1 |p{2cm} |}
+                                                  
+? 
+<pics/1.png, id=235, 376.37643pt x 314.12405pt>
+File: pics/1.png Graphic file (type png)
+ <use pics/1.png>
+Package pdftex.def Info: pics/1.png used on input line 546.
+(pdftex.def)             Requested size: 170.09244pt x 141.95845pt.
 
-<pics/107.png, id=211, 476.55267pt x 433.62pt>
-File: pics/107.png Graphic file (type png)
- <use pics/107.png>
-Package pdftex.def Info: pics/107.png used on input line 571.
-(pdftex.def)             Requested size: 138.84729pt x 126.33545pt.
+<pics/2.png, id=236, 379.95416pt x 320.56396pt>
+File: pics/2.png Graphic file (type png)
+ <use pics/2.png>
+Package pdftex.def Info: pics/2.png used on input line 550.
+(pdftex.def)             Requested size: 170.09244pt x 143.50406pt.
 
-<pics/111.png, id=212, 476.55267pt x 434.33554pt>
-File: pics/111.png Graphic file (type png)
- <use pics/111.png>
-Package pdftex.def Info: pics/111.png used on input line 578.
-(pdftex.def)             Requested size: 138.84729pt x 126.54391pt.
+<pics/3.png, id=237, 383.53188pt x 317.70178pt>
+File: pics/3.png Graphic file (type png)
+ <use pics/3.png>
+Package pdftex.def Info: pics/3.png used on input line 556.
+(pdftex.def)             Requested size: 170.09244pt x 140.89934pt.
 
-<pics/112.png, id=213, 485.1392pt x 438.62881pt>
-File: pics/112.png Graphic file (type png)
- <use pics/112.png>
-Package pdftex.def Info: pics/112.png used on input line 583.
-(pdftex.def)             Requested size: 138.84729pt x 125.53925pt.
+<pics/4.png, id=238, 381.38525pt x 309.8308pt>
+File: pics/4.png Graphic file (type png)
+ <use pics/4.png>
+Package pdftex.def Info: pics/4.png used on input line 560.
+(pdftex.def)             Requested size: 170.09244pt x 138.1792pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [12]
-[13 <./pics/105.png> <./pics/107.png> <./pics/111.png> <./pics/112.png>]
+[13 <./pics/1.png> <./pics/2.png> <./pics/3.png> <./pics/4.png>]
+Overfull \hbox (2.05554pt too wide) in paragraph at lines 590--648
+[]$[]$ []$[]$
+ []
+
+
+Overfull \hbox (2.05554pt too wide) in paragraph at lines 590--648
+[]$[]$ []$[]$
+ []
+
+<pics/122.png, id=268, 481.8pt x 444.15938pt>
+File: pics/122.png Graphic file (type png)
+ <use pics/122.png>
+Package pdftex.def Info: pics/122.png used on input line 669.
+(pdftex.def)             Requested size: 170.09244pt x 156.8pt.
+
+<pics/123.png, id=269, 475.02469pt x 436.63126pt>
+File: pics/123.png Graphic file (type png)
+ <use pics/123.png>
+Package pdftex.def Info: pics/123.png used on input line 674.
+(pdftex.def)             Requested size: 170.09244pt x 156.34099pt.
+
+<pics/124.png, id=270, 474.27188pt x 431.36156pt>
+File: pics/124.png Graphic file (type png)
+ <use pics/124.png>
+Package pdftex.def Info: pics/124.png used on input line 681.
+(pdftex.def)             Requested size: 170.09244pt x 154.70424pt.
+
+<pics/125.png, id=271, 475.02469pt x 435.12563pt>
+File: pics/125.png Graphic file (type png)
+ <use pics/125.png>
+Package pdftex.def Info: pics/125.png used on input line 686.
+(pdftex.def)             Requested size: 170.09244pt x 155.80188pt.
+ [14]
+[15 <./pics/122.png> <./pics/123.png> <./pics/124.png> <./pics/125.png>]
 (./seal_v3.bbl
 Missing character: There is no â in font cmr9!
 Missing character: There is no € in font cmr9!
 Missing character: There is no “ in font cmr9!
 Missing character: There is no Ã in font cmr9!
 Missing character: There is no ¡ in font cmr9!
- [14])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 615.
- [15]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 615.
+ [16])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 718.
+ [17]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 718.
  (./seal_v3.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 615.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 615.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 718.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 718.
 Package rerunfilecheck Info: File `seal_v3.out' has not changed.
 (rerunfilecheck)             Checksum: DB593BF379D39EBE25E6F6BAA332B55F;136.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
  ) 
 Here is how much of TeX's memory you used:
- 9544 strings out of 493945
- 138137 string characters out of 6159095
- 249019 words of memory out of 5000000
- 12495 multiletter control sequences out of 15000+600000
+ 9575 strings out of 493945
+ 138541 string characters out of 6159097
+ 251426 words of memory out of 5000000
+ 12509 multiletter control sequences out of 15000+600000
  13725 words of font info for 53 fonts, out of 8000000 for 9000
  774 hyphenation exceptions out of 8191
  42i,13n,38p,791b,488s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -844,17 +885,17 @@ xmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/pkg/share/texmf-dist/fo
 nts/type1/public/amsfonts/cm/cmex10.pfb></usr/pkg/share/texmf-dist/fonts/type1/
 public/amsfonts/cm/cmmi10.pfb></usr/pkg/share/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmmi7.pfb></usr/pkg/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-r10.pfb></usr/pkg/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></us
-r/pkg/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/pkg/share/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/pkg/share/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/pkg/share/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmsy9.pfb></usr/pkg/share/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmti10.pfb></usr/pkg/share/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmtt9.pfb>
-Output written on seal_v3.pdf (15 pages, 374760 bytes).
+mi9.pfb></usr/pkg/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></u
+sr/pkg/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/pkg/share
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/pkg/share/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/pkg/share/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmsy7.pfb></usr/pkg/share/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmsy9.pfb></usr/pkg/share/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mti10.pfb></usr/pkg/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on seal_v3.pdf (17 pages, 356325 bytes).
 PDF statistics:
- 311 PDF objects out of 1000 (max. 8388607)
- 226 compressed objects within 3 object streams
- 82 named destinations out of 1000 (max. 500000)
+ 374 PDF objects out of 1000 (max. 8388607)
+ 274 compressed objects within 3 object streams
+ 99 named destinations out of 1000 (max. 500000)
  59 words of extra memory for PDF output out of 10000 (max. 10000000)
 

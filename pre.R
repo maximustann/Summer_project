@@ -1,5 +1,3 @@
-
-
 source("DataExtraction.R")
 predata <- function(matrixSize){
 	set.seed(1)

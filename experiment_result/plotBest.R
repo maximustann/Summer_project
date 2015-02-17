@@ -22,7 +22,8 @@ plotme <- function(condition, number = 3){
 	par(new = T)
 	plot(lp_data, xlim = 0:1, ylim = 0:1, col = 'red', xlab = '', ylab = '', pch = 20, cex = 2)
 
-	legend("topright", c("NSGA-II", "ALA"), col = c("blue", "red"), pch = c(4, 20))
+	par(xpd = T)
+	legend("topright",c("NSGA-II", "IPGO"), col = c("blue", "red"), pch = c(4, 20))
 
 }
 

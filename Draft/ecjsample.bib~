@@ -398,12 +398,12 @@
 	address = {New York, NY, USA},
 }
 
-	@INPROCEEDINGS{1688438, 
-		author={Ishibuchi, H. and Nojima, Yusuke and Doi, T.}, 
-		booktitle={Evolutionary Computation, 2006. CEC 2006. IEEE Congress on}, 
-		title={Comparison between Single-Objective and Multi-Objective Genetic Algorithms: Performance Comparison and Performance Measures}, 
-		year={2006}, 
-		month={}, 
-		pages={1143-1150}, 
-		keywords={genetic algorithms;knapsack problems;multi-objective genetic algorithms;multi-objective knapsack problems;scalar fitness function;single-objective genetic algorithms;Computational intelligence;Computer architecture;Computer science;Degradation;Evolutionary computation;Genetic algorithms;Hybrid power systems;Intelligent systems;Pareto optimization}, 
-		doi={10.1109/CEC.2006.1688438},}
+@INPROCEEDINGS{1688438, 
+	author={Ishibuchi, H. and Nojima, Yusuke and Doi, T.}, 
+	booktitle={Evolutionary Computation, 2006. CEC 2006. IEEE Congress on}, 
+	title={Comparison between Single-Objective and Multi-Objective Genetic Algorithms: Performance Comparison and Performance Measures}, 
+	year={2006}, 
+	month={}, 
+	pages={1143-1150}, 
+	keywords={genetic algorithms;knapsack problems;multi-objective genetic algorithms;multi-objective knapsack problems;scalar fitness function;single-objective genetic algorithms;Computational intelligence;Computer architecture;Computer science;Degradation;Evolutionary computation;Genetic algorithms;Hybrid power systems;Intelligent systems;Pareto optimization}, 
+	doi={10.1109/CEC.2006.1688438},}

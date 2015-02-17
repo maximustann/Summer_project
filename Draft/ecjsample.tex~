@@ -595,34 +595,48 @@ processes will reach a maximum number. Therefore, the time consuming increases l
 	\begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{pics/105.png}
 		\caption{$3 \times 3$}
-		\label{fig:3_by_3}
+		\label{fig:3_3}
 	\end{subfigure}%
 	\begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{pics/107.png}
 		\caption{$5 \times 5$}
-		\label{fig:5_by_by_suff}
+		\label{fig:5_5}
 	\end{subfigure}
 
 
 	\begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{pics/111.png}
 		\caption{$10 \times 10$}
-		\label{fig:poor}
+		\label{fig:10_10}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{pics/112.png}
 		\caption{$15 \times 15$}
-		\label{fig:minimum}
+		\label{fig:15_15}
 	\end{subfigure}
 
-	\caption{Average Distance in four conditions}\label{fig:condition}
+	\caption{}\label{fig:condition}
 \end{figure}
+We conducted 16 experiments on 4 datasets under 4 cost constraints: sufficient, good, poor and minimum. The results show similar 
+patterns under same dataset. Therefore, we only pick one figure for each dataset.
+
+
+Figure \ref{fig:3_3} and \ref{fig:5_5} show NSGA-II is outperforms than ALA. As we discussed in the previous section, the 
+result of ALA is dominated by NSGA-II's solution set. Although, ALA solution for $3 \times 3$ matrix is quite close to the 
+Pareto front. \ref{fig:15_15} shows that solution of ALA is on the Pareto front. It does not improve the quality of the solution
+set. Therefore, we considered NSGA-II is outperforms ALA in this case. \ref{fig:10_10} is a special case, NSGA-II solution set does
+not cover the possible solution range. That is, we predefined 50 generation for NSGA-II is not enough for NSGA-II to find a solution
+set that cover the Pareto front. The solution from ALA is non-dominated solution in the NSGA-II solution set. While the inclusion
+of the ALA solution somewhat improves the quality of the NSGA-II solution set, we cannot say that ALA outperforms NSGA-II since the 
+ALA solution dominates no NSGA-II solutions.
+
+As a whole, we can conclude that NSGA-II outperforms ALA in terms of the quality of solutions.
 
 
 \section{Conclusion}
 In this paper, we presented a modified NSGA-II for web service location allocation problem. Our approach utilizes a memory pool so that
 greatly reduces the evaluation time while the diversity of the population gradually decreases. We have conducted a full experimental evaluation using the public WS-DREAM dataset to compare our approach to Alternate Location Allocation algorithm. 
-The experimental results shows the modified is effective to provide a near-optima solutions for the web service location-allocation problem.
+The experimental results shows the modified NSGA-II is effective to provide a near-optima solutions for the web service location-allocation problem.
 
 \bibliographystyle{apalike}
 \bibliography{ecjsample}

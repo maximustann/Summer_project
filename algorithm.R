@@ -124,7 +124,7 @@ set.seed(seed)
 				  parameters = parent[,1:varNo], objectives = parent[, (varNo + 1):(varNo + objDim)], 
 				  paretoFrontRank = parent[, varNo + objDim + 1], crowdingDistance = parent[, varNo + objDim + 2])
 	class(result) = "nsga2R"
-	cat("Repair time: ", repair_time, "\n", sep = "")
+	#cat("Repair time: ", repair_time, "\n", sep = "")
 	unique(front[, 1:varNo])
 }
 
@@ -134,8 +134,8 @@ check_existed <- function(childAfterM, front_pool, varNo){
 	child_existed <- vector()
 	child_non_existed <- vector()
 	num_in_children <- nrow(childAfterM)
+	front_pool <- matrix(front_pool, nrow = 1)
 	num_in_front <- nrow(front_pool)
-	#print(num_in_front)
 	if(num_in_front == 0){
 		child_non_existed <- childAfterM
 		child_existed <- NULL
@@ -244,33 +244,48 @@ cost_fitness <- function(chromosome, matrixSize){
 }
 
 latency_fitness <- function(chromosome, matrixSize){
+
+	chromosome <- as.integer(chromosome)
 	chromosome <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
 	latency <- 0.0
 	frequency <- colSums(frequency_matrix)
 	num_of_Usercenter <- matrixSize
-
-	for(service_iter in 1:matrixSize){
-		num_of_service <- sum(chromosome[service_iter, ])
-		deployed_service <- which(chromosome[service_iter, ] != 0)
-		locationLatency <- 0.0
-		for(latency_iter in 1:matrixSize){
-			if(0 %in% latency_matrix[latency_iter, ]){
-				if(chromosome[service_iter, which(latency_matrix[latency_iter, ] == 0)] == 1){
-					locationLatency <- locationLatency + 0.0
-				}
-				else{
-					locationLatency <- locationLatency + frequency[service_iter] / (num_of_service * matrixSize) * sum(latency_matrix[latency_iter, deployed_service])
-				}
+	response_matrix <- vector()
+	for(user_iter in 1:matrixSize){
+		for(service_iter in 1:matrixSize){
+			num_of_service <- sum(chromosome[service_iter, ])
+			deployed_service <- which(chromosome[service_iter, ] == 1)
+			if(num_of_service > 1){
+				response_matrix <- c(response_matrix, min(latency_matrix[service_iter, deployed_service]))
 			}
 			else{
-				locationLatency <- locationLatency + frequency[service_iter] / (num_of_service * matrixSize) * sum(latency_matrix[latency_iter, deployed_service])
+				response_matrix <- c(response_matrix, latency_matrix[service_iter, deployed_service])
 			}
 		}
-		latency <- latency + locationLatency
 	}
+	response_matrix <- matrix(response_matrix, nrow = matrixSize, matrixSize, byrow = T)
+	latency <- sum(response_matrix * frequency_matrix)
 
+	#for(service_iter in 1:matrixSize){
+		#num_of_service <- sum(chromosome[service_iter, ])
+		#deployed_service <- which(chromosome[service_iter, ] != 0)
+		#locationLatency <- 0.0
+		#for(latency_iter in 1:matrixSize){
+			#if(0 %in% latency_matrix[latency_iter, ]){
+				#if(chromosome[service_iter, which(latency_matrix[latency_iter, ] == 0)] == 1){
+					#locationLatency <- locationLatency + 0.0
+				#}
+				#else{
+					#locationLatency <- locationLatency + frequency[service_iter] / (num_of_service * matrixSize) * sum(latency_matrix[latency_iter, deployed_service])
+				#}
+			#}
+			#else{
+				#locationLatency <- locationLatency + frequency[service_iter] / (num_of_service * matrixSize) * sum(latency_matrix[latency_iter, deployed_service])
+			#}
+		#}
+		#latency <- latency + locationLatency
+	#}
 	latency
-
 }
 
 normalize <- function(data){

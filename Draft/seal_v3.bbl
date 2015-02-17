@@ -43,6 +43,11 @@ Elhossini, A., Areibi, S., Dony, R.: Strength pareto particle swarm
   optimization and hybrid ea-pso for multi-objective optimization. Evol.
   Comput.  18(1),  127--156 (2010)
 
+\bibitem{5961695}
+Goiri, I., Le, K., Guitart, J., Torres, J., Bianchini, R.: Intelligent
+  placement of datacenters for internet services. In: Distributed Computing
+  Systems (ICDCS), 2011 31st International Conference on. pp. 131--142 (2011)
+
 \bibitem{EnhancedGenetic}
 Huang, H., Ma, H., Zhang, M.: An enhanced genetic algorithm for web service
   location-allocation. In: Decker, H., Lhotská, L., Link, S., Spies, M.,
@@ -81,6 +86,15 @@ Kanagarajan, D., Karthikeyan, R., Palanikumar, K., Davim, J.: Optimization of
   electrical discharge machining characteristics of wc/co composites using
   non-dominated sorting genetic algorithm (nsga-ii). The International Journal
   of Advanced Manufacturing Technology  36(11-12),  1124--1132 (2008)
+
+\bibitem{lawler1963quadratic}
+Lawler, E.L.: The quadratic assignment problem. Management science  9(4),
+  586--599 (1963)
+
+\bibitem{man1996genetic}
+Man, K.F., Tang, K.S., Kwong, S.: Genetic algorithms: concepts and
+  applications. IEEE Transactions on Industrial Electronics  43(5),  519--534
+  (1996)
 
 \bibitem{Raghuwanshi04}
 Raghuwanshi, M.M., Kakde, O.G.: {Survey on multiobjective evolutionary and real
