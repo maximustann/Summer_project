@@ -199,8 +199,8 @@ To model service location-allocation problem we need make use of a set of matrix
 
 For service location-allocation problem we needs information of service usage, network latency, and service deployment cost to decide service location-allocation so that the overall network latency can be minimized with minimal deployment cost and with constraint.
 Assume a set of $S = \{ s_{1}, s_{2}, ..., s_{x}\}$ services are
-requested from a set of location $I = \{ i_{1}, i_{2}, ..., i_{i} \}$. The service providers allocate services 
-to $J = \{ j_{1}, j_{2}, ..., j_{j} \}$ be the set of candidate facility locations.
+requested from a set of location $I = \{ i_{1}, i_{2}, ..., i_{y} \}$. The service providers allocate services 
+to $J = \{ j_{1}, j_{2}, ..., j_{z} \}$ be the set of candidate facility locations.
 To model the service location-allocation problem we use five matrices: 
 service network latency matrix $L$, service location
 matrix $A$, service invocation frequency matrix $F$, cost matrix $C$ and user response time matrix $R$.
@@ -324,7 +324,7 @@ The second constraint is the cost constraint which predefined the upper boundary
 An integer number $CostLimitation$ is defined.
 \begin{center}
 	\begin{equation}
-		\sum\limits_{s \in S} \sum\limits_{j \in J} C_{sj} \times A_{sj} \leq CostLimitation
+		\sum\limits_{s \in S} \sum\limits_{j \in J} c_{sj} \times a_{sj} \leq CostLimitation
 	\end{equation}
 \end{center}
 
@@ -371,51 +371,41 @@ how good each chromosome meets the objectives.\end{flushleft}
 	\end{equation}
 \end{center}
 
-$C_{sj}$ is the Cost matrix stores the cost information of service $s$ at location $j$. $A_{sj}$ represents the deployment plan. The sum of the multiplication of 
-$C_{sj}$ and $A_{sj}$ derives the total cost of the deployment plan.
+$c_{sj}$ is the Cost matrix stores the cost information of service $s$ at location $j$. $a_{sj}$ represents the deployment plan. The sum of the multiplication of 
+$c_{sj}$ and $a_{sj}$ derives the total cost of the deployment plan.
 
+
+\begin{flushleft}For example, we use the above mentioned matrices C and A.\end{flushleft}
+
+\begin{align*}
+	CostFitness &= c_{11} * a_{11} + c_{12} * a_{12} + c_{13} * a_{13} + ... + c_{33} * a_{33} \\
+	&= 130 * 0 + 80 * 1 + 60 * 0 + ... + 54 * 0 \\
+	&= 228
+\end{align*}
 \subsubsection{Network latency fitness function}
 
-There are some assumptions we made of network latency. First, we assume
-the latency = 0 if the service is deployed locally. That is, if the service is deployed in the user center $i$. Then, the 
-invocation from $i$ to the service has no latency. The second assumption is the latency is symmetrical between user center and candidate location. e.g. 
-The latency from location $i$ to location $j$ is same with the latency from location $j$ to location $i$. Thirdly, the total invocation are equally
-contributed by user centers. In other words, we assume each user center has same invocation to a service.
+We assume the latency is symmetrical between user center and candidate location. e.g. 
+The latency from location $i$ to location $j$ is same with the latency from location $j$ to location $i$.
 
+\begin{center}
+	\begin{equation}
+		LatencyFitness = \sum\limits_{i \in I} \sum\limits_{s \in S} r_{is} \times f_{is}
+	\end{equation}
+\end{center}
 
-There are five steps to calculate the total network latency.
-\begin{enumerate}
-	\item Firstly, for each chromosome, calculate the number of invocation for each service. $Invocation_{s}$ is a vector which contains 
-		the number of invocation for each service.
-		\begin{center}
-			$Invocation_{s} = \sum\limits_{i \in I} F_{is}$ $s \in S$,
-		\end{center}
-	\item Calculate total number of deployment for each service. $ServiceNo_{s}$ is a vector which contains the number of deployment for each service.
-		\begin{center}
-			$ServiceNo_{s} = \sum\limits_{s \in S}\ A_{sj}$
-		\end{center}
-	\item Calculate the average number of invocation for each user center contribute to the services.
-		\begin{center}
-			$AverageInvocation_{i} = Invocation_{s} \div $s$ \div ServiceNo_{s}$
-		\end{center}
-	\item Calculate the latency of each service.
-		\begin{center}
-			$LocationLatency_{s} = \sum\limits_{i \in I} L_{ij}$
-		\end{center}
-	\item Calculate the total latency of the multiplication of $AverageInvocation_{i}$ and $LocationLatency_{i}$.
-		If the service is deployed locally, then the latency equals zero.
-		\begin{center}
-			Check if deployed locally: $LocationLatency_{s}$ = 0
-		\begin{equation}
-			LatencyFitness = \sum\limits_{s \in S}\sum\limits_{i \in I} AverageInvocation_{i} \times LocationLatency_{s}
-		\end{equation}
-		\end{center}
-\end{enumerate}
+\begin{flushleft}For example, we use the above mentioned matrices F and R.\end{flushleft}
+
+\begin{align*}
+	LatencyFitness &= f_{11} * r_{11} + f_{12} * r_{12} + f_{13} * r_{13} + ... + f_{33} * r_{33} \\
+	&= 120 * 5.776 + 6.984 * 35 + 0 * 56 + ... + 0.984 * 74\\
+	&= 1300.696
+\end{align*}
+
 
 
 \subsection{NSGA-II based algorithm for service location-allocation}
 Algorithm \ref{NSGA2} shows the precedure of NSGA-II applied on service location-allocation problem.
-\begin{algorithm}
+\begin{algorithm}[htb]
 	\caption{NSGA-II for service location-allocation}
 	\label{NSGA2}
 	\begin{algorithmic}[1]
@@ -433,7 +423,7 @@ Algorithm \ref{NSGA2} shows the precedure of NSGA-II applied on service location
 		\State Deploy the service to a random candidate location
 		\EndWhile
 		\While { violate cost constraint}
-		\State Close down a service from a random location as long as it does not violate service number constraint
+		\State Shut down a service from a random location as long as it does not violate service number constraint
 		\If { no service can be closed}
 		\State Break
 		\EndIf
@@ -694,12 +684,9 @@ We conducted 16 experiments on 4 datasets under 4 cost constraints: sufficient, 
 patterns for same dataset. Therefore, we only show one figure for each dataset.
 
 
-Figure \ref{fig:3_3} and \ref{fig:5_5} show NSGA-II is outperforms IPGO. As we discussed in the previous section, the 
-result of IPGO is dominated by NSGA-II's solution set. Although, IPGO solution for $3 \times 3$ matrix is quite close to the 
-Pareto front. \ref{fig:15_15} shows that solution of IPGO is on the Pareto front. It does not improve the quality of the solution
-set. Therefore, we considered NSGA-II outperforms IPGO in this case. \ref{fig:10_10} is a special case, NSGA-II solution set does
-not cover the possible solution range. That is, we predefined 50 generations for NSGA-II is not big enough for NSGA-II to find a solution
-set that cover the Pareto front. The solution from IPGO is non-dominated solution in the NSGA-II solution set. While the inclusion
+Figure \ref{fig:3_3} shows NSGA-II is outperforms IPGO. As we discussed in the previous section, the 
+result of IPGO is dominated by NSGA-II's solution set. \ref{fig:5_5} \ref{fig:10_10} \ref{fig:15_15} show that solution of IPGO is on the Pareto front. It does not improve the quality of the solution
+set. Therefore, we considered NSGA-II outperforms IPGO in this case. The solution from IPGO is non-dominated solution in the NSGA-II solution set. While the inclusion
 of the IPGO solution somewhat improves the quality of the NSGA-II solution set, we cannot say that IPGO outperforms NSGA-II since the 
 IPGO solution dominates no NSGA-II solutions.
 
