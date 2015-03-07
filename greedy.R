@@ -15,38 +15,7 @@ run_greedy <- function(matrixSize, cost_limitation){
 	result
 }
 
-#latency_fitness <- function(chromosome, matrixSize){
-	#latency <- 0.0
-	#chromosome <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
-	#frequency <- colSums(frequency_matrix)
-	#num_of_Usercenter <- matrixSize
-	#for(service_iter in 1:matrixSize){
-		#num_of_service <- sum(chromosome[service_iter, ])
-		#deployed_service <- which(chromosome[service_iter, ] != 0)
-		#locationLatency <- 0.0
-		#for(latency_iter in 1:matrixSize){
-			#if(0 %in% latency_matrix[latency_iter, ]){
-				#if(chromosome[service_iter, which(latency_matrix[latency_iter, ] == 0)] == 1){
-					#locationLatency <- locationLatency + 0.0
-				#}
-				#else{
-					#locationLatency <- locationLatency + frequency[service_iter] / (num_of_service * matrixSize) * sum(latency_matrix[latency_iter, deployed_service])
-				#}
-			#}
-			#else{
-				#locationLatency <- locationLatency + frequency[service_iter] / (num_of_service * matrixSize) * sum(latency_matrix[latency_iter, deployed_service])
-			#}
-		#}
-		#latency <- latency + locationLatency
-	#}
-	#latency
-#}
 
-#cost_fitness <- function(chromosome, matrixSize){
-	#chromosome <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
-	#cost <- sum(chromosome * cost_matrix)
-	#cost
-#}
 drop <- function(cost_limitation = 300, matrixSize){
 	chromosome <- rep(1, matrixSize * matrixSize) * cost_matrix
 	initial_solution <- chromosome
