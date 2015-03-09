@@ -22,7 +22,7 @@
 
 
 \title{
-Optimization of Location Allocation of Web Services using non-dominated sorting algorithm(NSGA-II)
+Optimization of Location Allocation of Web Services Using A Modified Non-dominated Sorting Genetic Algorithm
 }
 
 \author{Boxiong Tan, Hui Ma, Mengjie Zhang}
@@ -39,7 +39,7 @@ Optimization of Location Allocation of Web Services using non-dominated sorting 
 \maketitle
 
 \begin{abstract}
-In recent years, web services technology is becoming increasingly popular because the convenience, 
+In recent years, web services technology is becoming increasingly popular because  of the convenience, 
 low cost and capacity to be composed into high-level business processes. 
 The service location-allocation problem for a web service provider is critical and urgent. 
 It is because some factors such as Network latency, can make serious effect on the quality of service (QoS). 
@@ -57,11 +57,11 @@ customizable and adaptable applications to meet business demands. Furthermore, W
 convenient registration, search  and discovery system.
 
 With the ever increasing number of functional similar web services being available on the Internet, the web service providers (WSPs) are trying to improve the quality of service (QoS) to become competitive in the market.  
-QoS also known as non-functional requirements to  web services, is the degree to which a service meets specified requirements or user needs \cite{4061431}, such as response time, security and availability. 
+QoS, also known as non-functional requirements to  web services, is the degree to which a service meets specified requirements or user needs \cite{4061431}, such as response time, security and availability. 
 Among numerous QoS measurements, service response time is a critical factor for many real-time services, e.g. traffic service or finance service. 
 Service response time has two components: transmission time (variable with message size) and network latency \cite{Johansson}. 
 Study \cite{916684} shows that network latency is a significant component of service response delay.
-Ignoring network latency will underestimate response time by more than 80 percent. Since network latency is related to network topology as well as physical distance \cite{distanceMetrics}. 
+Ignoring network latency will underestimate response time by more than 80 percent \cite{Sun}, since network latency is related to network topology as well as physical distance \cite{distanceMetrics}. 
 The network latency could also vary with the network topology changes.
 The only way to reduce the network latency is to move the service to a location where has lower network latency to the user center. 
 Hence, the WSPs need to consider which physical locations to deploy their services so that it could minimize the cost as well as ensure the QoS.
@@ -73,33 +73,32 @@ However, the more services deployed, the better the quality and the higher cost.
 This problem is considered as NP-hard due to the fact that the combinatorial explosion of the search space \cite{Vanrompay}. 
 
 
-Very few researches study this problem, most of the researchers treat this problem as a single objective problem.
+Very few researches have studied this problem and most of the researchers treat this problem as a single objective problem.
 \cite{Aboolian} \cite{Sun} try to solve the problem by using integer linear programming techniques.
 In particular, \cite{Sun} solved this problem by employing a modified Alternate Location-Allocation (ALA) and greedy algorithm. 
 However, essentially Sun's approach build upon integer programming and greedy optimization. 
 As a result, the solution is easily stuck at local optima.
-Huang \cite{EnhancedGenetic} propose an enhanced genetic algorithm (GA)-based approach which make use of the integer scalarization technique to solve this problem.
+Huang \cite{EnhancedGenetic} proposed an enhanced genetic algorithm (GA)-based approach, which make use of the integer scalarization technique to solve this problem.
 GA \cite{man1996genetic} is an Evolutionary algorithm (EA) that uses genetic operators to obtain optimal solutions without any assumptions about the search space.
 This algorithm solves the problem with one objective and one constraint, however there are a few disadvantages existed in
-integer scalarization technique \cite{Multiobjective}, which were discussed explicitly in Section \ref{sec:Background}.
+integer scalarization technique \cite{Multiobjective}, which are to be discussed explicitly in Section \ref{sec:Background}.
 
-Since the location-allocation should be considered as a multi-objective problem. Evolutionary multi-objective optimization (EMO) methodologies have to be considered.
-Evolutionary multi-objective optimization (EMO) methodologies are a subset of Evolutionary algorithms (EA), which have been used in solving multi-objective optimization problems in recent years. 
-EMO are ideal for solving multi-objective optimization problems \cite{key:article}, since EMO works with a population of solutions, 
+Since the location-allocation task should be considered as a multi-objective problem, evolutionary multi-objective optimization (EMO) methodologies will be considered.
+EMO is ideal for solving multi-objective optimization problems \cite{key:article}, since EMO works with a population of solutions and 
 a simple EMO can be extended to maintain a diverse set of solutions.
 With an emphasis for moving toward the true Pareto-optimal region, an EMO can be used to find multiple Pareto-optimal solutions in 
 one single simulation run \cite{OptimizationElectrical}. Among numerous EMO algorithms,
 Non-dominated sorting GA (NSGA-II) \cite{996017}, Strength Pareto Evolutionary Algorithm 2 (SPEA-2) \cite{Deb} have become standard approaches. 
-Some schemes based on particle swarm optimization approaches \cite{Elhossini} \cite{Huang} are also important. 
+Some schemes based on particle swarm optimization approaches are also important \cite{Elhossini} \cite{Huang}.
 NSGA-II is one of the most widely used methods for generating the Pareto frontier. 
 NSGA-II implements elitism and uses a phenotype crowd comparison operator that keeps diversity without specifying any additional parameters \cite{Deb06referencepoint}.
 In this paper, we propose to use NSGA-II to solve the web service location-allocation problem.
 
 To show the effective and efficiency of our proposed NSGA-II based approach, we conduct an experiment to compare our approach with
-traditional approach based on integer programming and greedy optimization (IPSO). IPSO models one objective as an assignment problem then uses integer programming techniques to 
+traditional approach based on integer programming and greedy optimization (IPGO). IPGO models one objective as an assignment problem then uses integer programming techniques to 
 obtain an optimal solution. Then, based on this solution, the algorithm further optimize the other objective using greedy algorithm. 
-The major advantage of IPSO is that it is very efficient and gives 
-an reasonably good result. On the other hand, the objectives are considered unevenly. That is, IPSO considers the objective which optimize by linear programming as its priority.
+The major advantage of IPGO is that it is very efficient and gives 
+an reasonably good result. On the other hand, the objectives are considered unevenly. That is, IPGO considers the objective which optimize by linear programming as its priority.
 
 
 The aim of this research is to provide a framework that guides a WSP to locate services.
@@ -107,9 +106,9 @@ We consider the problem faced by a WSP who has existing facilities but wishes to
 The WSP must decide on facility locations from a finite set of possible locations. 
 In order to make the decision, the WSP must first analyze the data collected from current use of services. 
 The collected data should includes the records of invocations from each unique IP address.
-Therefore, based on these data, the WSP could summarize several customer demands concentrated at \textit{n} discrete nodes \cite{Aboolian}, namely user centers. 
-We assume the WSP has already done this step and list of user centers and candidate service deployment locations are given.
-In addition to decide which location to re-allocate the services, a dataset which contains the network latency between demand a user center and a candidate location are critical. 
+Therefore, based on these data, the WSP could summarize several customer demands concentrated on \textit{n} discrete nodes \cite{Aboolian}, namely user centers. 
+We assume that the WSP has already done this step and list of user centers and candidate service deployment locations are given.
+In addition to decide which location to re-allocate the services, a dataset which contains the network latency between demanding a user center and a candidate location is critical. 
 The WSP could collect the data or use existed dataset  \cite{6076756} \cite{5552800}. 
 Then, the service provider could use the algorithm which proposed by this paper, to select an optimal plan based on their funds. 
 The algorithm will produce a near optimal solution which indicate the services deployment locations with a minimum cost and best service quality.
@@ -127,9 +126,9 @@ programming with greedy optimization(IPGO).
 The experimental design was discussed in Section \ref{sec:experiment}. The experimental results are shown in Section \ref{sec:results}.
 
 
-\section{Related Works and Background}
+\section{Background}
 \label{sec:Background}
-A few researchers attempt to solve the service location-allocation problem by using single objective approach. Most of them solve this problem with linear programming approaches.
+A few researchers attempt to solve the service location-allocation problem by using a single objective approach. Most of them solve this problem with linear programming approaches.
 \cite{5961695} considers more than 3 objectives: response time, availability and cost. 
 It solves the placement of Datacenters for Internet Services with simulated annealing plus linear programming. 
 Sun et.al proposed two approaches \cite{Aboolian} \cite{Sun} that employ LP and DAL respectively. 
@@ -139,11 +138,11 @@ Some researchers use evolutionary algorithms. Huang \cite{EnhancedGenetic} appli
 the integer scalarization technique has many disadvantages:
 \begin{enumerate}
 	\item The decision maker needs to choose an appropriate weights for the objectives to retrieve a satisfactorily solution.
-	\item The algorithm does not produce an uniform spread of points on the Pareto curve. That is, all points are grouped in certain parts of the Pareto front.
+	%\item The algorithm does not produce an uniform spread of points on the Pareto curve. That is, all points are grouped in certain parts of the Pareto front.
 	\item Non-convex parts of the Pareto set cannot be reached by minimizing convex combinations of the object functions.
 \end{enumerate}
 
-So far, there is no research consider the service location-allocation problem as a multi-objective problem. Therefore, this paper is the first attempt to solve this problem using 
+So far, no research has considered the service location-allocation problem as a multi-objective problem. Therefore, this paper is the first attempt to solve this problem using 
 multi-objective algorithm.
 
 \subsection{NSGA-II}
@@ -165,8 +164,8 @@ The algorithm starts with initialization population. Once the population is sort
 Then, a parameter called crowding distance is calculated for each individual. The crowding distance is a measure of how close an individual is to its neighbors. Large 
 average crowding distance will result in better diversity in the population. 
 
-Parents are selected from the population by using tournament selection based on the rank and crowding distance. An individual is selected in the rank is lesser than the other or 
-if crowding distance is greater than the other. The selected population generates offsprings from crossover and mutation operators. 
+Parents are selected from the population by using tournament selection based on the rank and crowding distance. An individual is selected in the rank if it is lesser than the other or 
+if the crowding distance is greater than the other. The selected population generates offsprings from crossover and mutation operators. 
 
 The population with the current population and current offsprings is sorted again based on non-domination and only the best N individuals are selected, where N is the population size.
 The selection is based on rank and the on crowding distance on the last front.
@@ -182,10 +181,10 @@ The ADD procedure starts with all facilities closed and locates a facility that 
 iterates through all potential locations until no further savings can be made. In contrast, DROP opens all facilities and removes a 
 location that gives the greatest savings at each step and tries to find optimal or near optimum solutions at the end of the 
 iterative procedure. Integer programming with greedy optimization(IPGO) builds upon ADD and DROP methods. 
-In order to solve multi-objective problem, IPGO first employ Integer programming to derive a minimum cost solution. Then, it
+In order to solve multi-objective problem, IPGO first employs Integer programming to derive a minimum cost solution, it then 
 uses a greedy procedure to optimize the other objective.
 
-Sun et.al proposed Drop, ALA, and LP relaxations of Integer transpotation problem (DAL) \cite{Sun} is very similar with this approach. 
+Sun et al. proposed Drop, ALA, and LP relaxations of Integer transpotation problem (DAL) \cite{Sun} is very similar with this approach. 
 The DAL heuristics provided near optimal solutions in short computer times and with limited computer memory. But in Sun's approach, 
 he assumes there is competitive service providers existed. In contrast, IPGO does not consider about existed services. Therefore, IPGO
 uses Linear assignment approach instead of Alternate Location-allocation (ALA).
@@ -194,7 +193,7 @@ uses Linear assignment approach instead of Alternate Location-allocation (ALA).
 
 \section{Problem Description and Modeling}
 \label{sec:problem}
-In this section, we first describe the service location-allocation problem in details, then we will present models for the services location allocation problem.
+In this section, we first describe the service location-allocation problem in detail, then we will present models for the services location allocation problem.
 
 \subsection{Problem Description}
 Web service location-allocation problem is to determine reasonable locations for web services so that deployment cost of WSP can be minimized while service performance can be optimized.
