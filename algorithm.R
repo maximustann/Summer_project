@@ -21,7 +21,7 @@ run_algorithm <- function(matrixSize, seed = 1, cost_limitation){
 
 algorithm <- function(matrixSize, seed, cost_limitation){
 
-	popSize <- 50
+	popSize <- 100
 	objDim <- 2
 	varNo <- matrixSize * matrixSize
 	tourSize <- 10
@@ -29,7 +29,7 @@ algorithm <- function(matrixSize, seed, cost_limitation){
 	mprob <- 0.2
 	XoverDistIdx <- 20
 	cprob <- 0.8
-	generations <- 50
+	generations <- 100
 	#cost_limitation <- 100000
 	front <- vector()
 	front_pool <- vector()
@@ -266,36 +266,17 @@ latency_fitness <- function(chromosome, matrixSize){
 	response_matrix <- matrix(response_matrix, nrow = matrixSize, matrixSize, byrow = T)
 	latency <- sum(response_matrix * frequency_matrix)
 
-	#for(service_iter in 1:matrixSize){
-		#num_of_service <- sum(chromosome[service_iter, ])
-		#deployed_service <- which(chromosome[service_iter, ] != 0)
-		#locationLatency <- 0.0
-		#for(latency_iter in 1:matrixSize){
-			#if(0 %in% latency_matrix[latency_iter, ]){
-				#if(chromosome[service_iter, which(latency_matrix[latency_iter, ] == 0)] == 1){
-					#locationLatency <- locationLatency + 0.0
-				#}
-				#else{
-					#locationLatency <- locationLatency + frequency[service_iter] / (num_of_service * matrixSize) * sum(latency_matrix[latency_iter, deployed_service])
-				#}
-			#}
-			#else{
-				#locationLatency <- locationLatency + frequency[service_iter] / (num_of_service * matrixSize) * sum(latency_matrix[latency_iter, deployed_service])
-			#}
-		#}
-		#latency <- latency + locationLatency
-	#}
 	latency
 }
 
-normalize <- function(data){
+normalize <- function(data, max_value, min_value){
 	normalized_data <- vector()
 	for(i in 1:ncol(data)){
-		min_value <- min(data[, i])
-		max_value <- max(data[, i])
+		#min_value <- min(data[, i])
+		#max_value <- max(data[, i])
 		a <- 0
 		b <- 1
-		normalized_data <- cbind(normalized_data, a + ((data[, i] - min_value) * (b - a) / (max_value - min_value)))
+		normalized_data <- cbind(normalized_data, ((data[, i] - min_value) * (b - a) / (max_value - min_value)))
 	}
 	normalized_data
 }
