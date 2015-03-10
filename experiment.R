@@ -86,7 +86,6 @@ total_normalised <- function(gadata, lpdata){
 		max_value <- max(data[, i])
 		a <- 0
 		b <- 1
-		#normalized_data <- cbind(normalized_data, (data[, i] - mean(data[, i])) / sd(data[, i]))
 		normalized_data <- cbind(normalized_data, a + ((data[, i] - min_value) * (b - a) / (max_value - min_value)))
 	}
 	normalized_data

@@ -8,21 +8,23 @@ run_algorithm <- function(matrixSize, seed = 1, cost_limitation){
 	max_cost <- cost_fitness(matrix(rep(1, matrixSize * matrixSize), nrow = matrixSize))
 	assign.costs <- matrix(rep(1, matrixSize * matrixSize), nrow = matrixSize)
 	min_cost <- cost_fitness(lp.assign(assign.costs)$solution)
+	max_latency <- search_greatest_latency(matrixSize)
+	min_latency <- 0
 	print(cost_matrix)
 	print(latency_matrix)
 	print(frequency_matrix)
 	ptm <- proc.time()
 	front <- algorithm(matrixSize, seed, cost_limitation, max_cost, min_cost)
 	print((proc.time() - ptm)[1])
-	unNormalized <- evaluate_front(front, matrixSize)
-	unNormalized <- cbind(unNormalized, (proc.time() - ptm)[1])
-	colnames(unNormalized) <- c("costF", "latencyF", "time")
-	unNormalized
+	result_data <- evaluate_front(front, matrixSize)
+	result_data <- cbind(result_data, (proc.time() - ptm)[1])
+	colnames(result_data) <- c("costF", "latencyF", "time")
+	result_data
 }
 
 
 
-algorithm <- function(matrixSize, seed, cost_limitation, max_cost, min_cost){
+algorithm <- function(matrixSize, seed, cost_limitation, max_cost, min_cost, max_latency, min_latency){
 
 	popSize <- 100
 	objDim <- 2
@@ -42,10 +44,10 @@ set.seed(seed)
 	#	step 1, initialize the population
 	parent <- generate_population(matrixSize, matrixSize, popSize, cost_limitation, matrixSize)
 
-#====================Normalized Fitness================================
+#====================Calculate Fitness================================
 	#	step 2, calculate the fitness
-	unNormalized <- t(apply(parent, 1, fitness, matrixSize = matrixSize))
-	parent <- cbind(parent, unNormalized)
+	result_data <- t(apply(parent, 1, fitness, matrixSize = matrixSize))
+	parent <- cbind(parent, result_data)
 #====================Normalization Ends================================
 
 	#	step 3, rank it
@@ -91,11 +93,11 @@ set.seed(seed)
 		
 		#check existed
 		childAfterMutation <- check_existed(childAfterM, front_pool, varNo)
-	tmp_time <- proc.time()
-		unNormalized <- t(apply(childAfterMutation[[1]], 1, fitness, matrixSize))
-	repair_time <- repair_time + ((proc.time() - tmp_time)[1])
+	#tmp_time <- proc.time()
+		result_data <- t(apply(childAfterMutation[[1]], 1, fitness, matrixSize))
+	#repair_time <- repair_time + ((proc.time() - tmp_time)[1])
 		#Normalized data
-		childAfterMutation[[1]] <- cbind(childAfterMutation[[1]], unNormalized)
+		childAfterMutation[[1]] <- cbind(childAfterMutation[[1]], result_data)
 		childAfterM <- rbind(childAfterMutation[[1]], childAfterMutation[[2]])
 		parentNext <- rbind(parent[, 1:(varNo + objDim)], childAfterM)
 		ranking <- fastNonDominatedSorting(parentNext[, (varNo + 1) : (varNo + objDim)])
@@ -160,8 +162,8 @@ check_existed <- function(childAfterM, front_pool, varNo){
 
 evaluate_front <- function(front, matrixSize){
 	
-	unNormalized <- t(apply(front[, 1:(matrixSize * matrixSize)], 1, fitness, matrixSize))
-	unNormalized
+	result_data <- t(apply(front[, 1:(matrixSize * matrixSize)], 1, fitness, matrixSize))
+	result_data
 }
 
 
@@ -194,9 +196,9 @@ generate_population <- function(row, col, size, cost_limitation, matrixSize){
 	parent
 }
 
-fitness <- function(chromosome, matrixSize) {
-	cost <- cost_fitness(chromosome, matrixSize)
-	latency <- latency_fitness(chromosome, matrixSize)
+fitness <- function(chromosome, matrixSize, max_cost, min_cost, max_latency, min_latency) {
+	cost <- cost_fitness(chromosome, matrixSize, max_cost, min_cost)
+	latency <- normalized_latency_fitness(chromosome, matrixSize, max_latency, min_latency)
 	return(c(cost, latency))
 }
 
@@ -240,13 +242,20 @@ mutation <- function(parent_chromosome, mprob){
 	new_pop
 }
 
-cost_fitness <- function(chromosome, matrixSize){
+cost_fitness <- function(chromosome, matrixSize, max_cost, min_cost){
 	chromosome <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
 	cost <- sum(chromosome * cost_matrix)
+	cost <- normalize(cost, max_cost, min_cost)
 	cost
 }
 
-latency_fitness <- function(chromosome, matrixSize){
+normalized_latency_fitness <- function(chromosome, matrixSize, max_latency, min_latency){
+	latency <- unnormalized_latency_fitness(chromosome, matrixSize)
+	latency <- normalize(latency, max_latency, min_latency)
+	latency
+}
+
+unnormalized_latency_fitness <- function(chromosome, matrixSize){
 
 	chromosome <- as.integer(chromosome)
 	chromosome <- matrix(chromosome, nrow = matrixSize, ncol = matrixSize)
@@ -272,15 +281,9 @@ latency_fitness <- function(chromosome, matrixSize){
 	latency
 }
 
-normalize <- function(data, max_value, min_value){
+normalize <- function(value, max_value, min_value){
 	normalized_data <- vector()
-	for(i in 1:ncol(data)){
-		#min_value <- min(data[, i])
-		#max_value <- max(data[, i])
-		a <- 0
-		b <- 1
-		normalized_data <- cbind(normalized_data, ((data[, i] - min_value) * (b - a) / (max_value - min_value)))
-	}
+	normalized_data <- (value - min_value) / (max_value - min_value)
 	normalized_data
 }
 
@@ -349,6 +352,32 @@ repair_cost_maximum <- function(chromosome, limitation, matrixSize){
 	}
 }
 
-calculate_mean_cost <- function(unNormalized){
-	print(mean(unNormalized[, 1]))
+calculate_mean_cost <- function(result_data){
+	print(mean(result_data[, 1]))
+}
+
+search_greatest_latency <- function(matrixSize){
+	initial_matrix <- matrix(c(rep(1, matrixSize), rep(0, matrixSize * (matrixSize - 1))), nrow = matrixSize)
+	initial_matrix <- as.integer(initial_matrix)
+	latency <- 0.0
+	for(row_iter in 1:matrixSize){
+		for(col_iter in 1:matrixSize){
+			if(row_iter == 1 && col_iter == 1){
+				latency <- unnormalized_latency_fitness(initial_matrix, matrixSize)
+				next
+			}
+			num <- which(initial_matrix[row_iter, ] == 1)
+			initial_matrix[row_iter, num] <- 0
+			initial_matrix[row_iter, col_iter] <- 1
+			current_latency <- unnormalized_latency_fitness(initial_matrix, matrixSize)
+			if(current_latency > latency){
+				latency <- current_latency
+			}
+			else{
+				initial_matrix[row_iter, col_iter] <- 0
+				initial_matrix[row_iter, num] <- 1
+			}
+		}
+	}
+	latency
 }
