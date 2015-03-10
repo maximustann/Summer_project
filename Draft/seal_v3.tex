@@ -39,13 +39,13 @@ Optimization of Location Allocation of Web Services Using A Modified Non-dominat
 \maketitle
 
 \begin{abstract}
-In recent years, web services technology is becoming increasingly popular because  of the convenience, 
+In recent years, web services technology is becoming increasingly popular because of the convenience, 
 low cost and capacity to be composed into high-level business processes. 
 The service location-allocation problem for a web service provider is critical and urgent. 
-It is because some factors such as Network latency, can make serious effect on the quality of service (QoS). 
+It is because some factors such as network latency can make serious effect on the quality of service (QoS). 
 This paper presents a multiobjective optimization algorithm based on NSGA-II to solve the service location-allocation problem. 
 A stimulated experiment is conducted using the WS-DREAM dataset. 
-The results were compared with a single objective algorithm: Integer programming and greedy optimization (IPGO). 
+The results are compared with a single objective algorithm: Integer programming and greedy optimization (IPGO). 
 It shows NSGA-II based algorithm can provide a set of best solutions that outperforms IPGO.
 \end{abstract}
 
@@ -164,7 +164,7 @@ The algorithm starts with initialization population. Once the population is sort
 Then, a parameter called crowding distance is calculated for each individual. The crowding distance is a measure of how close an individual is to its neighbors. Large 
 average crowding distance will result in better diversity in the population. 
 
-Parents are selected from the population by using tournament selection based on the rank and crowding distance. An individual is selected in the rank if it is lesser than the other or 
+Parents are selected from the population by using tournament selection based on the rank and crowding distance. An individual is selected in the rank if it is smaller than the other or 
 if the crowding distance is greater than the other. The selected population generates offsprings from crossover and mutation operators. 
 
 The population with the current population and current offsprings is sorted again based on non-domination and only the best N individuals are selected, where N is the population size.
@@ -207,17 +207,17 @@ The task of service location allocation has two objectives:
 
 
 \subsection{Model Formulation}
-To model service location-allocation problem we need to make use of a set of matrices, to present input information and output solutions. 
+To model service location-allocation problem, we need to make use of a set of matrices, to present input information and output solutions. 
 
-For service location-allocation problem we needs information of service usage, network latency, and service deployment cost to decide service location-allocation so that the overall network latency can be minimized with minimal deployment cost and with constraint.
+For service location-allocation problem, we need information of service usage, network latency, and service deployment cost to decide service location-allocation so that the overall network latency can be minimized with minimal deployment cost and with constraint.
 Assume a set of $S = \{ s_{1}, s_{2}, ..., s_{x}\}$ services are
 requested from a set of location $I = \{ i_{1}, i_{2}, ..., i_{y} \}$. The service providers allocate services 
 to $J = \{ j_{1}, j_{2}, ..., j_{z} \}$ be the set of candidate facility locations.
-To model the service location-allocation problem we use five matrices: 
+To model the service location-allocation problem, we use five matrices: 
 service network latency matrix $L$, service location
 matrix $A$, service invocation frequency matrix $F$, cost matrix $C$ and user response time matrix $R$.
 
-In the following we list a set of notations that will be used for modelling. 
+In the following, we list a set of notations that will be used for modelling. 
 {
 \centering
 	\begin{tabular}{l*{2}{l}r}
@@ -235,8 +235,8 @@ In the following we list a set of notations that will be used for modelling.
 	\end{tabular}
 \\
 }
-The service invocation frequency matrix $F= [f_{is}]$, is used to record services invocation frequency from user centers, 
-which $f_{is}$ is an integer that indicate the number of invocation in a period of time from user center to service. 
+The service invocation frequency matrix, $F= [f_{is}]$, is used to record services invocation frequency from user centers, 
+where $f_{is}$ is an integer that indicates the number of invocations in a period of time from the user center to service. 
 For example, $f_{13}$ = 85 denotes service $s_{1}$ is invocated 85 times in a predefined period of time.
 
 \parbox{.45\linewidth}{
@@ -265,7 +265,7 @@ candidate locations. For example, The network latency between user center $i_{2}
 is 5.776s. These data could be collected by monitoring network latency \cite{6076756} \cite{5552800}.
 
 The cost matrix $C = [c_{sj}]$, is used to record the cost of deployment of services from candidate locations, 
-which $c_{sj}$ is an integer that indicate the cost of the deploying services from a candidate location. 
+where $c_{sj}$ is an integer that indicate the cost of the deploying services from a candidate location. 
 For example, $c_{12} = $ 80 denotes the cost of deploying service $s_{1}$ to location $j_{2}$ is 80 units.
 
 \parbox{.45\linewidth}{
@@ -289,9 +289,9 @@ $
 \\}
 }
 
-To model the service location-allocation problem we Consider the following assumptions:
+To model the service location-allocation problem, we consider the following assumptions:
 \begin{enumerate}
-	\item The new WSP decides where to locate his facilities regardless if there is existed functional similar services from other WSPs.
+	\item The new WSP decides where to locate his facilities regardless of there is existed functional similar services from other WSPs.
 	\item The decision of service location-allocation is made only considering two factors: total network latency and total cost.
 	\item A static allocation policy is used by WSPs. In practice, Web Services typically offer clients persistent and interactive services, which often span over multiple sessions. Therefore, a dynamic reallocation scheme is not practical as it may disrupt the continuity of the services.
 \end{enumerate}
@@ -308,8 +308,8 @@ response time matrix $R = [r_{is}]$.
 		r_{is} = MIN\{l_{ij} \mid j \in \{1, 2, ..., z\} \text{ and } a_{sj} = 1\}
 	\end{equation}
 \\}
-For example, we use two matrices $L$ and $A$ mentioned above to construct response time matrix $R$. 
-For each services $s$, by checking matrix $A$, find out which location the service has been deployed.
+For example, we use two matrices $L$ and $A$ mentioned above to construct the response time matrix $R$. 
+For each service $s$, by checking matrix $A$, find out which location the service has been deployed.
 Then look back matrix $L$, find out its corresponding latency to each user center $i$. If there is
 more than one location, then the smallest latency is selected. Therefore, we can construct the response time matrix $R$ as:
 
@@ -343,7 +343,7 @@ least one location.
 \\}
 
 The second constraint is the cost constraint which predefined the upper boundary of the total cost.
-An integer number $CostLimitation$ is defined.
+An integer number $CostLimitation$ is given by user.
 
 {\centering
 	\begin{equation}
@@ -388,7 +388,7 @@ As in the example below, two parents crossover at a point, to generate two offsp
 
 \subsubsection{Fitness Function}
 
-\begin{flushleft}In order to accomplish these two objectives. We design two fitness functions to evaluate 
+\begin{flushleft}In order to accomplish these two objectives, we design two fitness functions to evaluate 
 how good each chromosome meets the objectives.\end{flushleft}
 \subsubsection{Cost fitness function}
 
@@ -477,19 +477,19 @@ Algorithm \ref{NSGA2} shows the precedure of NSGA-II applied on service location
 	\end{algorithmic}
 \end{algorithm}
 
-There are two major differences between standard NSGA-II and modified version. Firstly, in order to avoid repeat evaluation of the fitness
-of chromosome which contribute to the majority of computation. After the first generation is initialized, the Pareto front will be 
+There are two major differences between standard NSGA-II and modified version. Firstly, in order to avoid repeatly evaluate the fitness
+of chromosome. After the first generation is initialized, the Pareto front will be 
 stored in the memory. In each generation, when evaluate the chromosome, the chromosome will be checked whether it is existed in the memory pool. 
 If so, then the calculation of fitness will be skipped. At the end of each iteration, the Pareto front pool will be updated to the current Pareto front.
 The reason for setting a memory pool is that, after a number of iterations, the population start converging. 
-Most of the population are redundant. Therefore, a memory pool could considerably reduce the repeat computation.
+Most of the population are redundant. Therefore, a memory pool could considerably reduce the repeated computation.
 
 The other difference is that, we use general mutation and crossover operation instead of polynomial mutation and simulated binary crossover.
 It is important to note that mutation and crossover operators can produce solutions that might violate the constraints. 
-Therefore, repair operators are needed to try to maintain feasible solutions. The repair operators are essentially while 
-loop which repeatedly check if the chromosome violates constraints.
+Therefore, repair operators are needed to try to maintain feasible solutions. The repair operators are essentially a while-loop 
+which repeatedly check if the chromosome violates constraints.
 
-Worth noting that the cost constraint repair operator may not provide a strictly correct solution that satisfied the cost constraint.
+It is worth noting that the cost constraint repair operator may not provide a strictly correct solution that satisfied the cost constraint.
 
 \section{IPGO for Web Service Location Allocation}
 \begin{algorithm}[htb]
@@ -506,7 +506,7 @@ Worth noting that the cost constraint repair operator may not provide a strictly
 	\begin{algorithmic}[1]
 		\State initialize allocation matrix $A$ = \{1\}.
 		\State Optimize cost solution $A$ with Integer assignment solver.
-		\State Evaluate Cost fitness with Cost fitness function
+		\State Evaluate Cost fitness with the cost fitness function
 		\For( each row of A)
 			\For( each column of A)
 				\If {$A_{ij}$ = 0}
@@ -521,7 +521,7 @@ Worth noting that the cost constraint repair operator may not provide a strictly
 		\State Return Service location matrix $A$
 	\end{algorithmic}
 \end{algorithm}
-In order to solve the location allocation problem with IPGO. We model the cost objective as the priority, optimize with Linear programming.
+In order to solve the location allocation problem with IPGO, we model the cost objective as the priority, optimize with Linear programming.
 The cost matrix $C$ and solution matrix $A$ are identical with the two matrices defined in Section \ref{sec:problem}. We use the same fitness functions as in NSGA-II to 
 evaluate the Cost objective and Latency objective.
 
@@ -569,14 +569,14 @@ To compare with IPGO, four different datasets were used, the problem instance wa
 
 In each dataset, algorithms run under four different levels of cost constraints: Sufficient condition is 100\% the expected total cost, 
 good condition (80\%), pool condition (40\%) and minimum budget condition (0\%). In the minimum budget condition, 
-both algorithm exhaustively reduce the cost until it reaches the service number constraint. The NSGA-II runs 40 times with different random 
-seed ranging from 1 to 40. To test the efficiency of the algorithms, We evaluate the average run time for each algorithm. 
+both algorithm exhaustively reduce the cost until it reaches the service number constraint. The NSGA-II runs 40 independent times with different random 
+seeds ranging from 1 to 40. To test the efficiency of the algorithms, We evaluate the average run time for each algorithm. 
 
 
 Parameter settings for the algorithms are as follow. The population size of NSGA-II is 50, and the maximum number of 
 generations is 50. The tournament size is 10. The crossover probability $P_{c}$ is 0.8 and the mutation probability $P_{m}$ is 0.2 as we found that this combination can produce good results.
 
-To compare with the result of NSGA-II and IPGO, we derive the Pareto front by using Xue's approach \cite{Xue}. Then take the approach from \cite{1688438} to 
+To compare with the result of NSGA-II and IPGO, we derive the Pareto front by using Xue's approach \cite{Xue}, then take the approach from \cite{1688438} to 
 compare the results.
 In Xue's approach, NSGA-II generate 40 results (from 40 runs) under each cost constraint are presented in the Section \ref{sec:comparison}. 40 sets of solutions 
 achieved by each multi-objective algorithm are firstly combined into one union set. In the union set, the non-dominated solutions 
@@ -647,7 +647,7 @@ We conducted 16 experiments on 4 datasets under 4 cost constraints: sufficient, 
 patterns for same dataset. Therefore, we only show one figure for each dataset.
 
 
-Figure \ref{fig:3_3} shows NSGA-II is outperforms IPGO. As we discussed in the previous section, the 
+Figure \ref{fig:3_3} shows NSGA-II outperforms IPGO. As we discussed in the previous section, the 
 result of IPGO is dominated by NSGA-II's solution set. \ref{fig:5_5} \ref{fig:10_10} \ref{fig:15_15} show that solution of IPGO is on the Pareto front. It does not improve the quality of the solution
 set. Therefore, we considered NSGA-II outperforms IPGO in this case. The solution from IPGO is non-dominated solution in the NSGA-II solution set. While the inclusion
 of the IPGO solution somewhat improves the quality of the NSGA-II solution set, we cannot say that IPGO outperforms NSGA-II since the 

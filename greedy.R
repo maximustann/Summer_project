@@ -4,46 +4,54 @@ library(mco)
 library(nsga2R)
 library(lpSolve)
 
-run_greedy <- function(matrixSize, cost_limitation){
+run_greedy <- function(matrixSize, seed, cost_limitation){
+	print(seed)
 	predata(matrixSize)
 	ptm <- proc.time()
-	solution <- drop(cost_limitation, matrixSize)
-	print(proc.time() - ptm)
+	solution <- drop(cost_limitation, matrixSize, seed)
+	#print(proc.time() - ptm)
 	result <- evaluate_solution(solution, matrixSize)
 	result <- c(result, (proc.time() - ptm)[1])
-	names(result) <- c("costF", "latencyF", "time")
+	#names(result) <- c("costF", "latencyF", "time")
 	result
 }
 
 
-drop <- function(cost_limitation = 300, matrixSize){
+drop <- function(cost_limitation = 300, matrixSize, seed){
 	chromosome <- rep(1, matrixSize * matrixSize) * cost_matrix
 	initial_solution <- chromosome
 	assign.costs <- chromosome
 	lp_time <- proc.time()
 	lp.assign(assign.costs)
-	cat("lp time: ", proc.time() - lp_time, "\n", sep = "")
+	#cat("lp time: ", proc.time() - lp_time, "\n", sep = "")
 	initial_solution <- lp.assign(assign.costs)$solution
-	solution <- ala(initial_solution, cost_limitation, matrixSize)
+	solution <- ala(initial_solution, cost_limitation, matrixSize, seed)
 	solution
 }
 
-ala <- function(initial_solution, cost_limitation, matrixSize){
+ala <- function(initial_solution, cost_limitation, matrixSize, seed){
+	set.seed(seed)
 	solution <- initial_solution
+	candidate_chromosome <- as.integer(as.vector(solution))
+
 	for(iter in 1:matrixSize){
-		for(citer in 1:matrixSize){
+		if(iter == 1){
 			latencyF <- latency_fitness(solution, matrixSize)
-			temp_solution <- solution
-			temp_solution[iter, citer] <- 1
-			current_solution <- temp_solution
-			#test if it is better than previous solution
-			currentF <- latency_fitness(current_solution, matrixSize)
-			if(currentF > latencyF && cost_fitness(current_solution, matrixSize) <= cost_limitation){
-				solution <- current_solution
-			}
+		}
+		candidate_index <- which(candidate_chromosome %in% 0)
+		selected_num <- sample(candidate_index, 1, replace = F)
+
+		candidate_chromosome[selected_num] <- 1
+		#test if it is better than previous solution
+		currentF <- latency_fitness(matrix(candidate_chromosome, nrow = matrixSize), matrixSize)
+		if(currentF < latencyF && cost_fitness(matrix(candidate_chromosome, nrow = matrixSize), matrixSize) <= cost_limitation){
+			#doing nothing
+		}
+		else{
+			candidate_chromosome[selected_num] <- 0
 		}
 	}
-	solution
+	return(matrix(candidate_chromosome, nrow = matrixSize))
 }
 
 evaluate_solution <- function(solution, matrixSize, weight_for_cost = 0.5){

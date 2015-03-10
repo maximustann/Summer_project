@@ -29,11 +29,11 @@ plotme <- function(condition, number = 3){
 
 read_ga_data <- function(filename){
 	data <- read.csv(filename, sep = ',', header = T)
-	return(data[1:(nrow(data) - 1),])
+	return(data[1:(nrow(data) - 40),])
 }
 
 read_lp_data <- function(filename){
 	data <- read.csv(filename, sep = ',', header = T)
-	return(data[nrow(data),])
+	return(data[(nrow(data) - 39):nrow(data),])
 }
 
