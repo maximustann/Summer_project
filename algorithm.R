@@ -5,11 +5,14 @@ library(nsga2R)
 run_algorithm <- function(matrixSize, seed = 1, cost_limitation){
 	
 	predata(matrixSize)
+	max_cost <- cost_fitness(matrix(rep(1, matrixSize * matrixSize), nrow = matrixSize))
+	assign.costs <- matrix(rep(1, matrixSize * matrixSize), nrow = matrixSize)
+	min_cost <- cost_fitness(lp.assign(assign.costs)$solution)
 	print(cost_matrix)
 	print(latency_matrix)
 	print(frequency_matrix)
 	ptm <- proc.time()
-	front <- algorithm(matrixSize, seed, cost_limitation)
+	front <- algorithm(matrixSize, seed, cost_limitation, max_cost, min_cost)
 	print((proc.time() - ptm)[1])
 	unNormalized <- evaluate_front(front, matrixSize)
 	unNormalized <- cbind(unNormalized, (proc.time() - ptm)[1])
@@ -19,7 +22,7 @@ run_algorithm <- function(matrixSize, seed = 1, cost_limitation){
 
 
 
-algorithm <- function(matrixSize, seed, cost_limitation){
+algorithm <- function(matrixSize, seed, cost_limitation, max_cost, min_cost){
 
 	popSize <- 100
 	objDim <- 2
