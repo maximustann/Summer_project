@@ -1,6 +1,6 @@
 source("pre.R")
 source("algorithm.R")
-source("greedy.R")
+source("ga.R")
 library(GA)
 library(mco)
 library(nsga2R)
@@ -10,50 +10,54 @@ library(doMC)
 registerDoMC(8)
 
 run <- function(matrixSize, cost_limitation){
-	gadata <- vector()
-	lpdata <- vector()
-	gatime<- vector()
-	lptime<- vector()
+	NSGAdata <- vector()
+	GAdata <- vector()
+	NSGAtime<- vector()
+	GAtime<- vector()
+	predata(matrixSize)
+	max_cost <- unNormalized_cost_fitness(matrix(rep(1, matrixSize * matrixSize), nrow = matrixSize), matrixSize)
+	min_cost <- unNormalized_cost_fitness(search_minimum_cost(matrixSize), matrixSize)
+	max_latency <- search_greatest_latency(matrixSize)
+	min_latency <- 0
+
 	foreach(iter = 1:40) %dopar%{
 		cat("Generation:", iter, '\n')
-		gadata <- run_algorithm(matrixSize, iter, cost_limitation)
-		lpdata <- run_greedy(matrixSize, iter, cost_limitation)
+		NSGAdata <- run_algorithm(matrixSize, iter, cost_limitation, max_cost, min_cost, max_latency, min_latency)
+		GAdata <- run_ga(matrixSize, iter, cost_limitation, max_cost, min_cost, max_latency, min_latency)
 
-		lptime <- lpdata[3]
-		lpdata <- matrix(lpdata, nrow = 1)
-		colnames(lpdata) <- c("costF", "latencyF", "time")
-		lpdata <- data.frame(lpdata)
-		filename_lp <- paste(iter, "_lp.csv", sep = "")
-		filename_lp_time <- paste(iter, "_time_lp.csv", sep = "")
-		write.csv(lpdata[, 1:2], filename_lp, quote = F, row.names = F, sep = ",", col.names = T)
-		write.csv(lptime, filename_lp_time, quote = F, row.names = F, col.names = F)
-
-		gatime <- gadata[1, 3]
+		GAtime <- GAdata[1, 3]
 		filename_ga <- paste(iter, "_ga.csv", sep = "")
 		filename_ga_time <- paste(iter, "_time_ga.csv", sep = "")
-		write.csv(gadata[, 1:2], filename_ga, quote = F, row.names = F)
-		write.csv(gatime, filename_ga_time, quote = F, row.names = F)
+		write.csv(GAdata[, 1:2], filename_ga, quote = F, row.names = F, sep = ",", col.names = T)
+		write.csv(GAtime, filename_ga_time, quote = F, row.names = F, col.names = F)
+
+		NSGAtime <- NSGAdata[1, 3]
+		filename_nsga <- paste(iter, "_nsga.csv", sep = "")
+		filename_nsga_time <- paste(iter, "_time_nsga.csv", sep = "")
+		write.csv(NSGAdata[, 1:2], filename_nsga, quote = F, row.names = F)
+		write.csv(NSGAtime, filename_nsga_time, quote = F, row.names = F)
 	}
 
 	for(iter in 1:40){
+		filename_nsga <- paste(iter, "_nsga.csv", sep = "")
+		filename_nsga_time <- paste(iter, "_time_nsga.csv", sep = "")
+		NSGAdata <- rbind(NSGAdata, read.csv(filename_nsga, header = T, sep = ','))
+		NSGAtime <- rbind(NSGAtime, read.csv(filename_nsga_time, header = T, sep = ","))
+
 		filename_ga <- paste(iter, "_ga.csv", sep = "")
 		filename_ga_time <- paste(iter, "_time_ga.csv", sep = "")
-		gadata <- rbind(gadata, read.csv(filename_ga, header = T, sep = ','))
-		gatime <- rbind(gatime, read.csv(filename_ga_time, header = T, sep = ","))
-
-		filename_lp <- paste(iter, "_lp.csv", sep = "")
-		filename_lp_time <- paste(iter, "_time_lp.csv", sep = "")
-		lpdata <- rbind(lpdata, read.csv(filename_lp, header = T, sep = ','))
-		lptime <- rbind(lptime, read.csv(filename_lp_time, header = T, sep = ","))
+		GAdata <- rbind(GAdata, read.csv(filename_ga, header = T, sep = ','))
+		GAtime <- rbind(GAtime, read.csv(filename_ga_time, header = T, sep = ","))
 	}
 
-	#lptime <- read.csv("1_time_lp.csv", header = T)
-	time_data <- rbind(gatime, lptime)
-	best_ga <- best_ga_front(gadata)
-	cat("row for best GA data: ", nrow(best_ga), "\n")
-	cat("row for LP data: ", nrow(lpdata), "\n")
-	#lpdata <- read.csv("1_lp.csv", sep = ",", header = T)
-	data <- total_normalised(best_ga, lpdata)[, 1:2]
+	##lptime <- read.csv("1_time_lp.csv", header = T)
+	time_data <- rbind(NSGAtime, GAtime)
+	best_nsga <- best_nsga_front(GAdata)
+	#cat("row for best GA data: ", nrow(best_ga), "\n")
+	#cat("row for LP data: ", nrow(lpdata), "\n")
+	##lpdata <- read.csv("1_lp.csv", sep = ",", header = T)
+	#data <- total_normalised(best_ga, lpdata)[, 1:2]
+	data <- rbind(best_nsga[, 1:2], GAdata)
 	colnames(data) <- c("costF", "latencyF")
 	filename <- paste(matrixSize, ".csv", sep = "")
 	filename_time <- paste(matrixSize, "_time.csv", sep="")
@@ -61,7 +65,7 @@ run <- function(matrixSize, cost_limitation){
 	write.csv(time_data, filename_time, quote = F, row.names = F)
 }
 
-best_ga_front <- function(gadata){
+best_nsga_front <- function(gadata){
 	temp <- unique(gadata[, 1:2])
 	ga <- vector()
 	best_ga <- vector()
@@ -95,3 +99,40 @@ total_normalised <- function(gadata, lpdata){
 	#dist <- sqrt((weight_for_cost * vect[1])^2 + ((1 - weight_for_cost) * vect[2])^2)
 	#dist
 #}
+
+search_maximum_latency <- function(matrixSize){
+	initial_matrix <- matrix(c(rep(1, matrixSize), rep(0, matrixSize * (matrixSize - 1))), nrow = matrixSize)
+	#initial_matrix <- as.integer(initial_matrix)
+	#print(initial_matrix)
+	latency <- 0.0
+	for(row_iter in 1:matrixSize){
+		for(col_iter in 1:matrixSize){
+			if(row_iter == 1 && col_iter == 1){
+				latency <- unNormalized_latency_fitness(initial_matrix, matrixSize)
+				next
+			}
+			num <- which(initial_matrix[row_iter, ] == 1)
+			initial_matrix[row_iter, num] <- 0
+			initial_matrix[row_iter, col_iter] <- 1
+			current_latency <- unNormalized_latency_fitness(initial_matrix, matrixSize)
+			if(current_latency > latency){
+				latency <- current_latency
+			}
+			else{
+				initial_matrix[row_iter, col_iter] <- 0
+				initial_matrix[row_iter, num] <- 1
+			}
+		}
+	}
+	latency
+}
+
+search_minimum_cost <- function(matrixSize){
+	mini_cost_matrix <- matrix(rep(0, matrixSize * matrixSize), nrow = matrixSize)
+	for(row_iter in 1:matrixSize){
+		pos <- which(cost_matrix[row_iter, ] == min(cost_matrix[row_iter, ]))[1]
+		mini_cost_matrix[row_iter, pos] <- 1
+	}
+	print(mini_cost_matrix)
+	mini_cost_matrix
+}

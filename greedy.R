@@ -19,12 +19,12 @@ run_greedy <- function(matrixSize, seed, cost_limitation){
 
 drop <- function(cost_limitation = 300, matrixSize, seed){
 	chromosome <- rep(1, matrixSize * matrixSize) * cost_matrix
-	initial_solution <- chromosome
 	assign.costs <- chromosome
 	lp_time <- proc.time()
 	lp.assign(assign.costs)
 	#cat("lp time: ", proc.time() - lp_time, "\n", sep = "")
 	initial_solution <- lp.assign(assign.costs)$solution
+	print(initial_solution)
 	solution <- ala(initial_solution, cost_limitation, matrixSize, seed)
 	solution
 }
