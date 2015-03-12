@@ -45,8 +45,8 @@ The service location-allocation problem for a web service provider is critical a
 It is because some factors such as network latency can make serious effect on the quality of service (QoS). 
 This paper presents a multiobjective optimization algorithm based on NSGA-II to solve the service location-allocation problem. 
 A stimulated experiment is conducted using the WS-DREAM dataset. 
-The results are compared with a single objective algorithm: Integer programming and greedy optimization (IPGO). 
-It shows NSGA-II based algorithm can provide a set of best solutions that outperforms IPGO.
+The results are compared with a single objective genetic algorithm (GA). 
+It shows NSGA-II based algorithm can provide a set of best solutions that outperforms genetic algorithm.
 \end{abstract}
 
 \section{Introduction}
@@ -110,18 +110,18 @@ In order to make the decision, the WSP must first analyze the data collected fro
 The collected data should includes the records of invocations from each unique IP address.
 Therefore, based on these data, the WSP could summarize several customer demands concentrated on \textit{n} discrete nodes \cite{Aboolian}, namely user centers. 
 We assume that the WSP has already done this step and list of user centers and candidate service deployment locations are given.
-In addition to decide which location to re-allocate the services, a dataset which contains the network latency between demanding a user center and a candidate location is critical. 
-The WSP could collect the data or use existed dataset  \cite{6076756} \cite{5552800}. 
+In addition to deciding locations to re-allocate the services, a dataset which contains the network latency between demanding a user center and a candidate location is critical. 
+The WSP could collect the data or use exist dataset  \cite{6076756} \cite{5552800}. 
 Then, the service provider could use the algorithm which proposed by this paper, to select an optimal plan based on their funds. 
 The algorithm will produce a near optimal solution which indicate the services deployment locations with a minimum cost and best service quality.
 The main objectives are:
 \begin{itemize}
 	\item To model the web service location-allocation problem so that it can be tackled with NSGA-II
-	\item To develop a modified NSGA-II approach for the web service location-allocation problem
+	\item To develop a NSGA-II based approach for the web service location-allocation problem
 	%\item To evaluate our approach by comparing it to a linear assignment with greedy optimization (IPGO) algorithm.
 \end{itemize}
 
-In Section \ref{sec:Background} we introduce the background of NSGA-II and IPGO as well as discuss the work from previous researchers.
+In Section \ref{sec:Background} we introduce the background of NSGA-II and GA as well as discuss the work from previous researchers.
 In Section \ref{sec:problem} we provide a formulation for our model. Section \ref{sec:algorithm_des} develops a modified NSGA-II. 
 %We use these to study a number of hypotheses on the placement of WSPs. These solutions are compared to solutions from Integer
 %programming with greedy optimization(IPGO). 
@@ -132,7 +132,7 @@ The experimental design was discussed in Section \ref{sec:experiment}. The exper
 \label{sec:Background}
 A few researchers attempt to solve the service location-allocation problem by using a single objective approach. Most of them solve this problem with linear programming approaches.
 \cite{5961695} considers more than 3 objectives: response time, availability and cost. 
-It solves the placement of Datacenters for Internet Services with simulated annealing plus linear programming. 
+It solves the placement of data centers for Internet Services with simulated annealing plus linear programming. 
 Sun et.al proposed two approaches \cite{Aboolian} \cite{Sun} that employ LP and DAL respectively. 
 The first approach \cite{Aboolian} assumes the model is based on a duopoly competitive market.
 The second approach \cite{Sun} assumes multiple competition services have been established in the market.
@@ -147,18 +147,19 @@ the integer scalarization technique has many disadvantages:
 So far, no research has considered the service location-allocation problem as a multi-objective problem. Therefore, this paper is the first attempt to solve this problem using 
 multi-objective algorithm.
 
-\subsection{NSGA-II}
-NSGA-II \cite{996017} belongs to the larger class of genetic algorithm (GA). GA \cite{man1996genetic} is a powerful tool to solve combinatorial optimization problems. It is an iterative procedure based on a constant-size population. In a GA, a population of strings (called chromosomes
+\subsection{GA and NSGA-II}
+GA \cite{man1996genetic} is a powerful tool to solve combinatorial optimization problems. It is an iterative procedure based on a constant-size population. In a GA, a population of strings (called chromosomes
 or the genotype of the genome), which are encoded as candidate solutions (called individuals, creatures, or phenotypes) to an optimization problem, evolves towards better solutions. 
 Each genome is associated with a fitness value based on a fitness function that indicates how close it comes to meeting the overall specification, when compared to other genomes in the
 population. The fitness value of an individual is also an indication of its chances of survival and reproduction in the next generation. A typical genetic algorithm requires a genetic
 representation of the solution domain and a fitness function to evaluate the solution domain. Since a chromosome from the population represents a solution, when the algorithm starts, 
-the whole population moves like one group towards an optimal area, so the GA searches from a population of solutions rather than a single solution.
+the whole population moves like one group towards an optimal area, so the GA searches from a population of solutions rather than a single solution. Integer scalarization technique \cite{Multiobjective} is 
+used to solve multi-objective problems with GA. It predefines a weight for each objective.
 
 NSGA-II is a multi-objective algorithm based on GA. When used for problems with only two objectives, NSGA-II performs 
 relatively well in both convergence and  computing speed. It permits a remarkable level of flexibility with regard to 
 performance assessment and design specification. NSGA-II assumes that every chromosome in the population has two 
-attributes: 1) a non-domination rank in the population, 2) a local crowding distance in the population. The goal of 
+attributes: a non-domination rank in the population and a local crowding distance in the population. The goal of 
 NSGA-II is to converge to the Pareto front as possible and with even spread of the solutions on the front by 
 controlling the two attributes. 
 
@@ -211,13 +212,18 @@ The task of service location allocation has two objectives:
 \subsection{Model Formulation}
 To model service location-allocation problem, we need to make use of a set of matrices, to present input information and output solutions. 
 
-For service location-allocation problem, we need information of service usage, network latency, and service deployment cost to decide service location-allocation so that the overall network latency can be minimized with minimal deployment cost and with constraint.
+For service location-allocation problem, we need information of service usage, network latency, and service deployment cost to decide service location-allocation so that the overall network latency can be minimized with minimal deployment cost and within constraints.
 Assume a set of $S = \{ s_{1}, s_{2}, ..., s_{x}\}$ services are
-requested from a set of location $I = \{ i_{1}, i_{2}, ..., i_{y} \}$. The service providers allocate services 
-to $J = \{ j_{1}, j_{2}, ..., j_{z} \}$ be the set of candidate facility locations.
+requested from a set of locations $I = \{ i_{1}, i_{2}, ..., i_{y} \}$. 
+The service providers allocate services to the set of candidate facility locations $J = \{ j_{1}, j_{2}, ..., j_{z} \}$.
 To model the service location-allocation problem, we use five matrices: 
-service network latency matrix $L$, service location
-matrix $A$, service invocation frequency matrix $F$, cost matrix $C$ and user response time matrix $R$.
+\begin{enumerate}
+	\item service network latency matrix $L$
+	\item service location matrix $A$
+	\item service invocation frequency matrix $F$
+	\item cost matrix $C$
+	\item user response time matrix $R$
+\end{enumerate}
 
 In the following, we list a set of notations that will be used for modelling. 
 {
@@ -267,8 +273,8 @@ candidate locations. For example, The network latency between user center $i_{2}
 is 5.776s. These data could be collected by monitoring network latency \cite{6076756} \cite{5552800}.
 
 The cost matrix $C = [c_{sj}]$, is used to record the cost of deployment of services from candidate locations, 
-where $c_{sj}$ is an integer that indicate the cost of the deploying services from a candidate location. 
-For example, $c_{12} = $ 80 denotes the cost of deploying service $s_{1}$ to location $j_{2}$ is 80 units.
+where $c_{sj}$ is an integer that indicate the cost of the deploying services to a location. 
+For example, $c_{12} = $ 80 denotes the cost of deploying service $s_{1}$ to location $j_{2}$ is 80 cost units.
 
 \parbox{.45\linewidth}{
 {\centering
@@ -295,15 +301,15 @@ To model the service location-allocation problem, we consider the following assu
 \begin{enumerate}
 	\item The new WSP decides where to locate his facilities regardless of there is existed functional similar services from other WSPs.
 	\item The decision of service location-allocation is made only considering two factors: total network latency and total cost.
-	\item A static allocation policy is used by WSPs. In practice, Web Services typically offer clients persistent and interactive services, which often span over multiple sessions. Therefore, a dynamic reallocation scheme is not practical as it may disrupt the continuity of the services.
+	\item A static allocation policy is used by WSPs. In practice, Web services typically offer clients persistent and interactive services, which often span over multiple sessions. Therefore, a dynamic reallocation scheme is not practical as it may disrupt the continuity of the services.
 \end{enumerate}
 
 
-The service location-allocation matrix $A = [a_{sj}]$ represents the actual service location-allocation, where $a_{sj}$  is a binary value i.e. 1 or 0.
+A service location-allocation matrix $A = [a_{sj}]$ represents the actual service location-allocation, where $a_{sj}$  is a binary value i.e. 1 or 0.
 
 
 Using service location allocation matrix $A = [a_{sj}]$ and network latency matrix $L = [l_{ij}]$, we can compute user
-response time matrix $R = [r_{is}]$. 
+response time matrix $R = [r_{is}]$, where
 
 {\centering
 	\begin{equation}
@@ -331,7 +337,7 @@ To apply NSGA-II to the service location-allocation problem, the first step is t
 identify chromosome, genetic operators and the fitness functions.
 
 \subsection{Chromosome Representation and Constraints}
-We use the service location matrix $A$ = $[a_{sj}]$ as the representation of chromosome that we mentioned in Section 
+In our approach, we model the service location matrix $A$ = $[a_{sj}]$ as a chromosome that we mentioned in Section 
 \ref{sec:problem}.
 
 The constraint setting is based on service providers' needs. One can set multiply constraints to the problem to narrow the potential searching space.
@@ -357,14 +363,15 @@ An integer number $CostLimitation$ is given by user.
 \subsection{Genetic Operators}
 \label{sec:operators}
  The original NSGA-II uses a simulated 
-binary crossover (SBX) \cite{930314} and polynomial mutation \cite{Raghuwanshi04} to cope with continuous problem. 
+binary crossover (SBX) \cite{930314} and polynomial mutation \cite{Raghuwanshi04} 
+to cope with continuous problems. 
 However, our problem is discretized, therefore we use the regular GA mutation and crossover operations.
 
 The selection operator is the tournament selection \cite{Xie:2008:AMI:1389095.1389347}, which allows the highest probability 
 of being reproduced to next generation.
 
 \subsubsection{Mutation}
-The mutation operator works as follows: Initially choose one random location from the chromosome. 
+The mutation operator works as follows: initially choose one random location from the chromosome. 
 Then, reverse the bit, e.g. 0 to 1 or 1 to 0. 
 
 In this study, a chromosome in a population will be selected based on mutation possibility $P_{m}$. $P_{m}$ is 
@@ -402,15 +409,13 @@ $c_{sj}$ is the Cost matrix stores the cost information of service $s$ at locati
 $c_{sj}$ and $a_{sj}$ derives the total cost of the deployment plan.
 
 
-\begin{flushleft}For example, we use the above mentioned matrices $C$ and $A$.\end{flushleft}
+%\begin{flushleft}For example, we use the above mentioned matrices $C$ and $A$.\end{flushleft}
 
-%\begin{align*}
-	$
-	CostFitness &= c_{11} * a_{11} + c_{12} * a_{12} + c_{13} * a_{13} + ... + c_{33} * a_{33} \\
-	&= 130 * 0 + 80 * 1 + 60 * 0 + ... + 54 * 0 \\
-	&= 228
-	$
-%\end{align*}
+	%$
+	%CostFitness &= c_{11} * a_{11} + c_{12} * a_{12} + c_{13} * a_{13} + ... + c_{33} * a_{33} \\
+	%&= 130 * 0 + 80 * 1 + 60 * 0 + ... + 54 * 0 \\
+	%&= 228
+	%$
 \subsubsection{Network latency fitness function}
 
 We assume the latency is symmetrical between user center and candidate location. e.g. 
@@ -420,15 +425,13 @@ The latency from location $i$ to location $j$ is same with the latency from loca
 		LatencyFitness = \sum\limits_{i \in I} \sum\limits_{s \in S} r_{is} \times f_{is}
 	\end{equation}
 
-\begin{flushleft}For example, we use the above mentioned matrices F and R.\end{flushleft}
+%\begin{flushleft}For example, we use the above mentioned matrices F and R.\end{flushleft}
 
-%\begin{align*}
-	$
-	LatencyFitness &= f_{11} * r_{11} + f_{12} * r_{12} + f_{13} * r_{13} + ... + f_{33} * r_{33} \\
-	&= 120 * 5.776 + 6.984 * 35 + 0 * 56 + ... + 0.984 * 74\\
-	&= 1300.696
-	$
-%\end{align*}
+	%$
+	%LatencyFitness &= f_{11} * r_{11} + f_{12} * r_{12} + f_{13} * r_{13} + ... + f_{33} * r_{33} \\
+	%&= 120 * 5.776 + 6.984 * 35 + 0 * 56 + ... + 0.984 * 74\\
+	%&= 1300.696
+	%$
 
 
 
@@ -553,7 +556,7 @@ It is worth noting that the cost constraint repair operator may not provide a st
 
 \section{Experiment Design}
 \label{sec:experiment}
-The purpose of the experiment is comparison between Integer programming and greedy optimization (IPGO) with NSGA-II in terms of efficiency and quality of solutions. 
+The purpose of the experiment is comparison between single objective genetic algorithm (GA) with NSGA-II in terms of efficiency and quality of solutions. 
 
 The exact algorithm was coded in R \cite{Morandat:2012:EDR:2367163.2367172} using packages: NSGA2R and LpSolve. The program was run on a 3.40GHz 
 desktop computer with 8 GB RAM.
