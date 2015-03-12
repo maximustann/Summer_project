@@ -23,9 +23,11 @@ plotme <- function(condition, number = 3){
 	right_y <- max(c(max(nsga_data$latencyF), max(ga_data$latencyF)))
 	print(left_x)
 	par(font.axis = 2)
-	plot(nsga_data[order(nsga_data$latencyF),], xlim = c(left_x, right_x), ylim = c(left_y, right_y), col = 'blue', xlab = 'cost', ylab = 'latency',  pch = 20, type = 'b', font.lab = 2)
+	#plot(nsga_data[order(nsga_data$latencyF),], xlim = c(left_x, right_x), ylim = c(left_y, right_y), col = 'blue', xlab = 'cost', ylab = 'latency',  pch = 20, type = 'b', font.lab = 2)
+	plot(nsga_data[order(nsga_data$latencyF),], xlim = c(0, 1), ylim = c(0, 1), col = 'blue', xlab = 'cost', ylab = 'latency',  pch = 20, type = 'b', font.lab = 2)
 	par(new = T)
-	plot(ga_data, xlim = c(left_x,right_x), ylim = c(left_y, right_y), col = 'red', xlab = '', ylab = '', pch = 4)
+	#plot(ga_data, xlim = c(left_x,right_x), ylim = c(left_y, right_y), col = 'red', xlab = '', ylab = '', pch = 4)
+	plot(ga_data, xlim = c(0, 1), ylim = c(0, 1), col = 'red', xlab = '', ylab = '', pch = 4)
 
 	par(xpd = T)
 	legend("topright",c("NSGA-II", "GA"), col = c("blue", "red"), pch = c(4, 4))

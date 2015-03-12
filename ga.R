@@ -5,7 +5,8 @@ run_ga<- function(matrixSize, seed = 1, cost_limitation, max_cost, min_cost, max
 	front <- single_ga(matrixSize, seed, cost_limitation, max_cost, min_cost, max_latency, min_latency, objective_weight)
 	print((proc.time() - ptm)[1])
 	#front <- cbind(front, (proc.time() - ptm)[1])
-	fitness_value <- evaluate_front(front[, 1:(matrixSize * matrixSize)], matrixSize, max_cost, min_cost, max_latency, min_latency)
+	fitness_value <- front[order(front[, matrixSize * matrixSize + 1])[1], ]
+	fitness_value <- evaluate_front(fitness_value, matrixSize, max_cost, min_cost, max_latency, min_latency)
 	fitness_value <- cbind(fitness_value, (proc.time() - ptm)[1])
 	fitness_value
 }
@@ -22,7 +23,7 @@ single_ga <- function(matrixSize, seed, cost_limitation, max_cost, min_cost, max
 	mprob <- 0.2
 	XoverDistIdx <- 20
 	cprob <- 0.8
-	generations <- 50
+	generations <- 100
 	front <- vector()
 	front_pool <- vector()
 #=============================================================================

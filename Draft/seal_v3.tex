@@ -94,12 +94,14 @@ NSGA-II is one of the most widely used methods for generating the Pareto frontie
 NSGA-II implements elitism and uses a phenotype crowd comparison operator that keeps diversity without specifying any additional parameters \cite{Deb06referencepoint}.
 In this paper, we propose to use NSGA-II to solve the web service location-allocation problem.
 
-To show the effective and efficiency of our proposed NSGA-II based approach, we conduct an experiment to compare our approach with
-traditional approach based on integer programming and greedy optimization (IPGO). IPGO models one objective as an assignment problem then uses integer programming techniques to 
-obtain an optimal solution. Then, based on this solution, the algorithm further optimize the other objective using greedy algorithm. 
-The major advantage of IPGO is that it is very efficient and gives 
-an reasonably good result. On the other hand, the objectives are considered unevenly. That is, IPGO considers the objective which optimize by linear programming as its priority.
 
+%
+%To show the effective and efficiency of our proposed NSGA-II based approach, we conduct an experiment to compare our approach with
+%traditional approach based on integer programming and greedy optimization (IPGO). IPGO models one objective as an assignment problem then uses integer programming techniques to 
+%obtain an optimal solution. Then, based on this solution, the algorithm further optimize the other objective using greedy algorithm. 
+%The major advantage of IPGO is that it is very efficient and gives 
+%an reasonably good result. On the other hand, the objectives are considered unevenly. That is, IPGO considers the objective which optimize by linear programming as its priority.
+%
 
 The aim of this research is to provide a framework that guides a WSP to locate services.
 We consider the problem faced by a WSP who has existing facilities but wishes to use the collected data to re-allocate their services in order to maximum their profit.
@@ -116,13 +118,13 @@ The main objectives are:
 \begin{itemize}
 	\item To model the web service location-allocation problem so that it can be tackled with NSGA-II
 	\item To develop a modified NSGA-II approach for the web service location-allocation problem
-	\item To evaluate our approach by comparing it to a linear assignment with greedy optimization (IPGO) algorithm.
+	%\item To evaluate our approach by comparing it to a linear assignment with greedy optimization (IPGO) algorithm.
 \end{itemize}
 
 In Section \ref{sec:Background} we introduce the background of NSGA-II and IPGO as well as discuss the work from previous researchers.
 In Section \ref{sec:problem} we provide a formulation for our model. Section \ref{sec:algorithm_des} develops a modified NSGA-II. 
-We use these to study a number of hypotheses on the placement of WSPs. These solutions are compared to solutions from Integer
-programming with greedy optimization(IPGO). 
+%We use these to study a number of hypotheses on the placement of WSPs. These solutions are compared to solutions from Integer
+%programming with greedy optimization(IPGO). 
 The experimental design was discussed in Section \ref{sec:experiment}. The experimental results are shown in Section \ref{sec:results}.
 
 
@@ -170,27 +172,27 @@ if the crowding distance is greater than the other. The selected population gene
 The population with the current population and current offsprings is sorted again based on non-domination and only the best N individuals are selected, where N is the population size.
 The selection is based on rank and the on crowding distance on the last front.
 
-\subsection{Integer programming with Greedy Optimaization (IPGO)}
-
-Linear assignment \cite{lawler1963quadratic} is a special case of the transpotation problem, which is a special case of the minimum cost flow problem, which
-in turn is a special case of a linear program.
-
-Much research has been devoted to develop efficient heuristic algorithm to solve location-allocation problem. Two of the predominant
-greedy construction heuristics are the ADD and DROP \cite{Sun} methods, which build solutions from scratch. 
-The ADD procedure starts with all facilities closed and locates a facility that gives the greatest savings at each step and 
-iterates through all potential locations until no further savings can be made. In contrast, DROP opens all facilities and removes a 
-location that gives the greatest savings at each step and tries to find optimal or near optimum solutions at the end of the 
-iterative procedure. Integer programming with greedy optimization(IPGO) builds upon ADD and DROP methods. 
-In order to solve multi-objective problem, IPGO first employs Integer programming to derive a minimum cost solution, it then 
-uses a greedy procedure to optimize the other objective.
-
-Sun et al. proposed Drop, ALA, and LP relaxations of Integer transpotation problem (DAL) \cite{Sun} is very similar with this approach. 
-The DAL heuristics provided near optimal solutions in short computer times and with limited computer memory. But in Sun's approach, 
-he assumes there is competitive service providers existed. In contrast, IPGO does not consider about existed services. Therefore, IPGO
-uses Linear assignment approach instead of Alternate Location-allocation (ALA).
-
-
-
+%\subsection{Integer programming with Greedy Optimaization (IPGO)}
+%
+%Linear assignment \cite{lawler1963quadratic} is a special case of the transpotation problem, which is a special case of the minimum cost flow problem, which
+%in turn is a special case of a linear program.
+%
+%Much research has been devoted to develop efficient heuristic algorithm to solve location-allocation problem. Two of the predominant
+%greedy construction heuristics are the ADD and DROP \cite{Sun} methods, which build solutions from scratch. 
+%The ADD procedure starts with all facilities closed and locates a facility that gives the greatest savings at each step and 
+%iterates through all potential locations until no further savings can be made. In contrast, DROP opens all facilities and removes a 
+%location that gives the greatest savings at each step and tries to find optimal or near optimum solutions at the end of the 
+%iterative procedure. Integer programming with greedy optimization(IPGO) builds upon ADD and DROP methods. 
+%In order to solve multi-objective problem, IPGO first employs Integer programming to derive a minimum cost solution, it then 
+%uses a greedy procedure to optimize the other objective.
+%
+%Sun et al. proposed Drop, ALA, and LP relaxations of Integer transpotation problem (DAL) \cite{Sun} is very similar with this approach. 
+%The DAL heuristics provided near optimal solutions in short computer times and with limited computer memory. But in Sun's approach, 
+%he assumes there is competitive service providers existed. In contrast, IPGO does not consider about existed services. Therefore, IPGO
+%uses Linear assignment approach instead of Alternate Location-allocation (ALA).
+%
+%
+%
 \section{Problem Description and Modeling}
 \label{sec:problem}
 In this section, we first describe the service location-allocation problem in detail, then we will present models for the services location allocation problem.
@@ -491,40 +493,40 @@ which repeatedly check if the chromosome violates constraints.
 
 It is worth noting that the cost constraint repair operator may not provide a strictly correct solution that satisfied the cost constraint.
 
-\section{IPGO for Web Service Location Allocation}
-\begin{algorithm}[htb]
-	\textbf{Inputs:}
-		Cost Matrix $C$,
-		Server network latency matrix $L$, 
-		Service location matrix $A$, 
-		Service invocation frequency matrix $F$
-
-	\textbf{Outputs:}
-		Service location matrix $A$
-	\caption{IPGO for service location-allocation}
-	\label{IPGO}
-	\begin{algorithmic}[1]
-		\State initialize allocation matrix $A$ = \{1\}.
-		\State Optimize cost solution $A$ with Integer assignment solver.
-		\State Evaluate Cost fitness with the cost fitness function
-		\For( each row of A)
-			\For( each column of A)
-				\If {$A_{ij}$ = 0}
-					\State Start the service: $A_{ij}$ = 1
-					\State Evaluate $A$ with Network Latency fitness function.
-					\If {Current Network latency fitness is greater than previous fitness}
-						\State Change back $A_{ij}$ = 0
-					\EndIf
-				\EndIf
-			\EndFor
-		\EndFor
-		\State Return Service location matrix $A$
-	\end{algorithmic}
-\end{algorithm}
-In order to solve the location allocation problem with IPGO, we model the cost objective as the priority, optimize with Linear programming.
-The cost matrix $C$ and solution matrix $A$ are identical with the two matrices defined in Section \ref{sec:problem}. We use the same fitness functions as in NSGA-II to 
-evaluate the Cost objective and Latency objective.
-
+%\section{IPGO for Web Service Location Allocation}
+%\begin{algorithm}[htb]
+	%\textbf{Inputs:}
+		%Cost Matrix $C$,
+		%Server network latency matrix $L$, 
+		%Service location matrix $A$, 
+		%Service invocation frequency matrix $F$
+%
+	%\textbf{Outputs:}
+		%Service location matrix $A$
+	%\caption{IPGO for service location-allocation}
+	%\label{IPGO}
+	%\begin{algorithmic}[1]
+		%\State initialize allocation matrix $A$ = \{1\}.
+		%\State Optimize cost solution $A$ with Integer assignment solver.
+		%\State Evaluate Cost fitness with the cost fitness function
+		%\For( each row of A)
+			%\For( each column of A)
+				%\If {$A_{ij}$ = 0}
+					%\State Start the service: $A_{ij}$ = 1
+					%\State Evaluate $A$ with Network Latency fitness function.
+					%\If {Current Network latency fitness is greater than previous fitness}
+						%\State Change back $A_{ij}$ = 0
+					%\EndIf
+				%\EndIf
+			%\EndFor
+		%\EndFor
+		%\State Return Service location matrix $A$
+	%\end{algorithmic}
+%\end{algorithm}
+%In order to solve the location allocation problem with IPGO, we model the cost objective as the priority, optimize with Linear programming.
+%The cost matrix $C$ and solution matrix $A$ are identical with the two matrices defined in Section \ref{sec:problem}. We use the same fitness functions as in NSGA-II to 
+%evaluate the Cost objective and Latency objective.
+%
 %\begin{equation}
      %\begin{align}
        %\mbox{Minimize } & \sum\limits_{s \in S} \sum\limits_{j \in J} c_{sj} \times a_{sj} \\
@@ -535,16 +537,16 @@ evaluate the Cost objective and Latency objective.
      %\end{align}
 %\end{equation}
 
-Once a minimum cost solution is found by linear assignment, the solution set will be passed to the ADD procedure to serve as an initial solution for 
-further improvement on Network latency.
-
- The ADD procedure as follows:
-\begin{itemize}
-	\item Evaluate network latency fitness of the initial solution.
-	\item Starts a facility then evaluate with network latency fitness function. If the network latency fitness decreased as well as 
-		the cost fitness does not exceed the cost constraint. The solution is kept.
-	\item If there is no location could be choose, terminate the procedure.
-\end{itemize}
+%Once a minimum cost solution is found by linear assignment, the solution set will be passed to the ADD procedure to serve as an initial solution for 
+%further improvement on Network latency.
+%
+ %The ADD procedure as follows:
+%\begin{itemize}
+	%\item Evaluate network latency fitness of the initial solution.
+	%\item Starts a facility then evaluate with network latency fitness function. If the network latency fitness decreased as well as 
+		%the cost fitness does not exceed the cost constraint. The solution is kept.
+	%\item If there is no location could be choose, terminate the procedure.
+%\end{itemize}
 
 
 
@@ -556,7 +558,7 @@ The purpose of the experiment is comparison between Integer programming and gree
 The exact algorithm was coded in R \cite{Morandat:2012:EDR:2367163.2367172} using packages: NSGA2R and LpSolve. The program was run on a 3.40GHz 
 desktop computer with 8 GB RAM.
 
-To compare with IPGO, four different datasets were used, the problem instance was generated as follows:
+%To compare with IPGO, four different datasets were used, the problem instance was generated as follows:
 \begin{enumerate}
 	\item The potential user center and candidate locations were randomly selected from existed network latency dataset \cite{6076756} \cite{5552800}. 
 	\item The number of potential user center equals the candidate locations. We defined 4 different size of allocation matrices:
@@ -576,92 +578,92 @@ seeds ranging from 1 to 40. To test the efficiency of the algorithms, We evaluat
 Parameter settings for the algorithms are as follow. The population size of NSGA-II is 50, and the maximum number of 
 generations is 50. The tournament size is 10. The crossover probability $P_{c}$ is 0.8 and the mutation probability $P_{m}$ is 0.2 as we found that this combination can produce good results.
 
-To compare with the result of NSGA-II and IPGO, we derive the Pareto front by using Xue's approach \cite{Xue}, then take the approach from \cite{1688438} to 
-compare the results.
+%To compare with the result of NSGA-II and IPGO, we derive the Pareto front by using Xue's approach \cite{Xue}, then take the approach from \cite{1688438} to 
+%compare the results.
 In Xue's approach, NSGA-II generate 40 results (from 40 runs) under each cost constraint are presented in the Section \ref{sec:comparison}. 40 sets of solutions 
 achieved by each multi-objective algorithm are firstly combined into one union set. In the union set, the non-dominated solutions 
-are presented to compare with the solutions achieved by IPGO.
+%are presented to compare with the solutions achieved by IPGO.
 
 
-\section{Experimental results}
-\label{sec:results}
-\subsection{Efficiency comparison}
+%\section{Experimental results}
+%\label{sec:results}
+%\subsection{Efficiency comparison}
+%
+%\begin{table}[h]
+%\caption{Efficiency Test}
+%\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+%\hline
+ %& \multicolumn{2}{l|}{$3 \times 3$} & \multicolumn{2}{l|}{$5 \times 5$} & \multicolumn{2}{l|}{$10 \times 10$} & \multicolumn{2}{l|}{$15 \times 15$} \\ \hline
+ 				%&	NSGA-II	&	IPGO	& 	NSGA-II	& 	IPGO	&  	NSGA-II	&  	IPGO	& 	NSGA-II	&   	IPGO\\ \hline
+%Sufficient 		&4.21 $\pm$ 0.18		& 0.013		& 6.04 $\pm$ 0.24& 0.22	& 14.55 $\pm$ 0.26&0.78& 28.18 $\pm$ 0.54&4.02\\ \hline
+ %Good 			&4.21 $\pm$ 0.28		& 0.007         &6.02 $\pm$ 0.26          &0.057          &14.4 $\pm$ 0.26          & 0.76          &28.1 $\pm$ 0.52          &3.83           \\ \hline
+ %Poor 			&4.82 $\pm$ 0.27		& 0.01          &6.755 $\pm 0.21          &0.06          &16.73 $\pm$ 0.67          & 0.773          &36.0 $\pm$ 0.7& 3.85          \\ \hline
+ %Minimum 		&4.69 $\pm$ 0.31		& 0.017         &8.0 $\pm$ 0.26          &0.06          &23.5 $\pm$ 1.36          & 0.92          &58.45 $\pm$ 1.9           &  3.83         \\ \hline
+%\end{tabular}
+%\end{table}
+%
+%As the experimental results show, in terms of the average run time, IPGO is clearly better than NSGA-II. 
+%There are two main reasons: firstly, it is fast to solve linear assignment for integer programming, because there 
+%is only one constraint. Second, repeat evaluation of chromosome is the decisive factor of time consuming. 
+%Although, the NSGA-II tries to avoid unnecessary evaluation by employing the idea of memory pool, 
+%the improvement is limited. 
+%
+%It is worth nothing that in sufficient condition and good condition, both algorithm's run time remain stable. The run time starts
+%increasing under poor condition and minimum condition with NSGA-II. In particular, the run time for $15 \times 15$ matrix under 
+%minimum condition is more than twice as under other conditions.  The reason is that, if the children exceed the cost constraint, 
+%the repair operator will exhaustively close redundant facilities until it satisfied the cost limitation or minimum facility 
+%number is achieved. If the cost constraint is set too low, the number of iteration in the repair 
+%processes will reach a maximum number. Therefore, the time consuming increases largely.
+%
 
-\begin{table}[h]
-\caption{Efficiency Test}
-\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
-\hline
- & \multicolumn{2}{l|}{$3 \times 3$} & \multicolumn{2}{l|}{$5 \times 5$} & \multicolumn{2}{l|}{$10 \times 10$} & \multicolumn{2}{l|}{$15 \times 15$} \\ \hline
- 				&	NSGA-II	&	IPGO	& 	NSGA-II	& 	IPGO	&  	NSGA-II	&  	IPGO	& 	NSGA-II	&   	IPGO\\ \hline
-Sufficient 		&4.21 $\pm$ 0.18		& 0.013		& 6.04 $\pm$ 0.24& 0.22	& 14.55 $\pm$ 0.26&0.78& 28.18 $\pm$ 0.54&4.02\\ \hline
- Good 			&4.21 $\pm$ 0.28		& 0.007         &6.02 $\pm$ 0.26          &0.057          &14.4 $\pm$ 0.26          & 0.76          &28.1 $\pm$ 0.52          &3.83           \\ \hline
- Poor 			&4.82 $\pm$ 0.27		& 0.01          &6.755 $\pm 0.21          &0.06          &16.73 $\pm$ 0.67          & 0.773          &36.0 $\pm$ 0.7& 3.85          \\ \hline
- Minimum 		&4.69 $\pm$ 0.31		& 0.017         &8.0 $\pm$ 0.26          &0.06          &23.5 $\pm$ 1.36          & 0.92          &58.45 $\pm$ 1.9           &  3.83         \\ \hline
-\end{tabular}
-\end{table}
-
-As the experimental results show, in terms of the average run time, IPGO is clearly better than NSGA-II. 
-There are two main reasons: firstly, it is fast to solve linear assignment for integer programming, because there 
-is only one constraint. Second, repeat evaluation of chromosome is the decisive factor of time consuming. 
-Although, the NSGA-II tries to avoid unnecessary evaluation by employing the idea of memory pool, 
-the improvement is limited. 
-
-It is worth nothing that in sufficient condition and good condition, both algorithm's run time remain stable. The run time starts
-increasing under poor condition and minimum condition with NSGA-II. In particular, the run time for $15 \times 15$ matrix under 
-minimum condition is more than twice as under other conditions.  The reason is that, if the children exceed the cost constraint, 
-the repair operator will exhaustively close redundant facilities until it satisfied the cost limitation or minimum facility 
-number is achieved. If the cost constraint is set too low, the number of iteration in the repair 
-processes will reach a maximum number. Therefore, the time consuming increases largely.
-
-
-\subsection{Effective comparison}
-\label{sec:comparison}
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{pics/122.png}
-		\caption{$3 \times 3$}
-		\label{fig:3_3}
-	\end{subfigure}%
-	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{pics/123.png}
-		\caption{$5 \times 5$}
-		\label{fig:5_5}
-	\end{subfigure}
-
-
-	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{pics/124.png}
-		\caption{$10 \times 10$}
-		\label{fig:10_10}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.49\textwidth}
-		\includegraphics[width=\textwidth]{pics/125.png}
-		\caption{$15 \times 15$}
-		\label{fig:15_15}
-	\end{subfigure}
-
-	\caption{}\label{fig:condition}
-\end{figure}
-We conducted 16 experiments on 4 datasets under 4 cost constraints: sufficient, good, poor and minimum. The results show similar 
-patterns for same dataset. Therefore, we only show one figure for each dataset.
-
-
-Figure \ref{fig:3_3} shows NSGA-II outperforms IPGO. As we discussed in the previous section, the 
-result of IPGO is dominated by NSGA-II's solution set. \ref{fig:5_5} \ref{fig:10_10} \ref{fig:15_15} show that solution of IPGO is on the Pareto front. It does not improve the quality of the solution
-set. Therefore, we considered NSGA-II outperforms IPGO in this case. The solution from IPGO is non-dominated solution in the NSGA-II solution set. While the inclusion
-of the IPGO solution somewhat improves the quality of the NSGA-II solution set, we cannot say that IPGO outperforms NSGA-II since the 
-IPGO solution dominates no NSGA-II solutions.
-
-As a whole, NSGA-II can provide a set of solutions which allow user to choose according to their preference. Further, the set of 
-solutions always contains the best solutions resulted from IPGO, which shows stronger problem solving ability than IPGO.
-
-
-\section{Conclusion}
-In this paper, we proposed a NSGA-II based approach to web service location-allocation problem. 
-Our approach utilizes a memory pool so that
-greatly reduces the evaluation time while the diversity of the population gradually decreases. We have conducted a full experimental evaluation using the public WS-DREAM dataset to compare our approach to Alternate Location Allocation algorithm. 
-The experimental results shows the NSGA-II is effective to provide a near-optima solutions for the web service location-allocation problem.
+%\subsection{Effective comparison}
+%\label{sec:comparison}
+%\begin{figure}[H]
+	%\centering
+	%\begin{subfigure}[b]{0.49\textwidth}
+		%\includegraphics[width=\textwidth]{pics/122.png}
+		%\caption{$3 \times 3$}
+		%\label{fig:3_3}
+	%\end{subfigure}%
+	%\begin{subfigure}[b]{0.49\textwidth}
+		%\includegraphics[width=\textwidth]{pics/123.png}
+		%\caption{$5 \times 5$}
+		%\label{fig:5_5}
+	%\end{subfigure}
+%
+%
+	%\begin{subfigure}[b]{0.49\textwidth}
+		%\includegraphics[width=\textwidth]{pics/124.png}
+		%\caption{$10 \times 10$}
+		%\label{fig:10_10}
+	%\end{subfigure}
+	%\begin{subfigure}[b]{0.49\textwidth}
+		%\includegraphics[width=\textwidth]{pics/125.png}
+		%\caption{$15 \times 15$}
+		%\label{fig:15_15}
+	%\end{subfigure}
+%
+	%\caption{}\label{fig:condition}
+%\end{figure}
+%We conducted 16 experiments on 4 datasets under 4 cost constraints: sufficient, good, poor and minimum. The results show similar 
+%patterns for same dataset. Therefore, we only show one figure for each dataset.
+%
+%
+%Figure \ref{fig:3_3} shows NSGA-II outperforms IPGO. As we discussed in the previous section, the 
+%result of IPGO is dominated by NSGA-II's solution set. \ref{fig:5_5} \ref{fig:10_10} \ref{fig:15_15} show that solution of IPGO is on the Pareto front. It does not improve the quality of the solution
+%set. Therefore, we considered NSGA-II outperforms IPGO in this case. The solution from IPGO is non-dominated solution in the NSGA-II solution set. While the inclusion
+%of the IPGO solution somewhat improves the quality of the NSGA-II solution set, we cannot say that IPGO outperforms NSGA-II since the 
+%IPGO solution dominates no NSGA-II solutions.
+%
+%As a whole, NSGA-II can provide a set of solutions which allow user to choose according to their preference. Further, the set of 
+%solutions always contains the best solutions resulted from IPGO, which shows stronger problem solving ability than IPGO.
+%
+%
+%\section{Conclusion}
+%In this paper, we proposed a NSGA-II based approach to web service location-allocation problem. 
+%Our approach utilizes a memory pool so that
+%greatly reduces the evaluation time while the diversity of the population gradually decreases. We have conducted a full experimental evaluation using the public WS-DREAM dataset to compare our approach to Alternate Location Allocation algorithm. 
+%The experimental results shows the NSGA-II is effective to provide a near-optima solutions for the web service location-allocation problem.
 
 \bibliography{llncs}
 \bibliographystyle{splncs03}

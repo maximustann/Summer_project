@@ -24,7 +24,7 @@ algorithm <- function(matrixSize, seed, cost_limitation, max_cost, min_cost, max
 	mprob <- 0.2
 	XoverDistIdx <- 20
 	cprob <- 0.8
-	generations <- 50
+	generations <- 100
 	front <- vector()
 	front_pool <- vector()
 #=============================================================================
