@@ -5,7 +5,6 @@ run_ga<- function(matrixSize, seed = 1, cost_limitation, max_cost, min_cost, max
 	front <- single_ga(matrixSize, seed, cost_limitation, max_cost, min_cost, max_latency, min_latency, objective_weight)
 	print((proc.time() - ptm)[1])
 	#front <- cbind(front, (proc.time() - ptm)[1])
-	fitness_value <- front[order(front[, matrixSize * matrixSize + 1])[1], ]
 	fitness_value <- evaluate_front(fitness_value, matrixSize, max_cost, min_cost, max_latency, min_latency)
 	fitness_value <- cbind(fitness_value, (proc.time() - ptm)[1])
 	fitness_value
@@ -100,7 +99,7 @@ set.seed(seed)
 				  parameters = parent[,1:varNo], objectives = parent[, (varNo + 1):(varNo + objDim)])
 	class(result) = "GA"
 	#cat("Repair time: ", repair_time, "\n", sep = "")
-	parentNext
+	parentNext[order(a[, (varNo + objDim)]), ][1, ]
 }
 
 
