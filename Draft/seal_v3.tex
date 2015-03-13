@@ -116,8 +116,8 @@ Then, the service provider could use the algorithm which proposed by this paper,
 The algorithm will produce a near optimal solution which indicate the services deployment locations with a minimum cost and best service quality.
 The main objectives are:
 \begin{itemize}
-	\item To model the web service location-allocation problem so that it can be tackled with NSGA-II
-	\item To develop a NSGA-II based approach for the web service location-allocation problem
+	\item To model the web service location-allocation problem so that it can be tackled with NSGA-II and GA.
+	\item To develop a NSGA-II based approach for the web service location-allocation problem.
 	%\item To evaluate our approach by comparing it to a linear assignment with greedy optimization (IPGO) algorithm.
 \end{itemize}
 
@@ -402,7 +402,7 @@ how good each chromosome meets the objectives.\end{flushleft}
 \subsubsection{Cost fitness function}
 
 \begin{equation}
-		CostFitness = \sum\limits_{s \in S} \sum\limits_{j \in J} c_{sj} \times a_{sj}
+	CostFitness = Normalised(\sum\limits_{s \in S} \sum\limits_{j \in J} c_{sj} \times a_{sj})
 \end{equation}
 
 $c_{sj}$ is the Cost matrix stores the cost information of service $s$ at location $j$. $a_{sj}$ represents the deployment plan. The sum of the multiplication of 
@@ -417,14 +417,20 @@ $c_{sj}$ and $a_{sj}$ derives the total cost of the deployment plan.
 	%&= 228
 	%$
 \subsubsection{Network latency fitness function}
-
 We assume the latency is symmetrical between user center and candidate location. e.g. 
 The latency from location $i$ to location $j$ is same with the latency from location $j$ to location $i$.
 
 	\begin{equation}
-		LatencyFitness = \sum\limits_{i \in I} \sum\limits_{s \in S} r_{is} \times f_{is}
+		LatencyFitness = Normalised(\sum\limits_{i \in I} \sum\limits_{s \in S} r_{is} \times f_{is})
 	\end{equation}
 
+\subsubsection{Normalise function}
+In order to scale cost fitness value and latency fitness value into a same range, normalization is necessary.
+Since the maximum and minimum value for total cost and total latency are deterministic, we use exhaustive search to
+calculate the maximum and minimum value at the beginning of the algorithm.
+	\begin{equation}
+		X_{i} = \frac{X_{i} - X_{min}}{X_{max} - X_{min}}
+	\end{equation}
 %\begin{flushleft}For example, we use the above mentioned matrices F and R.\end{flushleft}
 
 	%$
@@ -495,6 +501,55 @@ Therefore, repair operators are needed to try to maintain feasible solutions. Th
 which repeatedly check if the chromosome violates constraints.
 
 It is worth noting that the cost constraint repair operator may not provide a strictly correct solution that satisfied the cost constraint.
+
+
+\section{GA for Web Service Location Allocation}
+
+\begin{algorithm}[htb]
+	\caption{GA for service location-allocation}
+	\textbf{Inputs:}
+		Cost Matrix $C$,
+		Server network latency matrix $L$, 
+		Service location matrix $A$, 
+		Service invocation frequency matrix $F$
+		A weight parameter $w$
+	\textbf{Outputs:}
+		One best solution: allocation matrix $A$
+
+
+	\begin{algorithmic}[1]
+		\State Initialize a population of chromosome with random binary value
+		\State Evaluate population with fitness functions
+		\While{predefined generation}
+			\State Apply Tournament Selection
+			\State Apply Crossover 
+			\State Apply Mutation
+			\For( each chromosome)
+				\While{ violate service number constraint}
+					\State Deploy the service to a random candidate location
+				\EndWhile
+				\While { violate cost constraint}
+					\State Shut down a service from a random location as long as it does not violate service number constraint
+					\If { no service can be closed}
+					\State Break
+					\EndIf
+				\EndWhile
+			\State Evaluate with fitness functions
+		\EndWhile
+		\State Update population
+		\State Return population
+	\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{fitness function}
+We use Integer scalarization technique to calculate the fitness value. We use the same approach as NSGA-II to calculate
+cost fitness and latency fitness respectively. Then we multiply two fitness values with its weights and add them up.
+
+\begin{equation}
+		Fitness = weight \times CostFitness + (1 - weight) \times LatencyFitness
+	\end{equation}
+
+
 
 %\section{IPGO for Web Service Location Allocation}
 %\begin{algorithm}[htb]
@@ -573,39 +628,44 @@ desktop computer with 8 GB RAM.
 
 
 In each dataset, algorithms run under four different levels of cost constraints: Sufficient condition is 100\% the expected total cost, 
-good condition (80\%), pool condition (40\%) and minimum budget condition (0\%). In the minimum budget condition, 
+good condition (70\%), pool condition (40\%) and minimum budget condition (0\%). In the minimum budget condition, 
 both algorithm exhaustively reduce the cost until it reaches the service number constraint. The NSGA-II runs 40 independent times with different random 
 seeds ranging from 1 to 40. To test the efficiency of the algorithms, We evaluate the average run time for each algorithm. 
 
 
 Parameter settings for the algorithms are as follow. The population size of NSGA-II is 50, and the maximum number of 
-generations is 50. The tournament size is 10. The crossover probability $P_{c}$ is 0.8 and the mutation probability $P_{m}$ is 0.2 as we found that this combination can produce good results.
+generations is 50. The tournament size is 3. 
+The crossover probability $P_{c}$ is 0.8 and the mutation probability $P_{m}$ 
+is 0.2 as we found that this combination can produce good results. We use same parameter settings for GA. 
 
-%To compare with the result of NSGA-II and IPGO, we derive the Pareto front by using Xue's approach \cite{Xue}, then take the approach from \cite{1688438} to 
-%compare the results.
-In Xue's approach, NSGA-II generate 40 results (from 40 runs) under each cost constraint are presented in the Section \ref{sec:comparison}. 40 sets of solutions 
-achieved by each multi-objective algorithm are firstly combined into one union set. In the union set, the non-dominated solutions 
-%are presented to compare with the solutions achieved by IPGO.
+To compare with the result of NSGA-II and GA, we derive the Pareto front by using Xue's approach \cite{Xue}, then take the approach from \cite{1688438} to compare the results.
+In Xue's approach, NSGA-II generate 40 results (from 40 runs) under each cost constraint 
+are presented in the Section \ref{sec:comparison}. 40 sets of solutions 
+achieved by each multi-objective algorithm are firstly combined into one union set. GA also generates 40 sets of 
+solutions, we select the best one based on its fitness value from each set and combine them into one set. 
+The non-dominated solutions are presented to compare with the solutions achieved by GA.
 
 
-%\section{Experimental results}
-%\label{sec:results}
-%\subsection{Efficiency comparison}
-%
-%\begin{table}[h]
-%\caption{Efficiency Test}
-%\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
-%\hline
- %& \multicolumn{2}{l|}{$3 \times 3$} & \multicolumn{2}{l|}{$5 \times 5$} & \multicolumn{2}{l|}{$10 \times 10$} & \multicolumn{2}{l|}{$15 \times 15$} \\ \hline
- 				%&	NSGA-II	&	IPGO	& 	NSGA-II	& 	IPGO	&  	NSGA-II	&  	IPGO	& 	NSGA-II	&   	IPGO\\ \hline
-%Sufficient 		&4.21 $\pm$ 0.18		& 0.013		& 6.04 $\pm$ 0.24& 0.22	& 14.55 $\pm$ 0.26&0.78& 28.18 $\pm$ 0.54&4.02\\ \hline
- %Good 			&4.21 $\pm$ 0.28		& 0.007         &6.02 $\pm$ 0.26          &0.057          &14.4 $\pm$ 0.26          & 0.76          &28.1 $\pm$ 0.52          &3.83           \\ \hline
- %Poor 			&4.82 $\pm$ 0.27		& 0.01          &6.755 $\pm 0.21          &0.06          &16.73 $\pm$ 0.67          & 0.773          &36.0 $\pm$ 0.7& 3.85          \\ \hline
- %Minimum 		&4.69 $\pm$ 0.31		& 0.017         &8.0 $\pm$ 0.26          &0.06          &23.5 $\pm$ 1.36          & 0.92          &58.45 $\pm$ 1.9           &  3.83         \\ \hline
-%\end{tabular}
-%\end{table}
-%
-%As the experimental results show, in terms of the average run time, IPGO is clearly better than NSGA-II. 
+\section{Experimental results}
+\label{sec:results}
+\subsection{Efficiency comparison}
+
+\begin{table}[h]
+\caption{Efficiency Test}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+\hline
+ & \multicolumn{2}{l|}{$3 \times 3$} & \multicolumn{2}{l|}{$5 \times 5$} & \multicolumn{2}{l|}{$10 \times 10$} & \multicolumn{2}{l|}{$15 \times 15$} \\ \hline
+	&	NSGA-II(s)	&	GA(s)	& 	NSGA-II(s)	& 	GA(s)	&  	NSGA-II(s)	&  	GA(s)	& 	NSGA-II(s)	&   GA(s)\\ \hline
+Sufficient 		&4.4 $\pm$ 0.3		& 1.6	$\pm$ 0.1	& 5.9 $\pm$ 0.1& 3.2 $\pm$ 0.1	& 13.7 $\pm$ 0.1&11.0 $\pm$ 0.1 & 27.0 $\pm$ 0.1 &23.9 $\pm$0.5\\ \hline
+ Good 			&4.4 $\pm$ 0.2		& 1.6 $\pm$0.1      &6.0 $\pm$ 0.1 &3.2 $\pm$ 0.1  &13.9 $\pm$ 0.08  & 11.1 $\pm$ 0.3  &27.2 $\pm$ 0.1          &24.1 $\pm$ 0.27      \\ \hline
+ Poor 			&4.6 $\pm$ 0.19	& 2.2 $\pm$0.2          &6.3 $\pm 0.07    &4.29 $\pm$ 0.17          &15.2 $\pm$ 0.16          & 14.8 $\pm$ 0.3          &31.3 $\pm$ 0.28& 33.6 $\pm$ 0.45          \\ \hline
+ Minimum 		&4.6 $\pm$ 0.1		& 2.2 $\pm$ 0.1   &7.2 $\pm$ 0.12   &5.75 $\pm$0.17          &24.12 $\pm$ 0.5          & 25.8 $\pm$0.5          &56.72 $\pm$ 1.6           &  66.8$\pm$1.2         \\ \hline
+\end{tabular}
+\end{table}
+
+As the experimental results show, along with the cost constraint decreases, the running time increases especially when 
+the size of matrix is large. In terms of small dataset, GA is slightly better than NSGA-II. As the matrix getting bigger,
+the gab between GA and NSGA-II narrows and eventually exceeds NSGA-II.
 %There are two main reasons: firstly, it is fast to solve linear assignment for integer programming, because there 
 %is only one constraint. Second, repeat evaluation of chromosome is the decisive factor of time consuming. 
 %Although, the NSGA-II tries to avoid unnecessary evaluation by employing the idea of memory pool, 
@@ -615,58 +675,123 @@ achieved by each multi-objective algorithm are firstly combined into one union s
 %increasing under poor condition and minimum condition with NSGA-II. In particular, the run time for $15 \times 15$ matrix under 
 %minimum condition is more than twice as under other conditions.  The reason is that, if the children exceed the cost constraint, 
 %the repair operator will exhaustively close redundant facilities until it satisfied the cost limitation or minimum facility 
-%number is achieved. If the cost constraint is set too low, the number of iteration in the repair 
+%number is achieved. 
+%If the cost constraint is set too low, the number of iteration in the repair 
 %processes will reach a maximum number. Therefore, the time consuming increases largely.
-%
 
-%\subsection{Effective comparison}
-%\label{sec:comparison}
-%\begin{figure}[H]
-	%\centering
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/122.png}
-		%\caption{$3 \times 3$}
-		%\label{fig:3_3}
-	%\end{subfigure}%
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/123.png}
-		%\caption{$5 \times 5$}
-		%\label{fig:5_5}
+
+\subsection{3 $\times$ 3}
+\label{sec:comparison}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_suff.png}
+		\caption{sufficient}
+	\end{subfigure}%
+	%\begin{subfigure}[b]{0.3\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_good.png}
+		%\caption{good}
 	%\end{subfigure}
-%
-%
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/124.png}
-		%\caption{$10 \times 10$}
-		%\label{fig:10_10}
+	%\begin{subfigure}[b]{0.3\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_poor.png}
+		%\caption{poor}
 	%\end{subfigure}
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/125.png}
-		%\caption{$15 \times 15$}
-		%\label{fig:15_15}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_minimum.png}
+		\caption{minimum}
+	\end{subfigure}
+
+	\caption{}\label{fig:condition}
+\end{figure}
+
+\subsection{5 $\times$ 5}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_suff.png}
+		\caption{sufficient}
+	\end{subfigure}%
+	%\begin{subfigure}[b]{0.3\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_good.png}
+		%\caption{good}
 	%\end{subfigure}
-%
-	%\caption{}\label{fig:condition}
-%\end{figure}
-%We conducted 16 experiments on 4 datasets under 4 cost constraints: sufficient, good, poor and minimum. The results show similar 
-%patterns for same dataset. Therefore, we only show one figure for each dataset.
-%
-%
-%Figure \ref{fig:3_3} shows NSGA-II outperforms IPGO. As we discussed in the previous section, the 
-%result of IPGO is dominated by NSGA-II's solution set. \ref{fig:5_5} \ref{fig:10_10} \ref{fig:15_15} show that solution of IPGO is on the Pareto front. It does not improve the quality of the solution
-%set. Therefore, we considered NSGA-II outperforms IPGO in this case. The solution from IPGO is non-dominated solution in the NSGA-II solution set. While the inclusion
-%of the IPGO solution somewhat improves the quality of the NSGA-II solution set, we cannot say that IPGO outperforms NSGA-II since the 
-%IPGO solution dominates no NSGA-II solutions.
-%
-%As a whole, NSGA-II can provide a set of solutions which allow user to choose according to their preference. Further, the set of 
-%solutions always contains the best solutions resulted from IPGO, which shows stronger problem solving ability than IPGO.
-%
-%
-%\section{Conclusion}
-%In this paper, we proposed a NSGA-II based approach to web service location-allocation problem. 
-%Our approach utilizes a memory pool so that
-%greatly reduces the evaluation time while the diversity of the population gradually decreases. We have conducted a full experimental evaluation using the public WS-DREAM dataset to compare our approach to Alternate Location Allocation algorithm. 
-%The experimental results shows the NSGA-II is effective to provide a near-optima solutions for the web service location-allocation problem.
+	%\begin{subfigure}[b]{0.3\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_poor.png}
+		%\caption{poor}
+	%\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_minimum.png}
+		\caption{minimum}
+	\end{subfigure}
+
+	\caption{}\label{fig:condition}
+\end{figure}
+
+\subsection{10 $\times$ 10}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_suff.png}
+		\caption{sufficient}
+	\end{subfigure}%
+	%\begin{subfigure}[b]{0.3\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_good.png}
+		%\caption{good}
+	%\end{subfigure}
+	%\begin{subfigure}[b]{0.3\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_poor.png}
+		%\caption{poor}
+	%\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_minimum.png}
+		\caption{minimum}
+	\end{subfigure}
+
+	\caption{}\label{fig:condition}
+\end{figure}
+
+\subsection{15 $\times$ 15}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_suff.png}
+		\caption{sufficient}
+	\end{subfigure}
+	%\begin{subfigure}[b]{0.3\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_good.png}
+		%\caption{good}
+	%\end{subfigure}
+	%\begin{subfigure}[b]{0.3\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_poor.png}
+		%\caption{poor}
+	%\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_minimum.png}
+		\caption{minimum}
+	\end{subfigure}
+
+	\caption{}\label{fig:condition}
+\end{figure}
+
+
+
+We conducted 16 experiments on 4 datasets under 4 cost constraints: sufficient, good, poor and minimum. 
+
+Figure \ref{fig:3_3} shows NSGA-II outperforms IPGO. As we discussed in the previous section, the 
+result of IPGO is dominated by NSGA-II's solution set. \ref{fig:5_5} \ref{fig:10_10} \ref{fig:15_15} show that solution of IPGO is on the Pareto front. It does not improve the quality of the solution
+set. Therefore, we considered NSGA-II outperforms IPGO in this case. The solution from IPGO is non-dominated solution in the NSGA-II solution set. While the inclusion
+of the IPGO solution somewhat improves the quality of the NSGA-II solution set, we cannot say that IPGO outperforms NSGA-II since the 
+IPGO solution dominates no NSGA-II solutions.
+
+As a whole, NSGA-II can provide a set of solutions which allow user to choose according to their preference. Further, the set of 
+solutions always contains the best solutions resulted from IPGO, which shows stronger problem solving ability than IPGO.
+
+
+\section{Conclusion}
+In this paper, we proposed a NSGA-II based approach to web service location-allocation problem. 
+Our approach utilizes a memory pool so that
+greatly reduces the evaluation time while the diversity of the population gradually decreases. We have conducted a full experimental evaluation using the public WS-DREAM dataset to compare our approach to Alternate Location Allocation algorithm. 
+The experimental results shows the NSGA-II is effective to provide a near-optima solutions for the web service location-allocation problem.
 
 \bibliography{llncs}
 \bibliographystyle{splncs03}
