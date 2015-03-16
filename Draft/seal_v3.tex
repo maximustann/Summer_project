@@ -77,7 +77,7 @@ Very few researches have studied this problem and most of the researchers treat 
 \cite{Aboolian} \cite{Sun} try to solve the problem by using integer linear programming techniques.
 In particular, \cite{Sun} solved this problem by employing a modified Alternate Location-Allocation (ALA) and greedy algorithm. 
 However, essentially Sun's approach build upon integer programming and greedy optimization. 
-As a result, the solution is easily stuck at local optima.
+%As a result, the solution is easily stuck at local optima.
 Huang \cite{EnhancedGenetic} proposed an enhanced genetic algorithm (GA)-based approach, which make use of the integer scalarization technique to solve this problem.
 GA \cite{man1996genetic} is an Evolutionary algorithm (EA) that uses genetic operators to obtain optimal solutions without any assumptions about the search space.
 This algorithm solves the problem with one objective and one constraint, however there are a few disadvantages existed in
@@ -103,7 +103,7 @@ In this paper, we propose to use NSGA-II to solve the web service location-alloc
 %an reasonably good result. On the other hand, the objectives are considered unevenly. That is, IPGO considers the objective which optimize by linear programming as its priority.
 %
 
-The aim of this research is to provide a framework that guides a WSP to locate services.
+%The aim of this research is to provide a framework that guides a WSP to locate services.
 We consider the problem faced by a WSP who has existing facilities but wishes to use the collected data to re-allocate their services in order to maximum their profit.
 The WSP must decide on facility locations from a finite set of possible locations. 
 In order to make the decision, the WSP must first analyze the data collected from current use of services. 
@@ -133,9 +133,9 @@ The experimental design was discussed in Section \ref{sec:experiment}. The exper
 A few researchers attempt to solve the service location-allocation problem by using a single objective approach. Most of them solve this problem with linear programming approaches.
 \cite{5961695} considers more than 3 objectives: response time, availability and cost. 
 It solves the placement of data centers for Internet Services with simulated annealing plus linear programming. 
-Sun et.al proposed two approaches \cite{Aboolian} \cite{Sun} that employ LP and DAL respectively. 
-The first approach \cite{Aboolian} assumes the model is based on a duopoly competitive market.
-The second approach \cite{Sun} assumes multiple competition services have been established in the market.
+%Sun et.al proposed two approaches \cite{Aboolian} \cite{Sun} that employ LP and DAL respectively. 
+%The first approach \cite{Aboolian} assumes the model is based on a duopoly competitive market.
+%The second approach \cite{Sun} assumes multiple competition services have been established in the market.
 Some researchers use evolutionary algorithms. Huang \cite{EnhancedGenetic} applied an enhanced GA algorithm which employ the integer scalarization technique \cite{Multiobjective}. However, 
 the integer scalarization technique has many disadvantages:
 \begin{enumerate}
@@ -370,24 +370,24 @@ However, our problem is discretized, therefore we use the regular GA mutation an
 The selection operator is the tournament selection \cite{Xie:2008:AMI:1389095.1389347}, which allows the highest probability 
 of being reproduced to next generation.
 
-\subsubsection{Mutation}
-The mutation operator works as follows: initially choose one random location from the chromosome. 
+\begin{flushleft}\textbf{Mutation} The mutation operator works as follows: initially choose one random location from the chromosome. 
 Then, reverse the bit, e.g. 0 to 1 or 1 to 0. 
+\end{flushleft}
 
 In this study, a chromosome in a population will be selected based on mutation possibility $P_{m}$. $P_{m}$ is 
 a parameter predefined and fixed.
-As shown in below, a random position will be selected and replaced by a reversed number.
+%As shown in below, a random position will be selected and replaced by a reversed number.
 %\begin{figure}[ht]
 %\centering
 	%\includegraphics[width=0.5\textwidth]{pics/mutation.png}
 %\caption{}
 %\label{graph1}
 %\end{figure}
-\subsubsection{Crossover}
-The crossover operator in this paper is the single point crossover. 
+\begin{flushleft}\textbf{Crossover} The crossover operator in this paper is the single point crossover. 
 The crossover is controlled by crossover probability $P_{c}$. $P_{c}$ is a parameter predefined and fixed.
 The crossover point is created randomly within the length of the chromosome. 
-As in the example below, two parents crossover at a point, to generate two offsprings.
+\end{flushleft}
+%As in the example below, two parents crossover at a point, to generate two offsprings.
 %\begin{figure}[ht]
 %\centering
 	%\includegraphics[width=0.5\textwidth]{pics/crossover.png}
@@ -402,7 +402,7 @@ how good each chromosome meets the objectives.\end{flushleft}
 \subsubsection{Cost fitness function}
 
 \begin{equation}
-	CostFitness = Normalised(\sum\limits_{s \in S} \sum\limits_{j \in J} c_{sj} \times a_{sj})
+	CostFitness = Normalise(\sum\limits_{s \in S} \sum\limits_{j \in J} c_{sj} \times a_{sj})
 \end{equation}
 
 $c_{sj}$ is the Cost matrix stores the cost information of service $s$ at location $j$. $a_{sj}$ represents the deployment plan. The sum of the multiplication of 
@@ -421,13 +421,13 @@ We assume the latency is symmetrical between user center and candidate location.
 The latency from location $i$ to location $j$ is same with the latency from location $j$ to location $i$.
 
 	\begin{equation}
-		LatencyFitness = Normalised(\sum\limits_{i \in I} \sum\limits_{s \in S} r_{is} \times f_{is})
+		LatencyFitness = Normalise(\sum\limits_{i \in I} \sum\limits_{s \in S} r_{is} \times f_{is})
 	\end{equation}
 
 \subsubsection{Normalise function}
 In order to scale cost fitness value and latency fitness value into a same range, normalization is necessary.
 Since the maximum and minimum value for total cost and total latency are deterministic, we use exhaustive search to
-calculate the maximum and minimum value at the beginning of the algorithm.
+calculate the maximum and minimum values.
 	\begin{equation}
 		X_{i} = \frac{X_{i} - X_{min}}{X_{max} - X_{min}}
 	\end{equation}
@@ -442,7 +442,7 @@ calculate the maximum and minimum value at the beginning of the algorithm.
 
 
 \subsection{NSGA-II based algorithm for service location-allocation}
-Algorithm \ref{NSGA2} shows the precedure of NSGA-II applied on service location-allocation problem.
+%Algorithm \ref{NSGA2} shows the precedure of NSGA-II applied on service location-allocation problem.
 \begin{algorithm}[htb]
 	\caption{NSGA-II for service location-allocation}
 	\label{NSGA2}
@@ -478,9 +478,9 @@ Algorithm \ref{NSGA2} shows the precedure of NSGA-II applied on service location
 		\If{ chromosome does not exist in the Pareto front Pool}
 		\State Evaluate with fitness functions
 		\EndIf
+		\EndFor
 		\State Non-dominated sort and assign ranking
 		\State Evaluate the Crowding distance
-		\EndFor
 		\State Recombination and Selection
 		\State Update Pareto Front Pool with current Pareto Front
 		\EndWhile
@@ -501,18 +501,18 @@ Therefore, repair operators are needed to try to maintain feasible solutions. Th
 which repeatedly check if the chromosome violates constraints.
 
 It is worth noting that the cost constraint repair operator may not provide a strictly correct solution that satisfied the cost constraint.
-
-
 \section{GA for Web Service Location Allocation}
-
+The settings for GA is similar with NSGA-II except a weight parameter $w$ needs to be predefined in GA. The weight is used for 
+measuring the importance of objectives. Conventionally, the weight is in the range of $[0, 1]$. In our approach, we define the weight equals 0.5.
 \begin{algorithm}[htb]
 	\caption{GA for service location-allocation}
 	\textbf{Inputs:}
 		Cost Matrix $C$,
 		Server network latency matrix $L$, 
 		Service location matrix $A$, 
-		Service invocation frequency matrix $F$
-		A weight parameter $w$
+		Service invocation frequency matrix $F$, 
+		weight parameter $w$
+
 	\textbf{Outputs:}
 		One best solution: allocation matrix $A$
 
@@ -535,15 +535,16 @@ It is worth noting that the cost constraint repair operator may not provide a st
 					\EndIf
 				\EndWhile
 			\State Evaluate with fitness functions
-		\EndWhile
-		\State Update population
+			\EndFor
+			\State Update population
+			\EndWhile
 		\State Return population
 	\end{algorithmic}
 \end{algorithm}
 
 \subsubsection{fitness function}
-We use Integer scalarization technique to calculate the fitness value. We use the same approach as NSGA-II to calculate
-cost fitness and latency fitness respectively. Then we multiply two fitness values with its weights and add them up.
+We use Integer scalarization technique to calculate the fitness value. We evaluate cost and latency with the same fitness functions as in NSGA-II.
+Then combining two fitness values multiply by its weights.
 
 \begin{equation}
 		Fitness = weight \times CostFitness + (1 - weight) \times LatencyFitness
@@ -633,7 +634,7 @@ both algorithm exhaustively reduce the cost until it reaches the service number 
 seeds ranging from 1 to 40. To test the efficiency of the algorithms, We evaluate the average run time for each algorithm. 
 
 
-Parameter settings for the algorithms are as follow. The population size of NSGA-II is 50, and the maximum number of 
+Parameter settings for the algorithms are as follow. The population size is 50, and the maximum number of 
 generations is 50. The tournament size is 3. 
 The crossover probability $P_{c}$ is 0.8 and the mutation probability $P_{m}$ 
 is 0.2 as we found that this combination can produce good results. We use same parameter settings for GA. 
@@ -665,7 +666,7 @@ Sufficient 		&4.4 $\pm$ 0.3		& 1.6	$\pm$ 0.1	& 5.9 $\pm$ 0.1& 3.2 $\pm$ 0.1	& 13
 
 As the experimental results show, along with the cost constraint decreases, the running time increases especially when 
 the size of matrix is large. In terms of small dataset, GA is slightly better than NSGA-II. As the matrix getting bigger,
-the gab between GA and NSGA-II narrows and eventually exceeds NSGA-II.
+the gap between GA and NSGA-II narrows and eventually exceeds NSGA-II.
 %There are two main reasons: firstly, it is fast to solve linear assignment for integer programming, because there 
 %is only one constraint. Second, repeat evaluation of chromosome is the decisive factor of time consuming. 
 %Although, the NSGA-II tries to avoid unnecessary evaluation by employing the idea of memory pool, 
@@ -680,112 +681,142 @@ the gab between GA and NSGA-II narrows and eventually exceeds NSGA-II.
 %processes will reach a maximum number. Therefore, the time consuming increases largely.
 
 
-\subsection{3 $\times$ 3}
+\subsection{Effectiveness comparison}
 \label{sec:comparison}
+We conducted 16 experiments on 4 datasets under 4 cost constraints: sufficient, good, poor and minimum. 
+Among four scenarios, sufficient, good and poor shows similar patterns as in Figure \ref{fig:c1} and \ref{fig:c2} sufficient conditions. 
+Therefore, we only present the sufficient and minimum scenarios.
+
+The blue dots and red cross represent solutions from NSGA-II and GA respectively. We use cost fitness value and latency fitness value as 
+x, y coordinate. Our goal is to minimize both cost and latency, therefore, better solution should locate close to the origin.
+
+In Figure \ref{fig:c1}, 
+%because of both matrices are relatively small, it is easy for NSGA-II to find near optimal solutions. Therefore, there is
+%not much differences between sufficient condition and minimum condition. On the other hand, 
+The solutions set from GA are clearly inferior than 
+NSGA-II. Especially, when the constraint is restrict, most solutions from GA will be identical. In other words, in minimum condition, the solutions
+from GA lack of diversity.
+
+
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
+	\begin{subfigure}[b]{0.45\textwidth}
 		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_suff.png}
-		\caption{sufficient}
+		\caption{3 $\times$ 3 sufficient}
 	\end{subfigure}%
-	%\begin{subfigure}[b]{0.3\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_good.png}
+	%\begin{subfigure}[b]{0.49\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50.49_times_3_good.png}
 		%\caption{good}
 	%\end{subfigure}
-	%\begin{subfigure}[b]{0.3\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_poor.png}
+	%\begin{subfigure}[b]{0.49\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50.49_times_3_poor.png}
 		%\caption{poor}
 	%\end{subfigure}
-	\begin{subfigure}[b]{0.3\textwidth}
+	\begin{subfigure}[b]{0.45\textwidth}
 		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_minimum.png}
-		\caption{minimum}
+		\caption{3 $\times$ 3 minimum}
 	\end{subfigure}
-
-	\caption{}\label{fig:condition}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_suff.png}
+		\caption{5 $\times$ 5 sufficient}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_minimum.png}
+		\caption{5 $\times$ 5 minimum}
+	\end{subfigure}
+	\caption{}\label{fig:c1}
 \end{figure}
 
-\subsection{5 $\times$ 5}
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_suff.png}
-		\caption{sufficient}
-	\end{subfigure}%
-	%\begin{subfigure}[b]{0.3\textwidth}
+%\begin{figure}[H]
+	%\centering
+	%\begin{subfigure}[b]{0.49\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_suff.png}
+		%\caption{sufficient}
+	%\end{subfigure}
+	%%\begin{subfigure}[b]{0.49\textwidth}
 		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_good.png}
 		%\caption{good}
 	%\end{subfigure}
-	%\begin{subfigure}[b]{0.3\textwidth}
+	%\begin{subfigure}[b]{0.49\textwidth}
 		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_poor.png}
 		%\caption{poor}
 	%\end{subfigure}
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_minimum.png}
-		\caption{minimum}
-	\end{subfigure}
+	%\begin{subfigure}[b]{0.49\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_minimum.png}
+		%\caption{minimum}
+	%\end{subfigure}
 
-	\caption{}\label{fig:condition}
-\end{figure}
+	%\caption{}\label{fig:condition}
+%\end{figure}
 
-\subsection{10 $\times$ 10}
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
+	\begin{subfigure}[b]{0.45\textwidth}
 		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_suff.png}
-		\caption{sufficient}
+		\caption{10 $\times$ 10 sufficient}
 	\end{subfigure}%
-	%\begin{subfigure}[b]{0.3\textwidth}
+	%\begin{subfigure}[b]{0.49\textwidth}
 		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_good.png}
 		%\caption{good}
 	%\end{subfigure}
-	%\begin{subfigure}[b]{0.3\textwidth}
+	%\begin{subfigure}[b]{0.49\textwidth}
 		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_poor.png}
 		%\caption{poor}
 	%\end{subfigure}
-	\begin{subfigure}[b]{0.3\textwidth}
+	\begin{subfigure}[b]{0.45\textwidth}
 		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_minimum.png}
-		\caption{minimum}
+		\caption{10 $\times$ 10 minimum}
 	\end{subfigure}
-
-	\caption{}\label{fig:condition}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_suff.png}
+		\caption{15 $\times$ 15 sufficient}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_minimum.png}
+		\caption{15 $\times$ 15 minimum}
+	\end{subfigure}
+	\caption{}\label{fig:c2}
 \end{figure}
 
-\subsection{15 $\times$ 15}
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_suff.png}
-		\caption{sufficient}
-	\end{subfigure}
-	%\begin{subfigure}[b]{0.3\textwidth}
+%\begin{figure}[H]
+	%\centering
+	%\begin{subfigure}[b]{0.49\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_suff.png}
+		%\caption{sufficient}
+	%\end{subfigure}
+	%\begin{subfigure}[b]{0.49\textwidth}
 		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_good.png}
 		%\caption{good}
 	%\end{subfigure}
-	%\begin{subfigure}[b]{0.3\textwidth}
+	%\begin{subfigure}[b]{0.49\textwidth}
 		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_poor.png}
 		%\caption{poor}
 	%\end{subfigure}
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_minimum.png}
-		\caption{minimum}
-	\end{subfigure}
+	%\begin{subfigure}[b]{0.49\textwidth}
+		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_minimum.png}
+		%\caption{minimum}
+	%\end{subfigure}
 
-	\caption{}\label{fig:condition}
-\end{figure}
+	%\caption{}\label{fig:condition}
+%\end{figure}
+In Figure \ref{fig:c2} we compared two larger matrices 10 $\times$ 10 and 15 $\times$ 15. Both results suggest that NSGA-II superior than GA.
+It is worth noting that in minimum condition, it shows a complete different pattern. The solution clusters are pushing towards the origin in both
+algorithms. The reason is that the searching space for 10 $\times$ 10 and 15 $\times$ 15 are so large that 
+it is hard to find near optimal solutions with 50 generations and 50 population. As we can observe the solutions from 10 $\times$ 10 matrix are
+closer than the solutions from 15 $\times$ 15 matrix. In minimum condition, the repair operator narrow down the searching space that both
+algorithms try to find optimal solutions within the constraint. However, if the constraint could not be satisfied, the solution still can remain
+in the solution set. Hence, NSGA-II still tries to produce a Pareto front.
 
 
 
-We conducted 16 experiments on 4 datasets under 4 cost constraints: sufficient, good, poor and minimum. 
 
-Figure \ref{fig:3_3} shows NSGA-II outperforms IPGO. As we discussed in the previous section, the 
-result of IPGO is dominated by NSGA-II's solution set. \ref{fig:5_5} \ref{fig:10_10} \ref{fig:15_15} show that solution of IPGO is on the Pareto front. It does not improve the quality of the solution
-set. Therefore, we considered NSGA-II outperforms IPGO in this case. The solution from IPGO is non-dominated solution in the NSGA-II solution set. While the inclusion
-of the IPGO solution somewhat improves the quality of the NSGA-II solution set, we cannot say that IPGO outperforms NSGA-II since the 
-IPGO solution dominates no NSGA-II solutions.
+%Figure \ref{fig:3_3} shows NSGA-II outperforms IPGO. As we discussed in the previous section, the 
+%result of IPGO is dominated by NSGA-II's solution set. \ref{fig:5_5} \ref{fig:10_10} \ref{fig:15_15} show that solution of IPGO is on the Pareto front. It does not improve the quality of the solution
+%set. Therefore, we considered NSGA-II outperforms IPGO in this case. The solution from IPGO is non-dominated solution in the NSGA-II solution set. While the inclusion
+%of the IPGO solution somewhat improves the quality of the NSGA-II solution set, we cannot say that IPGO outperforms NSGA-II since the 
+%IPGO solution dominates no NSGA-II solutions.
 
-As a whole, NSGA-II can provide a set of solutions which allow user to choose according to their preference. Further, the set of 
-solutions always contains the best solutions resulted from IPGO, which shows stronger problem solving ability than IPGO.
-
+%As a whole, NSGA-II provide a set of solutions not only better than the best solutions from GA but also form a distributed Pareto front.
 
 \section{Conclusion}
 In this paper, we proposed a NSGA-II based approach to web service location-allocation problem. 
