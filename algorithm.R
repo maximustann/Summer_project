@@ -2,20 +2,19 @@ library(foreach)
 library(GA)
 library(mco)
 library(nsga2R)
-run_algorithm <- function(matrixSize, seed = 1, cost_limitation, max_cost, min_cost, max_latency, min_latency){
+run_algorithm <- function(matrixSize, seed = 1, cost_limitation, max_cost, min_cost, max_latency, min_latency, initialisation = F){
 	ptm <- proc.time()
-	front <- algorithm(matrixSize, seed, cost_limitation, max_cost, min_cost, max_latency, min_latency)
+	front <- algorithm(matrixSize, seed, cost_limitation, max_cost, min_cost, max_latency, min_latency, initialisation)
 	print((proc.time() - ptm)[1])
 	fitness_value <- evaluate_front(front, matrixSize, max_cost, min_cost, max_latency, min_latency)
 	fitness_value <- cbind(fitness_value, (proc.time() - ptm)[1])
 	colnames(fitness_value) <- c("costF", "latencyF", "time")
-	#print(fitness_value)
 	fitness_value
 }
 
 
 
-algorithm <- function(matrixSize, seed, cost_limitation, max_cost, min_cost, max_latency, min_latency){
+algorithm <- function(matrixSize, seed, cost_limitation, max_cost, min_cost, max_latency, min_latency, initialisation = F){
 	popSize <- 50
 	objDim <- 2
 	varNo <- matrixSize * matrixSize
@@ -24,14 +23,14 @@ algorithm <- function(matrixSize, seed, cost_limitation, max_cost, min_cost, max
 	mprob <- 0.2
 	XoverDistIdx <- 20
 	cprob <- 0.8
-	generations <- 100
+	generations <- 50
 	front <- vector()
 	front_pool <- vector()
 #=============================================================================
 set.seed(seed)
 #========================Algorithm Starts=====================================
 	#	step 1, initialize the population
-	parent <- generate_population(matrixSize, matrixSize, popSize, cost_limitation, matrixSize)
+	parent <- generate_population(matrixSize, matrixSize, popSize, cost_limitation, matrixSize, initialisation)
 
 #====================Calculate Fitness================================
 	#	step 2, calculate the fitness
@@ -156,9 +155,14 @@ evaluate_front <- function(front, matrixSize, max_cost, min_cost, max_latency, m
 
 
 
-generate_population <- function(row, col, size, cost_limitation, matrixSize){
+generate_population <- function(row, col, size, cost_limitation, matrixSize, initialisation = F){
 	parent <- vector()
 	count <- 0
+	if(initialisation == T){
+		size <- size - 1
+		low_cost_chromosome <- as.vector(search_minimum_cost(matrixSize))
+		parent <- rbind(parent, low_cost_chromosome)
+	}
 	repeat {
 		check <- 1
 		if(count > size - 1){

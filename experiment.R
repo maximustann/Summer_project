@@ -9,7 +9,7 @@ library(foreach)
 library(doMC)
 registerDoMC(8)
 
-run <- function(matrixSize, cost_limitation){
+run <- function(matrixSize, cost_limitation, initialisation = F){
 	NSGAdata <- vector()
 	GAdata <- vector()
 	NSGAtime<- vector()
@@ -22,45 +22,80 @@ run <- function(matrixSize, cost_limitation){
 
 	foreach(iter = 1:40) %dopar%{
 		cat("Generation:", iter, '\n')
-		NSGAdata <- run_algorithm(matrixSize, iter, cost_limitation, max_cost, min_cost, max_latency, min_latency)
-		GAdata <- run_ga(matrixSize, iter, cost_limitation, max_cost, min_cost, max_latency, min_latency)
+		NSGAdata <- run_algorithm(matrixSize, iter, cost_limitation, max_cost, min_cost, max_latency, min_latency, initialisation)
+		GAdata <- run_ga(matrixSize, iter, cost_limitation, max_cost, min_cost, max_latency, min_latency, initialisation)
+		
+		if(initialisation == T){
+			GAtime <- GAdata[1, 3]
+			filename_ga <- paste(iter, "_initialisation_ga.csv", sep = "")
+			filename_ga_time <- paste(iter, "_initialisation_time_ga.csv", sep = "")
+			write.csv(GAdata[, 1:2], filename_ga, quote = F, col.names = T, row.names = F)
+			write.csv(GAtime, filename_ga_time, quote = F, row.names = F, col.names = F)
 
-		GAtime <- GAdata[1, 3]
-		filename_ga <- paste(iter, "_ga.csv", sep = "")
-		filename_ga_time <- paste(iter, "_time_ga.csv", sep = "")
-		write.csv(GAdata[, 1:2], filename_ga, quote = F, row.names = F, sep = ",", col.names = T)
-		write.csv(GAtime, filename_ga_time, quote = F, row.names = F, col.names = F)
+			NSGAtime <- NSGAdata[1, 3]
+			filename_nsga <- paste(iter, "_initialisation_nsga.csv", sep = "")
+			filename_nsga_time <- paste(iter, "_initialisation_time_nsga.csv", sep = "")
+			write.csv(NSGAdata[, 1:2], filename_nsga, quote = F, row.names = F)
+			write.csv(NSGAtime, filename_nsga_time, quote = F, row.names = F)
+		}
+		else{
+			GAtime <- GAdata[1, 3]
+			filename_ga <- paste(iter, "_ga.csv", sep = "")
+			filename_ga_time <- paste(iter, "_time_ga.csv", sep = "")
+			write.csv(GAdata[, 1:2], filename_ga, quote = F, col.names = T, row.names = F)
+			write.csv(GAtime, filename_ga_time, quote = F, row.names = F, col.names = F)
+	
+			NSGAtime <- NSGAdata[1, 3]
+			filename_nsga <- paste(iter, "_nsga.csv", sep = "")
+			filename_nsga_time <- paste(iter, "_time_nsga.csv", sep = "")
+			write.csv(NSGAdata[, 1:2], filename_nsga, quote = F, row.names = F)
+			write.csv(NSGAtime, filename_nsga_time, quote = F, row.names = F)
+		}
 
-		NSGAtime <- NSGAdata[1, 3]
-		filename_nsga <- paste(iter, "_nsga.csv", sep = "")
-		filename_nsga_time <- paste(iter, "_time_nsga.csv", sep = "")
-		write.csv(NSGAdata[, 1:2], filename_nsga, quote = F, row.names = F)
-		write.csv(NSGAtime, filename_nsga_time, quote = F, row.names = F)
 	}
 
 	for(iter in 1:40){
-		filename_nsga <- paste(iter, "_nsga.csv", sep = "")
-		filename_nsga_time <- paste(iter, "_time_nsga.csv", sep = "")
-		NSGAdata <- rbind(NSGAdata, read.csv(filename_nsga, header = T, sep = ','))
-		NSGAtime <- rbind(NSGAtime, read.csv(filename_nsga_time, header = T, sep = ","))
-
-		filename_ga <- paste(iter, "_ga.csv", sep = "")
-		filename_ga_time <- paste(iter, "_time_ga.csv", sep = "")
-		GAdata <- rbind(GAdata, read.csv(filename_ga, header = T, sep = ','))
-		GAtime <- rbind(GAtime, read.csv(filename_ga_time, header = T, sep = ","))
+		if(initialisation == T){
+			filename_nsga <- paste(iter, "_initialisation_nsga.csv", sep = "")
+			filename_nsga_time <- paste(iter, "_initialisation_time_nsga.csv", sep = "")
+			NSGAdata <- rbind(NSGAdata, read.csv(filename_nsga, header = T, sep = ','))
+			NSGAtime <- rbind(NSGAtime, read.csv(filename_nsga_time, header = T, sep = ","))
+	
+			filename_ga <- paste(iter, "_initialisation_ga.csv", sep = "")
+			filename_ga_time <- paste(iter, "_initialisation_time_ga.csv", sep = "")
+			GAdata <- rbind(GAdata, read.csv(filename_ga, header = T, sep = ','))
+			GAtime <- rbind(GAtime, read.csv(filename_ga_time, header = T, sep = ","))
+		}
+		else{
+			filename_nsga <- paste(iter, "_nsga.csv", sep = "")
+			filename_nsga_time <- paste(iter, "_time_nsga.csv", sep = "")
+			NSGAdata <- rbind(NSGAdata, read.csv(filename_nsga, header = T, sep = ','))
+			NSGAtime <- rbind(NSGAtime, read.csv(filename_nsga_time, header = T, sep = ","))
+	
+			filename_ga <- paste(iter, "_ga.csv", sep = "")
+			filename_ga_time <- paste(iter, "_time_ga.csv", sep = "")
+			GAdata <- rbind(GAdata, read.csv(filename_ga, header = T, sep = ','))
+			GAtime <- rbind(GAtime, read.csv(filename_ga_time, header = T, sep = ","))
+		}
 	}
 
 	##lptime <- read.csv("1_time_lp.csv", header = T)
 	time_data <- rbind(NSGAtime, GAtime)
-	best_nsga <- best_nsga_front(GAdata)
+	best_nsga <- best_nsga_front(NSGAdata)
 	#cat("row for best GA data: ", nrow(best_ga), "\n")
 	#cat("row for LP data: ", nrow(lpdata), "\n")
 	##lpdata <- read.csv("1_lp.csv", sep = ",", header = T)
 	#data <- total_normalised(best_ga, lpdata)[, 1:2]
 	data <- rbind(best_nsga[, 1:2], GAdata)
 	colnames(data) <- c("costF", "latencyF")
-	filename <- paste(matrixSize, ".csv", sep = "")
-	filename_time <- paste(matrixSize, "_time.csv", sep="")
+	if(initialisation == T){
+		filename <- paste(matrixSize, "_initialisation.csv", sep = "")
+		filename_time <- paste(matrixSize, "_initialisation_time.csv", sep="")
+	}
+	else{
+		filename <- paste(matrixSize, ".csv", sep = "")
+		filename_time <- paste(matrixSize, "_time.csv", sep="")
+	}
 	write.csv(data, filename, quote = F, row.names = F)
 	write.csv(time_data, filename_time, quote = F, row.names = F)
 }
@@ -78,6 +113,7 @@ best_nsga_front <- function(gadata){
 	}
 	ga <- cbind(temp, rnkIndex)
 	best_ga <- ga[ga[, 3] == 1,]
+	print(best_ga)
 	best_ga
 }
 
@@ -133,6 +169,6 @@ search_minimum_cost <- function(matrixSize){
 		pos <- which(cost_matrix[row_iter, ] == min(cost_matrix[row_iter, ]))[1]
 		mini_cost_matrix[row_iter, pos] <- 1
 	}
-	print(mini_cost_matrix)
+	#print(mini_cost_matrix)
 	mini_cost_matrix
 }

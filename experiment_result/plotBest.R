@@ -1,5 +1,4 @@
 plotme <- function(condition, number = 3){
-	
 	if(number == 3){
 		filename <- paste("3_3", "/", condition, "/", number, ".csv", sep = "")
 	}
@@ -21,7 +20,6 @@ plotme <- function(condition, number = 3){
 	right_x <- max(c(max(nsga_data$costF), max(ga_data$costF)))
 	left_y <- min(c(min(nsga_data$latencyF), min(ga_data$latencyF)))
 	right_y <- max(c(max(nsga_data$latencyF), max(ga_data$latencyF)))
-	print(left_x)
 	par(font.axis = 2)
 	#plot(nsga_data[order(nsga_data$latencyF),], xlim = c(left_x, right_x), ylim = c(left_y, right_y), col = 'blue', xlab = 'cost', ylab = 'latency',  pch = 20, type = 'b', font.lab = 2)
 	plot(nsga_data[order(nsga_data$latencyF),], xlim = c(0, 1), ylim = c(0, 1), col = 'blue', xlab = 'cost', ylab = 'latency',  pch = 20, type = 'b', font.lab = 2)
@@ -30,17 +28,17 @@ plotme <- function(condition, number = 3){
 	plot(ga_data, xlim = c(0, 1), ylim = c(0, 1), col = 'red', xlab = '', ylab = '', pch = 4)
 
 	par(xpd = T)
-	legend("topright",c("NSGA-II", "GA"), col = c("blue", "red"), pch = c(4, 4))
+	legend("topright",c("NSGA-II", "GA"), col = c("blue", "red"), pch = c(20, 4))
 
 }
 
 read_nsga_data <- function(filename){
 	data <- read.csv(filename, sep = ',', header = T)
-	return(data[1:(nrow(data) - 2000),])
+	return(data[1:(nrow(data) - 40),])
 }
 
 read_ga_data <- function(filename){
 	data <- read.csv(filename, sep = ',', header = T)
-	return(data[(nrow(data) - 2000 + 1):nrow(data),])
+	return(data[(nrow(data) - 40 + 1):nrow(data),])
 }
 

@@ -1,18 +1,21 @@
-run_ga<- function(matrixSize, seed = 1, cost_limitation, max_cost, min_cost, max_latency, min_latency){
+run_ga<- function(matrixSize, seed = 1, cost_limitation, max_cost, min_cost, max_latency, min_latency, initialisation = F){
 	
 	objective_weight <- 0.5
 	ptm <- proc.time()
-	front <- single_ga(matrixSize, seed, cost_limitation, max_cost, min_cost, max_latency, min_latency, objective_weight)
+	front <- single_ga(matrixSize, seed, cost_limitation, max_cost, min_cost, max_latency, min_latency, objective_weight, initialisation)
 	print((proc.time() - ptm)[1])
 	#front <- cbind(front, (proc.time() - ptm)[1])
-	fitness_value <- evaluate_front(fitness_value, matrixSize, max_cost, min_cost, max_latency, min_latency)
+	fitness_value <- t(fitness(front, matrixSize, max_cost, min_cost, max_latency, min_latency))
 	fitness_value <- cbind(fitness_value, (proc.time() - ptm)[1])
+	colnames(fitness_value) <- c("costF", "latencyF", "time")
+	row.names(fitness_value) <- NULL
+	fitness_value <- as.data.frame(fitness_value)
 	fitness_value
 }
 
 
 
-single_ga <- function(matrixSize, seed, cost_limitation, max_cost, min_cost, max_latency, min_latency, objective_weight){
+single_ga <- function(matrixSize, seed, cost_limitation, max_cost, min_cost, max_latency, min_latency, objective_weight, initialisation = F){
 
 	popSize <- 50
 	objDim <- 1
@@ -22,14 +25,14 @@ single_ga <- function(matrixSize, seed, cost_limitation, max_cost, min_cost, max
 	mprob <- 0.2
 	XoverDistIdx <- 20
 	cprob <- 0.8
-	generations <- 100
+	generations <- 50
 	front <- vector()
 	front_pool <- vector()
 #=============================================================================
 set.seed(seed)
 #========================Algorithm Starts=====================================
 	#	step 1, initialize the population
-	parent <- generate_population(matrixSize, matrixSize, popSize, cost_limitation, matrixSize)
+	parent <- generate_population(matrixSize, matrixSize, popSize, cost_limitation, matrixSize, initialisation)
 
 #====================Calculate Fitness================================
 	#	step 2, calculate the fitness
@@ -99,7 +102,8 @@ set.seed(seed)
 				  parameters = parent[,1:varNo], objectives = parent[, (varNo + 1):(varNo + objDim)])
 	class(result) = "GA"
 	#cat("Repair time: ", repair_time, "\n", sep = "")
-	parentNext[order(a[, (varNo + objDim)]), ][1, ]
+	final_result <- parentNext[order(parentNext[, (varNo + objDim)]), ][1, ]
+	final_result
 }
 
 
@@ -316,4 +320,10 @@ ga_tournament_selection <- function (pop, pool_size, tour_size)
         counter <- counter + 1
     }
     return(f)
+}
+
+evaluate_single_front <- function(front, matrixSize, max_cost, min_cost, max_latency, min_latency){
+	print(front[, 1:(matrixSize * matrixSize)])
+	fitness_value <- fitness(front[, 1:(matrixSize * matrixSize)], matrixSize, max_cost, min_cost, max_latency, min_latency)
+	fitness_value
 }
