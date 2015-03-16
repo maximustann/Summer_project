@@ -629,7 +629,8 @@ desktop computer with 8 GB RAM.
 
 
 In each dataset, algorithms run under four different levels of cost constraints: Sufficient condition is 100\% the expected total cost, 
-good condition (70\%), pool condition (40\%) and minimum budget condition (0\%). In the minimum budget condition, 
+good condition (70\%), pool condition (40\%) and minimum budget condition (0\%). We try to stimulated the real budget condition with these four 
+scenarios. In the minimum budget condition, 
 both algorithm exhaustively reduce the cost until it reaches the service number constraint. The NSGA-II runs 40 independent times with different random 
 seeds ranging from 1 to 40. To test the efficiency of the algorithms, We evaluate the average run time for each algorithm. 
 
@@ -639,16 +640,78 @@ generations is 50. The tournament size is 3.
 The crossover probability $P_{c}$ is 0.8 and the mutation probability $P_{m}$ 
 is 0.2 as we found that this combination can produce good results. We use same parameter settings for GA. 
 
-To compare with the result of NSGA-II and GA, we derive the Pareto front by using Xue's approach \cite{Xue}, then take the approach from \cite{1688438} to compare the results.
+To compare with the result of NSGA-II and GA, we derive the Pareto front by using Xue's approach \cite{Xue} \cite{6381531}, then take the approach from \cite{1688438} to compare the results.
 In Xue's approach, NSGA-II generate 40 results (from 40 runs) under each cost constraint 
 are presented in the Section \ref{sec:comparison}. 40 sets of solutions 
 achieved by each multi-objective algorithm are firstly combined into one union set. GA also generates 40 sets of 
 solutions, we select the best one based on its fitness value from each set and combine them into one set. 
 The non-dominated solutions are presented to compare with the solutions achieved by GA.
 
+In addition to the comparison between NSGA-II and GA, we conducted full experiments on NSGA-II with initialisation and GA with initialisation.
+We initialized the population with 49 random chromosomes and one minimum cost chromosome. We expect the initialized algorithms superior than
+the uninitialized algorithms.
 
 \section{Experimental results}
 \label{sec:results}
+\subsection{Effectiveness comparison}
+\label{sec:comparison}
+We conducted experiments on NSGA-II, GA, NSGA-II with initialisation and GA with initialisation respectively.
+Algorithms run under four sizes of matrices: 3 $\times$ 3, 5 $\times$ 5, 10 $\times$ 10 and 15 $\times$ 15 with different levels of cost constraints: sufficient, good, poor and minimum.
+
+We use cost fitness value and latency fitness value as 
+x, y coordinate. Our goal is to minimize both cost and latency, therefore, better solution should locate close to the origin.
+
+
+As a result, these four conditions show similar pattern as in Figure \ref{fig:c1}. 
+The difference between these four scenarios is that the repair operator
+will try to narrow the searching space, hence the solutions will be pushed closer to the y axis.
+
+
+In 3 $\times$ 3 and 5 $\times$ 5 dataset, the solutions from NSGA-II and initialized NSGA-II are mostly overlapping. The solutions from GA and
+initialized GA are also interleaving. That is because of size of matrices are small, it is easy for algorithms to find near optimal solutions. 
+Therefore, it is hard to claim initialized algorithms are superior than uninitialized algorithms, but clearly, NSGA-II is dominate GA.
+%not much differences between sufficient condition and minimum condition. On the other hand, 
+%The solutions set from GA are clearly inferior than 
+%NSGA-II. Especially, when the constraint is restrict, most solutions from GA will be identical. In other words, in minimum condition, the solutions
+%from GA lack of diversity.
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_sufficient_initialisation.png}
+		\caption{3 $\times$ 3}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_sufficient_initialisation.png}
+		\caption{5 $\times$ 5}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_sufficient_initialisation.png}
+		\caption{10 $\times$ 10}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.45\textwidth}
+		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_sufficient_initialisation.png}
+		\caption{15 $\times$ 15}
+	\end{subfigure}
+	\caption{}\label{fig:c1}
+\end{figure}
+In 10 $\times$ 10, 15 $\times$ 15 matrices, both results NSGA-II dominate GA, half solutions from initialized GA are better than NSGA-II and initialized NSGA-II still dominate initialized GA.
+
+The results shows that the algorithms with 50 generation and 50 population are insufficient to an optima solution for such big searching space.
+However, with initialization, both NSGA-II and GA improve their solution significantly. Instead of randomly initializing population, we 
+add one known optima solution into the population could narrow the searching space so that the algorithm could converge faster.
+
+
+
+
+%Figure \ref{fig:3_3} shows NSGA-II outperforms IPGO. As we discussed in the previous section, the 
+%result of IPGO is dominated by NSGA-II's solution set. \ref{fig:5_5} \ref{fig:10_10} \ref{fig:15_15} show that solution of IPGO is on the Pareto front. It does not improve the quality of the solution
+%set. Therefore, we considered NSGA-II outperforms IPGO in this case. The solution from IPGO is non-dominated solution in the NSGA-II solution set. While the inclusion
+%of the IPGO solution somewhat improves the quality of the NSGA-II solution set, we cannot say that IPGO outperforms NSGA-II since the 
+%IPGO solution dominates no NSGA-II solutions.
+
+%As a whole, NSGA-II provide a set of solutions not only better than the best solutions from GA but also form a distributed Pareto front.
 \subsection{Efficiency comparison}
 
 \begin{table}[h]
@@ -659,7 +722,7 @@ The non-dominated solutions are presented to compare with the solutions achieved
 	&	NSGA-II(s)	&	GA(s)	& 	NSGA-II(s)	& 	GA(s)	&  	NSGA-II(s)	&  	GA(s)	& 	NSGA-II(s)	&   GA(s)\\ \hline
 Sufficient 		&4.4 $\pm$ 0.3		& 1.6	$\pm$ 0.1	& 5.9 $\pm$ 0.1& 3.2 $\pm$ 0.1	& 13.7 $\pm$ 0.1&11.0 $\pm$ 0.1 & 27.0 $\pm$ 0.1 &23.9 $\pm$0.5\\ \hline
  Good 			&4.4 $\pm$ 0.2		& 1.6 $\pm$0.1      &6.0 $\pm$ 0.1 &3.2 $\pm$ 0.1  &13.9 $\pm$ 0.08  & 11.1 $\pm$ 0.3  &27.2 $\pm$ 0.1          &24.1 $\pm$ 0.27      \\ \hline
- Poor 			&4.6 $\pm$ 0.19	& 2.2 $\pm$0.2          &6.3 $\pm 0.07    &4.29 $\pm$ 0.17          &15.2 $\pm$ 0.16          & 14.8 $\pm$ 0.3          &31.3 $\pm$ 0.28& 33.6 $\pm$ 0.45          \\ \hline
+ Poor 			&4.6 $\pm$ 0.19	& 2.2 $\pm$0.2          &6.3 $\pm$ 0.07    &4.29 $\pm$ 0.17          &15.2 $\pm$ 0.16          & 14.8 $\pm$ 0.3          &31.3 $\pm$ 0.28& 33.6 $\pm$ 0.45          \\ \hline
  Minimum 		&4.6 $\pm$ 0.1		& 2.2 $\pm$ 0.1   &7.2 $\pm$ 0.12   &5.75 $\pm$0.17          &24.12 $\pm$ 0.5          & 25.8 $\pm$0.5          &56.72 $\pm$ 1.6           &  66.8$\pm$1.2         \\ \hline
 \end{tabular}
 \end{table}
@@ -681,142 +744,6 @@ the gap between GA and NSGA-II narrows and eventually exceeds NSGA-II.
 %processes will reach a maximum number. Therefore, the time consuming increases largely.
 
 
-\subsection{Effectiveness comparison}
-\label{sec:comparison}
-We conducted 16 experiments on 4 datasets under 4 cost constraints: sufficient, good, poor and minimum. 
-Among four scenarios, sufficient, good and poor shows similar patterns as in Figure \ref{fig:c1} and \ref{fig:c2} sufficient conditions. 
-Therefore, we only present the sufficient and minimum scenarios.
-
-The blue dots and red cross represent solutions from NSGA-II and GA respectively. We use cost fitness value and latency fitness value as 
-x, y coordinate. Our goal is to minimize both cost and latency, therefore, better solution should locate close to the origin.
-
-In Figure \ref{fig:c1}, 
-%because of both matrices are relatively small, it is easy for NSGA-II to find near optimal solutions. Therefore, there is
-%not much differences between sufficient condition and minimum condition. On the other hand, 
-The solutions set from GA are clearly inferior than 
-NSGA-II. Especially, when the constraint is restrict, most solutions from GA will be identical. In other words, in minimum condition, the solutions
-from GA lack of diversity.
-
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_suff.png}
-		\caption{3 $\times$ 3 sufficient}
-	\end{subfigure}%
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50.49_times_3_good.png}
-		%\caption{good}
-	%\end{subfigure}
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50.49_times_3_poor.png}
-		%\caption{poor}
-	%\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_minimum.png}
-		\caption{3 $\times$ 3 minimum}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_suff.png}
-		\caption{5 $\times$ 5 sufficient}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_minimum.png}
-		\caption{5 $\times$ 5 minimum}
-	\end{subfigure}
-	\caption{}\label{fig:c1}
-\end{figure}
-
-%\begin{figure}[H]
-	%\centering
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_suff.png}
-		%\caption{sufficient}
-	%\end{subfigure}
-	%%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_good.png}
-		%\caption{good}
-	%\end{subfigure}
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_poor.png}
-		%\caption{poor}
-	%\end{subfigure}
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_minimum.png}
-		%\caption{minimum}
-	%\end{subfigure}
-
-	%\caption{}\label{fig:condition}
-%\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_suff.png}
-		\caption{10 $\times$ 10 sufficient}
-	\end{subfigure}%
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_good.png}
-		%\caption{good}
-	%\end{subfigure}
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_poor.png}
-		%\caption{poor}
-	%\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_minimum.png}
-		\caption{10 $\times$ 10 minimum}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_suff.png}
-		\caption{15 $\times$ 15 sufficient}
-	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
-		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_minimum.png}
-		\caption{15 $\times$ 15 minimum}
-	\end{subfigure}
-	\caption{}\label{fig:c2}
-\end{figure}
-
-%\begin{figure}[H]
-	%\centering
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_suff.png}
-		%\caption{sufficient}
-	%\end{subfigure}
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_good.png}
-		%\caption{good}
-	%\end{subfigure}
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_poor.png}
-		%\caption{poor}
-	%\end{subfigure}
-	%\begin{subfigure}[b]{0.49\textwidth}
-		%\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_minimum.png}
-		%\caption{minimum}
-	%\end{subfigure}
-
-	%\caption{}\label{fig:condition}
-%\end{figure}
-In Figure \ref{fig:c2} we compared two larger matrices 10 $\times$ 10 and 15 $\times$ 15. Both results suggest that NSGA-II superior than GA.
-It is worth noting that in minimum condition, it shows a complete different pattern. The solution clusters are pushing towards the origin in both
-algorithms. The reason is that the searching space for 10 $\times$ 10 and 15 $\times$ 15 are so large that 
-it is hard to find near optimal solutions with 50 generations and 50 population. As we can observe the solutions from 10 $\times$ 10 matrix are
-closer than the solutions from 15 $\times$ 15 matrix. In minimum condition, the repair operator narrow down the searching space that both
-algorithms try to find optimal solutions within the constraint. However, if the constraint could not be satisfied, the solution still can remain
-in the solution set. Hence, NSGA-II still tries to produce a Pareto front.
-
-
-
-
-%Figure \ref{fig:3_3} shows NSGA-II outperforms IPGO. As we discussed in the previous section, the 
-%result of IPGO is dominated by NSGA-II's solution set. \ref{fig:5_5} \ref{fig:10_10} \ref{fig:15_15} show that solution of IPGO is on the Pareto front. It does not improve the quality of the solution
-%set. Therefore, we considered NSGA-II outperforms IPGO in this case. The solution from IPGO is non-dominated solution in the NSGA-II solution set. While the inclusion
-%of the IPGO solution somewhat improves the quality of the NSGA-II solution set, we cannot say that IPGO outperforms NSGA-II since the 
-%IPGO solution dominates no NSGA-II solutions.
-
-%As a whole, NSGA-II provide a set of solutions not only better than the best solutions from GA but also form a distributed Pareto front.
 
 \section{Conclusion}
 In this paper, we proposed a NSGA-II based approach to web service location-allocation problem. 
