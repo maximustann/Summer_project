@@ -608,9 +608,10 @@ from 339 different user locations invoked 7824 web services scattered over diffe
 The algorithm was coded in R \cite{Morandat:2012:EDR:2367163.2367172} using existed package: NSGA2R. The program was run on a 3.40GHz 
 desktop computer with 8 GB RAM.
 
-4 different service location-allocation problems is designed with different complexities.
+4 different service location-allocation problems are designed with different complexities.
 \begin{table}[h]
 {\centering
+	\caption{Complexity table}
 	\begin{tabular}{|c|c|c|c|}
 		\hline
 		\multicolumn{1}{|l|}{problem} & \multicolumn{1}{l|}{user location} & \multicolumn{1}{l|}{server location} & \multicolumn{1}{l|}{number of service} \\\hline
@@ -630,7 +631,7 @@ desktop computer with 8 GB RAM.
 In each dataset, algorithms run under four different levels of cost constraints: Sufficient condition is 100\% the expected total cost, 
 good condition (70\%), pool condition (40\%) and minimum budget condition (0\%). We try to stimulated a real world budget condition with these four 
 scenarios. In the minimum budget condition, 
-both algorithm exhaustively reduce the cost until it reaches the service number constraint. The NSGA-II runs 40 independent times with different random 
+both algorithms exhaustively reduce the cost until it reaches the service number constraint. The NSGA-II runs 40 independent times with different random 
 seeds ranging from 1 to 40. To test the efficiency of the algorithms, We evaluate the average run time for each algorithm. 
 
 
@@ -640,7 +641,7 @@ The crossover probability $P_{c}$ is 0.8 and the mutation probability $P_{m}$
 is 0.2 as we found that this combination can produce good results. We use same parameter settings for GA. 
 
 To compare with the result of NSGA-II and GA, we first derive the Pareto front by using the approach in \cite{Xue} \cite{6381531}, and then compare the results using approach in \cite{1688438}.
-In Xue's approach, NSGA-II generate 40 results (from 40 runs) under each cost constraint 
+In Xue's approach, NSGA-II generates 40 results (from 40 runs) under each cost constraint 
 are presented in the Section \ref{sec:comparison}. 40 sets of solutions 
 achieved by each multi-objective algorithm are firstly combined into one union set. GA also generates 40 sets of 
 solutions, we select the best one based on its fitness value from each set and combine them into one set. 
@@ -690,7 +691,7 @@ Experimental results show that few different cost constraints leads to similar r
 	\caption{}\label{fig:c1}
 \end{figure}
 
-From the above results we can see that for all the four problems, NSGA-II based approach produce results that dominate or overlap the results from GA based approach. Further,
+From the above results we can see that for all the four problems, NSGA-II based approach produces results that dominate or overlap the results from GA based approach. Further,
 NSGA-II with an initialized chromosome that represents service location-allocation of the minimum cost dominate the results without a chromosome of the lower cost, though problem 1 and
 problem 2 of small complexity size, this observation is not obvious.
 
@@ -729,7 +730,7 @@ Sufficient 		&4.4 $\pm$ 0.3		& 1.6 	$\pm$ 0.1	$\downarrow$& 5.9 $\pm$ 0.1& 3.2 $
 }
 \end{table}
 The results from initialized algorithms are similar with uninitialized algorithms, therefore we only present the uninitialized results.
-As shown in the table above for small problems GA based approach are faster. However for bigger problem (problem 3 and 4) NSGA-II shows its efficiency. Also NSGA-II produce a set of 
+As shown in the table above for small problems GA based approach are faster. However for bigger problem (problem 3 and 4) NSGA-II shows its efficiency. Also NSGA-II produces a set of 
 non-dominated solutions instead of one solution, which provide WSPs with more options.
 %As the experimental results show, along with the cost constraint decreases, the running time increases especially when 
 %the size of matrix is large. In terms of small dataset, GA is slightly better than NSGA-II. As the matrix getting bigger,
