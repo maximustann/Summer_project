@@ -19,7 +19,12 @@
 \patchcmd{\bbordermatrix}{8.75}{4.75}{}{}
 \patchcmd{\bbordermatrix}{\left(}{\left[}{}{}
 \patchcmd{\bbordermatrix}{\right)}{\right]}{}{}
-
+\setlength{\parskip}{0cm}
+\setlength{\parindent}{1em}
+\usepackage[compact]{titlesec}
+\titlespacing{\section}{0pt}{2ex}{1ex}
+\titlespacing{\subsection}{0pt}{1ex}{0ex}
+\titlespacing{\subsubsection}{0pt}{0.5ex}{0ex}
 
 \title{
 Optimization of Location Allocation of Web Services Using A Modified Non-dominated Sorting Genetic Algorithm
@@ -51,7 +56,7 @@ It shows NSGA-II based algorithm can provide a set of best solutions that outper
 
 \section{Introduction}
 Web Services are considered as self-contained, self-describing, modular applications that can be published, located, and invoked across the Web \cite{Ran}. 
-In recent years, web services technology is becoming increasingly popular because of the convenience, low cost and capacity to be composed into high-level business processes \cite{Aboolian}.
+In recent years, web services technology is becoming increasingly popular because of the convenience, low cost \cite{Aboolian} and capacity to be composed into high-level business processes.
 
 With the ever increasing number of functional similar web services being available on the Internet, the web service providers (WSPs) are trying to improve the quality of service (QoS) to become competitive in the market.  
 QoS, also known as non-functional requirements to  web services, is the degree to which a service meets specified requirements or user needs \cite{4061431}, such as response time, security and availability. 
@@ -77,8 +82,8 @@ However, the major problem for this approach is that linear programming is not s
 %As a result, the solution is easily stuck at local optima.
 Huang \cite{EnhancedGenetic} proposed an enhanced genetic algorithm (GA)-based approach, which make use of the integer scalarization technique to solve this problem.
 %GA \cite{man1996genetic} is an Evolutionary algorithm (EA) that uses genetic operators to obtain optimal solutions without any assumptions about the search space.
-This algorithm solves the problem with one objective and one constraint. However there has some deficiencies in the
-integer scalarization techniques \cite{Multiobjective}. Firstly, the decision maker needs to choose an appropriate weights for the objectives to retrieve a satisfactorily solution. 
+This algorithm solves the problem with one objective and one constraint. However there are some deficiencies in the
+integer scalarization techniques \cite{Multiobjective}. Firstly, decision makers need to choose appropriate weights for the objectives to retrieve a satisfactorily solution. 
 Secondly, non-convex parts of the Pareto set cannot be reached by minimizing convex combinations of the object functions.
 
 
@@ -90,8 +95,8 @@ one single simulation run \cite{OptimizationElectrical}. Among numerous EMO algo
 Non-dominated sorting GA (NSGA-II) \cite{996017}, Strength Pareto Evolutionary Algorithm 2 (SPEA-2) \cite{Deb} have become standard approaches. 
 Some schemes based on particle swarm optimization (PSO) approaches are also proposed \cite{Elhossini} \cite{Huang}.
 NSGA-II is one of the most widely used methods for generating the Pareto frontier, because it can keep diversity without specifying any additional parameters \cite{Deb06referencepoint}.
-In this paper, we propose to use NSGA-II to solve the web service location-allocation problem, which has two objectives:
-cost and network latency.
+In this paper, we propose to use NSGA-II to solve the web service location-allocation problem, which has two objectives, to minimize
+cost and deployment network latency.
 
 
 %
@@ -106,7 +111,7 @@ cost and network latency.
 We consider the problem faced by a WSP who has existing facilities but wishes to use the collected data to re-allocate their services in order to maximum their profit.
 The WSP must decide on facility locations from a finite set of possible locations. 
 In order to make a decision, the WSP must first analyze the data collected from current use of services. 
-The collected data should includes the records of invocations from each unique IP address.
+The collected data should include the records of invocations from each unique IP address.
 Therefore, based on these data, the WSP could summarize several customer demands concentrated on \textit{n} discrete nodes \cite{Aboolian}, namely user centers. 
 We assume that the WSP has already done this step and a list of user centers and candidate service deployment locations are given.
 In addition to deciding locations to of the services, information about network latency between user centers and candidate locations is needed. 
@@ -206,7 +211,7 @@ To model service location-allocation problem, we need to make use of a set of ma
 For service location-allocation problem, we need information of service usage, network latency, and service deployment cost to decide service location-allocation so that the overall network latency can be minimized with minimal deployment cost and within constraints.
 Assume a set of $S = \{ s_{1}, s_{2}, ...s_{s}, s_{x}\}$ services are
 requested from a set of locations $I = \{ i_{1}, i_{2}, ...i_{i}, i_{y} \}$. 
-The service providers allocate services to the set of candidate facility locations $J = \{ j_{1}, j_{2}, ...j_{j}, j_{z} \}$.
+The service providers allocate services to a set of candidate facility locations $J = \{ j_{1}, j_{2}, ...j_{j}, j_{z} \}$.
 
 
 In this paper, we will use the following matrices.
@@ -252,11 +257,11 @@ $
 }
 
 A \emph{network latency matrix} $L = [l_{ij}]$, is used to record network latencies from user centers to 
-candidate locations. For example, The network latency between user center $i_{2}$ with candidate location $j_{1}$ 
+candidate locations. For example, the network latency between user center $i_{2}$ with candidate location $j_{1}$ 
 is 5.776s. These data could be collected by monitoring network latencies \cite{6076756} \cite{5552800}.
 
-The cost matrix $C = [c_{sj}]$, is used to record the cost of deployment of services to candidate locations, 
-where $c_{sj}$ is an integer that indicate the cost of the deploying a service to a location. 
+The cost matrix, $C = [c_{sj}]$, is used to record the cost of deployment of services to candidate locations, 
+where $c_{sj}$ is an integer that indicates the cost of deploying a service to a location. 
 For example, $c_{12} = $ 80 denotes the cost of deploying service $s_{1}$ to location $j_{2}$ is 80 cost units.
 
 \parbox{.45\linewidth}{
@@ -290,7 +295,6 @@ To model the service location-allocation problem, we consider the following assu
 
 A \emph{service location-allocation matrix} $A = [a_{sj}]$ represents the actual service location-allocation, where $a_{sj}$  is a binary value 1 or 0 to indicate whether a service is allocate to a location or not.
 
-
 Using service location allocation matrix $A = [a_{sj}]$ and network latency matrix $L = [l_{ij}]$, we can compute user
 response time matrix $R = [r_{is}]$, 
 
@@ -301,7 +305,7 @@ response time matrix $R = [r_{is}]$,
 \\}
 For example, we can use the two example matrices $L$ and $A$ presented above to construct the response time matrix $R$. 
 For each service $s$, by checking matrix $A$, we can find out which location the service has been deployed.
-Then look back matrix $L$, find out its corresponding latency to each user center $i$. If there is
+Then we check matrix $L$, to find out its corresponding latency to each user center $i$. If there is
 more than one location, then the smallest latency is selected. Therefore, we can construct the response time matrix $R$ as:
 
 {\centering
@@ -313,38 +317,31 @@ R = \bbordermatrix{~ & s_{1} & s_{2} & s_{3}\cr
 $
 \\}
 
-
 \section{NSGA-II for Web Services Location Allocation}
 \label{sec:algorithm_des}
-To apply NSGA-II to the service location-allocation problem, the first step is to define the variable in NSGA-II, i.e. to
+To apply NSGA-II to the service location-allocation problem, the first step is to define the variable in NSGA-II, i.e., to
 identify chromosome, genetic operators and the fitness functions.
 
 \subsection{Chromosome Representation and Constraints}
 In our approach, we model the service location matrix $A$ = $[a_{sj}]$ as a chromosome that we mentioned in Section 
-\ref{sec:problem}.
-
-The constraint setting is based on service providers' needs. One can set multiply constraints to the problem to narrow the potential searching space.
+\ref{sec:problem}. The constraint setting is based on service providers' needs. One can set multiply constraints to the problem to narrow the potential searching space.
 In our case, we set two basic constraints. The first constraint service number constraint requires that each service is deployed in at 
 least one location.
 
-{\vspace*{0mm}
+{
 	\centering
 	\begin{equation}
 		\sum\limits_{x \in S} a_{xj} \geq 1
 	\end{equation}
 \\}
-
 The second constraint, is cost constraint, which sets up  the upper boundary of the total cost.
 An integer number $CostLimitation$ is decided by the WSP.
-
-{\vspace*{0mm}
+{
 	\centering
 	\begin{equation}
 		\sum\limits_{s \in S} \sum\limits_{j \in J} c_{sj} \times a_{sj} \leq CostLimitation
 	\end{equation}
 \\}
-
-
 \subsection{Genetic Operators}
 \label{sec:operators}
  The original NSGA-II uses a simulated 
@@ -356,41 +353,41 @@ The selection operator is the tournament selection \cite{Xie:2008:AMI:1389095.13
 of being reproduced to next generation.
 
 \begin{flushleft}\textbf{Mutation} The mutation operator works as follows: initially choose one random location from the chromosome. 
-Then, this location is replaced by by its inverse value e.g 1 to 0 or 0 to 1.
-\end{flushleft}
-
+Then, this location is replaced by its inverse value, e.g., change 1 to 0 or change 0 to 1.
 In this study, a chromosome in a population will be selected based on mutation possibility $P_{m}$, which is 
 a parameter predefined and fixed.
+\end{flushleft}
 %As shown in below, a random position will be selected and replaced by a reversed number.
-\begin{figure}[ht]
-\centering
-	\includegraphics[width=0.5\textwidth]{pics/mutation.png}
-\caption{}
-\label{graph1}
-\end{figure}
+%\vspace{-1mm}
+%\begin{figure}[ht]
+%\centering
+	%\includegraphics[width=0.5\textwidth]{pics/mutation.png}
+%\caption{Mutation}
+%\label{graph1}
+%\end{figure}
 \begin{flushleft}\textbf{Crossover} The crossover operator in this paper is the single point crossover. 
 The crossover is controlled by crossover probability $P_{c}$, is a parameter predefined and fixed.
 The crossover point is created randomly within the length of the chromosome. 
 \end{flushleft}
-%As in the example below, two parents crossover at a point, to generate two offsprings.
-\begin{figure}[ht]
-\centering
-	\includegraphics[width=0.5\textwidth]{pics/crossover.png}
-\caption{}
-\label{graph2}
-\end{figure}
+%\begin{figure}[ht]
+%\centering
+	%\includegraphics[width=0.7\textwidth]{pics/crossover.png}
+%\caption{Crossover}
+%\label{graph2}
+%\end{figure}
 
+%\vspace{-1mm}
 \subsubsection{Fitness Function}
 \label{sec:fitness_functions}
 \begin{flushleft}In order to accomplish these two objectives, we design two fitness functions to evaluate 
-how good each chromosome meets the objectives. We use CostFitness to calculate the overall cost of deploying services under an allocation plan\end{flushleft}
+how good each chromosome meets the objectives. We use \emph{CostFitness} to calculate the overall cost of deploying services under an allocation plan\end{flushleft}
 %\subsubsection{Cost fitness function}
 
 \begin{equation}
 	CostFitness = \sum\limits_{s \in S} \sum\limits_{j \in J} c_{sj} \times a_{sj}
 \end{equation}
 
-\begin{flushleft}$c_{sj}$ is the cost of deploying service $s$ at location $j$, where $a_{sj}$ represents the deployment plan. The sum of the multiplication of 
+\begin{flushleft}where $c_{sj}$ is the cost of deploying service $s$ at location $j$, $a_{sj}$ represents the deployment plan. The sum of the multiplication of 
 $c_{sj}$ and $a_{sj}$ is the total deployment cost.\end{flushleft}
 
 
@@ -401,25 +398,26 @@ $c_{sj}$ and $a_{sj}$ is the total deployment cost.\end{flushleft}
 	%&= 130 * 0 + 80 * 1 + 60 * 0 + ... + 54 * 0 \\
 	%&= 228
 	%$
-We assume the latency is symmetrical between user center and candidate location. e.g. 
-The latency from location $i$ to location $j$ is same with the latency from location $j$ to location $i$.
-
+We assume the latency is symmetrical between user center and candidate location.
+e.g., $l_{ij} = l_{ji}$
 	\begin{equation}
 		LatencyFitness = \sum\limits_{i \in I} \sum\limits_{s \in S} r_{is} \times f_{is}
 	\end{equation}
 
 \subsubsection{Normalise function}
-To indicate the goodness of an allocation solution we normalise CostFitness and LatencyFitness according to the largest and minimum values of
-CostFitness and LatencyFitness. Normalised fitness values can also be used to compare results from different approaches.
-Since the maximum and minimum value for total cost and total latency are deterministic, we use exhaustive search to
+To indicate the goodness of an allocation solution we normalise \emph{CostFitness} and \emph{LatencyFitness} according to the largest and minimum values of
+\emph{CostFitness} and \emph{LatencyFitness}. Normalised fitness values can also be used to compare results from different approaches.
+Since the maximum and minimum values for total cost and total latency are deterministic, we use exhaustive search to
 find out the $Latency_{max}$. $Latency_{min}$ is zero for we assume each service could be deployed in each user center. 
-$Cost_{min}$ is the cost of allocation each of services at a location that leads to minimal cost and $Cost_{max}$ is the cost of allocation when each service is allocated to all the 
+$Cost_{min}$ is the cost of allocating each of services at a location that leads to the minimal cost and $Cost_{max}$ is the cost of allocating each service is allocated to all the 
 locations.
 	\begin{equation}
+		\label{eq:cost_prime}
 		CostFitness^\prime = \frac{CostFitness - Cost_{min}}{Cost_{max} - Cost_{min}}
 	\end{equation}
 
 	\begin{equation}
+		\label{eq:latency_prime}
 		LatencyFitness^\prime = \frac{LatencyFitness - Latency_{min}}{Latency_{max} - Latency_{min}}
 	\end{equation}
 %\begin{flushleft}For example, we use the above mentioned matrices F and R.\end{flushleft}
@@ -430,10 +428,10 @@ locations.
 	%&= 1300.696
 	%$
 
-
-
 \subsection{NSGA-II based algorithm for service location-allocation}
 %Algorithm \ref{NSGA2} shows the precedure of NSGA-II applied on service location-allocation problem.
+In this section we present our NSGA-II based algorithm for service location-allocation as Algorithm 1,
+comparing with the original NSGA-II our  proposed algorithm has two new features.
 \begin{algorithm}[htb]
 	\caption{NSGA-II for service location-allocation}
 	\label{NSGA2}
@@ -447,6 +445,7 @@ locations.
 		Pareto Front:a  set of service allocation matrix $A$
 
 	\begin{algorithmic}[1]
+		\label{alg:1}
 		\State Initialize a population of chromosome with random binary values
 		\State Evaluate population with fitness functions
 		\State Non-dominated sort and assign a ranking to each chromosome
@@ -476,32 +475,34 @@ locations.
 	\end{algorithmic}
 \end{algorithm}
 
-There are two major differences between standard NSGA-II and modified version. Firstly, in order to avoid repeatly evaluate the fitness
-of chromosome. After the first generation is initialized, the Pareto front will be 
-stored in the memory. In each generation, when evaluate the chromosome, the chromosome is checked to see it exists in the memory pool. 
+Firstly, in order to avoid repeatly evaluating the fitness
+of chromosomes, after the first generation is initialized, it storing the Pareto front 
+in the memory. In each generation, when evaluate the chromosome, the chromosome is checked to see it exists in the memory pool. 
 If so, then the calculation of fitness will be skipped. At the end of each iteration, the Pareto front pool is updated to the current Pareto front.
 The reason for setting a memory pool is that, after a number of iterations, the population start converging. 
 Most of the population are redundant. Therefore, a memory pool could considerably reduce the repeated computation.
 
-The other difference is that, we use general mutation and crossover operation instead of polynomial mutation and simulated binary crossover.
+Secondly, it uses general mutation and crossover operation instead of polynomial mutation and simulated binary crossover.
 It is important to note that the mutation and crossover operators can produce solutions that might violate the constraints. 
 Therefore, repair operators are needed to try to maintain feasible solutions. The proposed algorithm checks the cost and service number constraint to avoid
 possible infeasible solutions.
 
 \section{GA for Web Service Location Allocation}
-In order to show the advantages of our multi-objective NSGA-II approach, we extend the single-objective algorithm GA based approach in \cite{Huang} to consider two objectives. 
-The extended GA-based approach is show as following. A weight $w$ needs to be predefined in GA. The weight is used for 
+\label{sec:GA}
+
+In order to show the advantages of our multi-objective NSGA-II based approach, we extend the single-objective GA based approach in \cite{Huang} to consider two objectives. 
+The extended GA-based approach is shown as Algorithm 2. A weight $w$ needs to be predefined in GA, for 
 measuring the importance of objectives. Conventionally, the weight is in the range of $[0, 1]$. In our approach, we define the weight equals 0.5.
 
-\subsubsection{Fitness function}
 As in Section \ref{sec:model} we model an allocation matrix as a chromosome. Crossover and mutation operators are same as defined in Section \ref{sec:operators}.
 To evaluate the chromosomes of population.
-We use Integer Scalarization technique to calculate the fitness value. $w$ is a predefined value to measure the important of cost and latency. Note that CostFitness and LatencyFitness
-are calculate in the same as in section \ref{sec:fitness_functions}.
-
+We use Integer Scalarization technique to calculate the fitness value. 
 \begin{equation}
-		Fitness = w \times CostFitness + (1 - w) \times LatencyFitness
+		Fitness = w \times CostFitness^\prime + (1 - w) \times LatencyFitness^\prime
 	\end{equation}
+
+	$w$ is a predefined value used to measure the important of cost and latency. Note that \emph{CostFitness} and \emph{LatencyFitness}
+	are calculated using Formula \ref{eq:cost_prime} and \ref{eq:latency_prime} in section \ref{sec:fitness_functions}.
 
 
 \begin{algorithm}[htb]
@@ -601,17 +602,14 @@ are calculate in the same as in section \ref{sec:fitness_functions}.
 
 \section{Experiment Evaluation}
 \label{sec:experiment}
-To evaluate the effectiveness and efficiency of our proposed NSGA-II based approach to service location-allocation. We compare our approach with a GA-based single objective approach
-using an existing dataset, WS-DREAM \cite{6076756} \cite{5552800}, which is a historical dataset on QoS of Web services from different locations. It contains the data of latency
-from 339 different user locations invoked 7824 web services scattered over different locations.
-
+To evaluate the effectiveness and efficiency of our proposed NSGA-II based approach to service location-allocation. We compare our approach with the GA-based single objective approach in Section \ref{sec:GA}
+using an existing dataset, WS-DREAM \cite{6076756} \cite{5552800}, which is a historical dataset on QoS of Web services from different locations. It contains the data of latencies
+from 339 different user locations invoked 5824 web services scattered over different locations.
 The algorithm was coded in R \cite{Morandat:2012:EDR:2367163.2367172} using existed package: NSGA2R. The program was run on a 3.40GHz 
-desktop computer with 8 GB RAM.
-
-4 different service location-allocation problems are designed with different complexities.
+desktop computer with 8 GB RAM. Four different service location-allocation problems are designed with different complexities.
 \begin{table}[h]
 {\centering
-	\caption{Complexity table}
+	\caption{Test Cases}
 	\begin{tabular}{|c|c|c|c|}
 		\hline
 		\multicolumn{1}{|l|}{problem} & \multicolumn{1}{l|}{user location} & \multicolumn{1}{l|}{server location} & \multicolumn{1}{l|}{number of service} \\\hline
@@ -623,16 +621,15 @@ desktop computer with 8 GB RAM.
 	\end{tabular}
 \\}
 \end{table}
-
 %To compare with IPGO, four different datasets were used, the problem instance was generated as follows:
-	A cost matrix is randomly generated from a normal distribution with mean = 100 and standard deviation = 20, in addition, a frequency matrix was an integer matrix which is randomly generated from a uniform distribution on [1, 120].
+	A cost matrix is randomly generated from a normal distribution with mean as 100 and standard deviation as 20. In addition, a frequency matrix, is randomly generated from a uniform distribution over [1, 120].
 
 
-In each dataset, algorithms run under four different levels of cost constraints: Sufficient condition is 100\% the expected total cost, 
+In each dataset, algorithms are run under four different levels of cost constraints: Sufficient condition (indicating 100\% the expected total cost), 
 good condition (70\%), pool condition (40\%) and minimum budget condition (0\%). We try to stimulated a real world budget condition with these four 
 scenarios. In the minimum budget condition, 
-both algorithms exhaustively reduce the cost until it reaches the service number constraint. The NSGA-II runs 40 independent times with different random 
-seeds ranging from 1 to 40. To test the efficiency of the algorithms, We evaluate the average run time for each algorithm. 
+both algorithms exhaustively reduce the cost until it reaches the service number constraint. The NSGA-II based algorithm is runs 40 independent times with different random 
+seeds ranging from 1 to 40. To test the efficiency of the algorithms, we evaluate the average run time for each algorithm. 
 
 
 Parameter settings for the algorithms are as follow. The population size is 50, and the maximum number of 
@@ -640,25 +637,23 @@ generations is 50. The tournament size is 3.
 The crossover probability $P_{c}$ is 0.8 and the mutation probability $P_{m}$ 
 is 0.2 as we found that this combination can produce good results. We use same parameter settings for GA. 
 
-To compare with the result of NSGA-II and GA, we first derive the Pareto front by using the approach in \cite{Xue} \cite{6381531}, and then compare the results using approach in \cite{1688438}.
+To compare the result of Algorithm 1 with GA-based algorithm (Algorithm 2), we first derive the Pareto front by using the approach in \cite{Xue} \cite{6381531}, and then compare the results using approach in \cite{1688438}.
 In Xue's approach, NSGA-II generates 40 results (from 40 runs) under each cost constraint 
 are presented in the Section \ref{sec:comparison}. 40 sets of solutions 
-achieved by each multi-objective algorithm are firstly combined into one union set. GA also generates 40 sets of 
+achieved by each multi-objective algorithm are firstly combined into one set. GA also generates 40 sets of 
 solutions, we select the best one based on its fitness value from each set and combine them into one set. 
 The non-dominated solutions are presented to compare with the solutions achieved by GA.
 
-In addition to the comparison between NSGA-II and GA, we conducted full experiments on NSGA-II with an initialisation and GA with an initialisation.
+In addition to the comparison between NSGA-II based algorithm and GA based algorithm, we conducted full experiments on NSGA-II with an initialisation and GA with an initialisation.
 We initialized the population with 49 random chromosomes and a chromosome which leading to minimum cost. We expect the initialized algorithms superior than
 the uninitialized algorithms.
 
 \subsection{Effectiveness comparison}
 \label{sec:comparison}
-We conducted experiments on NSGA-II, GA, NSGA-II with initialisation and GA with initialisation respectively.
-
-We use cost fitness value and latency fitness value as 
+We conducted experiments on NSGA-II, GA, NSGA-II with initialisation and GA with initialisation respectively. We use cost fitness value and latency fitness value as 
 x, y coordinate. Our goal is to minimize both cost and latency. Therefore, better solution should locate close to the origin.
 
-Experimental results show that few different cost constraints leads to similar result patterns. Due to the page limitation we shows the results of one cost constraints.
+Experimental results show that fewer different cost constraints leads to similar result patterns. Due to the page limitation we shows the results of one cost constraints.
 %As a result, these four conditions show similar pattern as in Figure \ref{fig:c1}. 
 %The difference between these four scenarios is that the repair operator
 %will try to narrow the searching space, hence the solutions will be pushed closer to the y axis.
@@ -688,14 +683,14 @@ Experimental results show that few different cost constraints leads to similar r
 		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_sufficient_initialisation.png}
 		\caption{15 $\times$ 15}
 	\end{subfigure}
-	\caption{}\label{fig:c1}
+	\caption{Comparisons Between NSGA-II, GA, initialized-NSGA-II and initialized-GA}\label{fig:c1}
 \end{figure}
 
-From the above results we can see that for all the four problems, NSGA-II based approach produces results that dominate or overlap the results from GA based approach. Further,
-NSGA-II with an initialized chromosome that represents service location-allocation of the minimum cost dominate the results without a chromosome of the lower cost, though problem 1 and
+From the above results we can see that for all the four problems, NSGA-II based approaches produce results that dominate or overlap the results from GA based approach. Further,
+NSGA-II with an initialized chromosome that represents service location-allocation of the minimum cost dominate the results without a chromosome of the lower cost, though for problem 1 and
 problem 2 of small complexity size, this observation is not obvious.
 
-In particular, for big problems 3 and 4, results of NSGA-II based approaches dominate the results of GA-based approaches. We also notice that for problems even though the population size
+In particular, for big problems, problem 3 and 4, results of NSGA-II based approaches dominate the results of GA-based approaches. We also notice that even though the population size
 is small as 50, including a chromosome of optimal cost can help to narrow down searching space and to converge to optimal solution faster.
 %In 10 $\times$ 10, 15 $\times$ 15 matrices, both results NSGA-II dominate GA, half solutions from initialized GA are better than NSGA-II and initialized NSGA-II still dominate initialized GA.
 
@@ -716,11 +711,11 @@ is small as 50, including a chromosome of optimal cost can help to narrow down s
 \subsection{Efficiency comparison}
 %\small
 \begin{table}[h]
-\caption{Efficiency Test}
+	\caption{Execution Time (s)}
 \scalebox{0.75}{
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
 \hline
- & \multicolumn{2}{l|}{$3 \times 3$} & \multicolumn{2}{l|}{$5 \times 5$} & \multicolumn{2}{l|}{$10 \times 10$} & \multicolumn{2}{l|}{$15 \times 15$} \\ \hline
+ & \multicolumn{2}{l|}{problem 1} & \multicolumn{2}{l|}{problem 2} & \multicolumn{2}{l|}{problem 3} & \multicolumn{2}{l|}{problem 4} \\ \hline
 	&	NSGA-II(s)	&	GA(s)	& 	NSGA-II(s)	& 	GA(s)	&  	NSGA-II(s)	&  	GA(s)	& 	NSGA-II(s)	&   GA(s)\\ \hline
 Sufficient 		&4.4 $\pm$ 0.3		& 1.6 	$\pm$ 0.1	$\downarrow$& 5.9 $\pm$ 0.1& 3.2 $\pm$ 0.1	$\downarrow$& 13.7 $\pm$ 0.1&11.0 $\pm$ 0.1 & 27.0 $\pm$ 0.1 &23.9 $\pm$0.5$\downarrow$\\ \hline
  Good 			&4.4 $\pm$ 0.2		& 1.6 $\pm$0.1 $\downarrow$     &6.0 $\pm$ 0.1 &3.2 $\pm$ 0.1  $\downarrow$&13.9 $\pm$ 0.08  & 11.1 $\pm$ 0.3  &27.2 $\pm$ 0.1          &24.1 $\pm$ 0.27 $\downarrow$     \\ \hline
@@ -730,7 +725,8 @@ Sufficient 		&4.4 $\pm$ 0.3		& 1.6 	$\pm$ 0.1	$\downarrow$& 5.9 $\pm$ 0.1& 3.2 $
 }
 \end{table}
 The results from initialized algorithms are similar with uninitialized algorithms, therefore we only present the uninitialized results.
-As shown in the table above for small problems GA based approach are faster. However for bigger problem (problem 3 and 4) NSGA-II shows its efficiency. Also NSGA-II produces a set of 
+As shown in the table above for small problems GA based approach are faster. However for bigger problem (problem 3 and 4) NSGA-II based approach, are more efficient than GA-based approach. 
+Also NSGA-II based approach produces a set of 
 non-dominated solutions instead of one solution, which provide WSPs with more options.
 %As the experimental results show, along with the cost constraint decreases, the running time increases especially when 
 %the size of matrix is large. In terms of small dataset, GA is slightly better than NSGA-II. As the matrix getting bigger,
@@ -757,7 +753,9 @@ In this paper, we proposed a NSGA-II based approach to web service location-allo
 %greatly reduces the evaluation time while the diversity of the population gradually decreases. 
 Our approach consider two objectives, minimizing cost  and minimizing network latency at the same time.
 We have conducted a full experimental evaluation using the public WS-DREAM dataset to compare our approach to single-objective GA-based approach.
-The experimental results shows the NSGA-II is effective to produce a set near-optima solutions for the web service location-allocation problem.
+The experimental results shows the NSGA-II based approach is effective to produce a set near-optima solutions for the web service location-allocation problem.
+Also, NSGA-II based approach are more efficient than GA-based approach for problem with big number of user centers and server locations. Future work will investigate the scalability of 
+our proposed approaches for big datasets.
 
 \bibliography{llncs}
 \bibliographystyle{splncs03}
