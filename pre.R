@@ -4,8 +4,6 @@ predata <- function(matrixSize){
 	cost_matrix <<- matrix(floor(rnorm(matrixSize * matrixSize, 100, 20)), 
 						  nrow = matrixSize, ncol = matrixSize)
 
-	#cost_matrix <<- matrix(rnorm(matrixSize * matrixSize, 100, 20), 
-						  #nrow = matrixSize, ncol = matrixSize)
 	frequency_matrix <<- matrix(data = floor(runif(matrixSize * matrixSize, 1, 120)), 
 							   nrow = matrixSize, ncol = matrixSize)
 

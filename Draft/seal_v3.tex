@@ -22,9 +22,9 @@
 \setlength{\parskip}{0cm}
 \setlength{\parindent}{1em}
 \usepackage[compact]{titlesec}
-\titlespacing{\section}{0pt}{2ex}{1ex}
-\titlespacing{\subsection}{0pt}{1ex}{0ex}
-\titlespacing{\subsubsection}{0pt}{0.5ex}{0ex}
+\titlespacing{\section}{1pt}{2ex}{1ex}
+\titlespacing{\subsection}{1pt}{1ex}{1ex}
+\titlespacing{\subsubsection}{1pt}{1ex}{1ex}
 
 \title{
 Optimization of Location Allocation of Web Services Using A Modified Non-dominated Sorting Genetic Algorithm
@@ -59,26 +59,34 @@ Web Services are considered as self-contained, self-describing, modular applicat
 In recent years, web services technology is becoming increasingly popular because of the convenience, low cost \cite{Aboolian} and capacity to be composed into high-level business processes.
 
 With the ever increasing number of functional similar web services being available on the Internet, the web service providers (WSPs) are trying to improve the quality of service (QoS) to become competitive in the market.  
-QoS, also known as non-functional requirements to  web services, is the degree to which a service meets specified requirements or user needs \cite{4061431}, such as response time, security and availability. 
-Among numerous QoS measurements, service response time is a critical factor for many real-time services, e.g. traffic service or finance service. 
-Service response time has two components: transmission time (variable with message size) and network latency \cite{Johansson}. 
+QoS is the degree to which a service meets specified requirements or web service users' needs \cite{4061431}, such as response time, security and availability. 
+Service response time is a critical measurement for many real-time services, e.g. traffic service or finance service. 
+Service response time has two components: transmission time and network latency \cite{Johansson}. 
 Study \cite{916684} shows that network latency is a significant component of service response delay.
 Ignoring network latency will underestimate response time by more than 80 percent \cite{Sun}, since network latency is related to network topology as well as physical distance \cite{distanceMetrics}. 
 To reduce the network latency WSPs need to allocate services location where has the lower latency to the user center that
-access the services. Ideally, WSPs could deploy their services to each user center in order to provide the best quality.
+access the services. 
+User center denotes a geometric location (e.g., a city) that is encompassed by a service area. 
+%Service area, also known as trade area, 
+%is a region where web service users concentrated at. 
+%There are many ways to identify service
+%areas such as using IP information or user generated location data \cite{Qu}.
+Ideally, WSPs could deploy their services to each user center in order to provide the best quality.
 However, the more services deployed, the better the quality and the higher cost. 
 
 
-The Web service location-allocation problem is essentially a multi-objective optimization problem \cite{Multiobjective}, for which there are two conflict objectives, to provide optimal 
-QoS to service users and to consume minimal deployment cost.
-This problem is considered as NP-hard due to the fact that the combinatorial explosion of the search space \cite{Vanrompay}. 
+The Web service location-allocation problem is essentially a multi-objective optimization problem \cite{Multiobjective}, for which there are two conflict objectives,
+to provide optimal QoS to web service users and to consume minimal deployment cost.
+This problem can be classified as a multidimensional knapsack problem (MKP), therefore, it is
+considered NP-hard due to the fact that the combinatorial explosion of the search space 
+\cite{Vanrompay}.
 
 
 Very few researches have studied the service location-allocation problem and most of the researchers treat this problem as a single objective problem.
 \cite{Aboolian} \cite{Sun} try to solve the problem by using integer linear programming techniques.
-In particular, \cite{Sun} solved this problem by employing greedy and linear relaxations of Integer 
-transpotation problem.
-However, the major problem for this approach is that linear programming is not scaling.
+In particular, \cite{Sun} solved this problem by employing greedy and linear relaxations of Integer transpotation problem.
+However, integer programming (IP) is very effective for small-scale or mid-scale 
+MKP but suffers from large memory requirement for large-scale MKP \cite{Hwang11aninteger}.
 %As a result, the solution is easily stuck at local optima.
 Huang \cite{EnhancedGenetic} proposed an enhanced genetic algorithm (GA)-based approach, which make use of the integer scalarization technique to solve this problem.
 %GA \cite{man1996genetic} is an Evolutionary algorithm (EA) that uses genetic operators to obtain optimal solutions without any assumptions about the search space.
@@ -95,30 +103,13 @@ one single simulation run \cite{OptimizationElectrical}. Among numerous EMO algo
 Non-dominated sorting GA (NSGA-II) \cite{996017}, Strength Pareto Evolutionary Algorithm 2 (SPEA-2) \cite{Deb} have become standard approaches. 
 Some schemes based on particle swarm optimization (PSO) approaches are also proposed \cite{Elhossini} \cite{Huang}.
 NSGA-II is one of the most widely used methods for generating the Pareto frontier, because it can keep diversity without specifying any additional parameters \cite{Deb06referencepoint}.
-In this paper, we propose to use NSGA-II to solve the web service location-allocation problem, which has two objectives, to minimize
+In this paper, we propose to use NSGA-II to solve the web service 
+location-allocation problem, which has two objectives, to minimize
 cost and deployment network latency.
 
 
-%
-%To show the effective and efficiency of our proposed NSGA-II based approach, we conduct an experiment to compare our approach with
-%traditional approach based on integer programming and greedy optimization (IPGO). IPGO models one objective as an assignment problem then uses integer programming techniques to 
-%obtain an optimal solution. Then, based on this solution, the algorithm further optimize the other objective using greedy algorithm. 
-%The major advantage of IPGO is that it is very efficient and gives 
-%an reasonably good result. On the other hand, the objectives are considered unevenly. That is, IPGO considers the objective which optimize by linear programming as its priority.
-%
-
-%The aim of this research is to provide a framework that guides a WSP to locate services.
-We consider the problem faced by a WSP who has existing facilities but wishes to use the collected data to re-allocate their services in order to maximum their profit.
-The WSP must decide on facility locations from a finite set of possible locations. 
-In order to make a decision, the WSP must first analyze the data collected from current use of services. 
-The collected data should include the records of invocations from each unique IP address.
-Therefore, based on these data, the WSP could summarize several customer demands concentrated on \textit{n} discrete nodes \cite{Aboolian}, namely user centers. 
-We assume that the WSP has already done this step and a list of user centers and candidate service deployment locations are given.
-In addition to deciding locations to of the services, information about network latency between user centers and candidate locations is needed. 
-Exist datasets in \cite{6076756} \cite{5552800} contain latency information collected from the real world. 
-
 The aim of this project is to propose a NSGA-II based approach to produce a set of near optimal solutions of service location-allocation, so that cost and overall network latency are 
-close to minimum. Then, the service provider could use the algorithm which proposed by this paper, to select an optimal plan based on their funds. 
+close to minimum. Then, the WSPs could use the algorithm which proposed by this paper, to select an optimal plan based on their funds. 
 The main objectives are:
 \begin{itemize}
 	\item To model the web service location-allocation problem so that it can be tackled by NSGA-II.
@@ -143,8 +134,8 @@ The experimental design and results evaluation are shown in Section \ref{sec:exp
 %The first approach \cite{Aboolian} assumes the model is based on a duopoly competitive market.
 %The second approach \cite{Sun} assumes multiple competition services have been established in the market.
 %Some researchers use evolutionary algorithms. Huang \cite{EnhancedGenetic} applied an enhanced GA algorithm which employ the integer scalarization technique \cite{Multiobjective}. However, 
-GA \cite{man1996genetic} is a powerful tool to solve combinatorial optimization problems. It is an iterative procedure based on a constant-size population. In a GA, a population of strings (called chromosomes
-or the genotype of the genome), which are encoded as candidate solutions (called individuals, creatures, or phenotypes) to an optimization problem, evolves towards better solutions. 
+GA \cite{man1996genetic} is a powerful tool to solve combinatorial optimization problems. It is an iterative procedure based on a constant-size population. In a GA, a population of strings (called chromosomes), 
+which are encoded as candidate solutions (called individuals) to an optimization problem, evolves towards better solutions. 
 Each genome is associated with a fitness value based on a fitness function that indicates how close it comes to meeting the overall specification, when compared to other genomes in the
 population. The fitness value of an individual is also an indication of its chances of survival and reproduction in the next generation. A typical genetic algorithm requires a genetic
 representation of the solution domain and a fitness function to evaluate the solution domain. Since a chromosome from the population represents a solution, when the algorithm starts, 
@@ -152,7 +143,9 @@ the whole population moves like one group towards an optimal area so the GA sear
 used to solve multi-objective problems with GA. It predefines a weight for each objective.
 
 NSGA-II is a multi-objective algorithm based on GA. When used for problems with only two objectives, NSGA-II performs 
-relatively well in both convergence and  computing speed. It permits a remarkable level of flexibility with regard to 
+well in both convergence and  computing speed. However, NSGA-II has been
+criticized for its high computational cost and bad performance with
+more than two objectives \cite{nsga2_cri}. NSGA-II permits a remarkable level of flexibility with regard to 
 performance assessment and design specification. NSGA-II assumes that every chromosome in the population has two 
 attributes: a non-domination rank in the population and a local crowding distance in the population. The goal of 
 NSGA-II is to converge to the Pareto front as possible and with even spread of the solutions on the front by 
@@ -189,11 +182,12 @@ The selection is based on rank and the on crowding distance on the last front.
 %
 %
 %
+\vspace*{-1em}
 \section{Problem Description and Modeling}
 \label{sec:problem}
-In this section, we first describe the service location-allocation problem, then we will present models for the services location allocation problem.
+%In this section, we first describe the service location-allocation problem, then we will present models for the services location allocation problem.
 
-\subsection{Problem Description}
+\subsection{Problem Description and Assumptions}
 Web service location-allocation problem is to determine reasonable locations for web services so that the deployment cost of WSP can be minimized while service performance can be optimized.
 In this paper, to optimize service performance we consider to minimize network latency.
 
@@ -203,6 +197,52 @@ The task of service location allocation has two objectives:
 	\item To minimize the total network latency of the services.
 \end{itemize}
 
+%To model the service location-allocation problem, we consider the following assumptions:
+%\begin{enumerate}
+	%\item The new WSP decides where to locate his facilities regardless of there is existed functional similar services from other WSPs.
+	%\item The decision of service location-allocation is made only considering two factors: total network latency and total cost.
+	%\item A static allocation policy is used by WSPs. In practice, Web services typically offer clients persistent and interactive services, which often span over multiple sessions. Therefore, a dynamic reallocation scheme is not practical as it may disrupt the continuity of the services.
+%\end{enumerate}
+\subsubsection{Stakeholder Web Service Providers}
+We consider the problem faced by a WSP who has existing facilities but wishes to 
+use the collected data to re-allocate their services in order to maximum their profit.
+
+The WSP must decide on facility locations from a finite set of possible locations. 
+In order to make a decision, the WSP must first analyze the data collected from current use of services. 
+The collected data should include the records of invocations from each unique IP address.
+Therefore, based on these data, the WSP could summarize several customer demands concentrated on \textit{n} discrete nodes \cite{Aboolian}, namely user centers. 
+We assume that the WSP has already done this step and a list of user centers and candidate 
+locations are given. Candidate location is the geometric location that is suitable to 
+deploy services. Candidate locations are selected based on other criterions such as 
+facilities or deployment cost. User centers and candidate locations are very likely overlapping since 
+web serivce users receive best QoS services if the web serivces are deployed locally.
+In addition to deciding locations to of the services, information about network latency between user centers and candidate locations are needed. 
+
+
+The list below shows some critical information that should be providered by the WSPs. 1. A list of user centers.
+	2. A list of candidate locations
+	3. Service invocation frequency from user centers to services
+	4. Average network latency from user centers to candidate locations
+	5. Web service deployment cost for each candidate location
+%\end{enumerate}
+
+Worth noting that service invocation frequency are changing over time. For example, a 
+service was popular in some regions may be unfrequented after a few months. That's the 
+main reason for WSPs re-allocate their services. Network latency highly depends on the 
+network traffic and may be very different during periods of a day. However, as long as 
+there is no significant changes in the network topology, the average network latency
+remain stable. Therefore, the average network latency for a period of time should be 
+representative.
+
+These are the main input data that the decision making is dependent on. The details of 
+these input data and modeling are introduced in Section \ref{sec:model}. 
+
+\subsubsection{Static deployment vs. Dynamic deployment}
+As virtual machine technology and infrastracture-as-a-service (IaaS) are becoming
+more and more popular. Dynamic web service deployment become possible \cite{kemps2012dynamic}. On the other hand, static deployment is still the mainstream because of a majority
+of web serivce are deployed on local infrastracture \cite{He}. In this paper, we made an
+assumption that WSPs periodicaly change the web service deployment since the user centers
+are changing over time.
 
 \subsection{Model Formulation}
 \label{sec:model}
@@ -231,7 +271,7 @@ In this paper, we will use the following matrices.
 %\\
 }
 \end{center}
-A \emph{service invocation frequency matrix}, $F= [f_{is}]$, is used to record services invocation frequencies from user centers, 
+\emph{service invocation frequency matrix}, $F= [f_{is}]$, is used to record services invocation frequencies from user centers, 
 where $f_{is}$ is an integer that indicates the number of invocations in a period of time from a user center to a service. 
 For example, $f_{13}$ = 85 denotes service $s_{1}$ is called 85 times in a predefined period of time.
 
@@ -256,7 +296,7 @@ $
 \\}
 }
 
-A \emph{network latency matrix} $L = [l_{ij}]$, is used to record network latencies from user centers to 
+\emph{network latency matrix} $L = [l_{ij}]$, is used to record network latencies from user centers to 
 candidate locations. For example, the network latency between user center $i_{2}$ with candidate location $j_{1}$ 
 is 5.776s. These data could be collected by monitoring network latencies \cite{6076756} \cite{5552800}.
 
@@ -285,15 +325,8 @@ $
 \\}
 }
 
-To model the service location-allocation problem, we consider the following assumptions:
-\begin{enumerate}
-	\item The new WSP decides where to locate his facilities regardless of there is existed functional similar services from other WSPs.
-	\item The decision of service location-allocation is made only considering two factors: total network latency and total cost.
-	\item A static allocation policy is used by WSPs. In practice, Web services typically offer clients persistent and interactive services, which often span over multiple sessions. Therefore, a dynamic reallocation scheme is not practical as it may disrupt the continuity of the services.
-\end{enumerate}
 
-
-A \emph{service location-allocation matrix} $A = [a_{sj}]$ represents the actual service location-allocation, where $a_{sj}$  is a binary value 1 or 0 to indicate whether a service is allocate to a location or not.
+\emph{service location-allocation matrix} $A = [a_{sj}]$ represents the actual service location-allocation, where $a_{sj}$  is a binary value 1 or 0 to indicate whether a service is allocate to a location or not.
 
 Using service location allocation matrix $A = [a_{sj}]$ and network latency matrix $L = [l_{ij}]$, we can compute user
 response time matrix $R = [r_{is}]$, 
@@ -317,10 +350,29 @@ R = \bbordermatrix{~ & s_{1} & s_{2} & s_{3}\cr
 $
 \\}
 
+%\subsubsection{Summary}
+
+%\begin{flushleft}\textbf{Input}:\end{flushleft}
+%\begin{itemize}
+	%\item \emph{L}: network latency from user centers to candidate locations
+	%\item \emph{F}: service invocation frequency from user centers to web services
+	%\item \emph{C}: deployment cost for services in different candidate locations
+%\end{itemize}
+
+%\begin{flushleft}\textbf{Temporary variable}:\end{flushleft}
+%\begin{itemize}
+	%\item \emph{R}: user response matrix is a temporary variable generated during the optimization process
+%\end{itemize}
+
+%\begin{flushleft}\textbf{Output}:\end{flushleft}
+%\begin{itemize}
+	%\item \emph{A}: the solution matrix
+%\end{itemize}
+
 \section{NSGA-II for Web Services Location Allocation}
 \label{sec:algorithm_des}
-To apply NSGA-II to the service location-allocation problem, the first step is to define the variable in NSGA-II, i.e., to
-identify chromosome, genetic operators and the fitness functions.
+%To apply NSGA-II to the service location-allocation problem, the first step is to define the variable in NSGA-II, i.e., to
+%identify chromosome, genetic operators and the fitness functions.
 
 \subsection{Chromosome Representation and Constraints}
 In our approach, we model the service location matrix $A$ = $[a_{sj}]$ as a chromosome that we mentioned in Section 
@@ -328,6 +380,7 @@ In our approach, we model the service location matrix $A$ = $[a_{sj}]$ as a chro
 In our case, we set two basic constraints. The first constraint service number constraint requires that each service is deployed in at 
 least one location.
 
+\vspace*{-1em}
 {
 	\centering
 	\begin{equation}
@@ -342,12 +395,10 @@ An integer number $CostLimitation$ is decided by the WSP.
 		\sum\limits_{s \in S} \sum\limits_{j \in J} c_{sj} \times a_{sj} \leq CostLimitation
 	\end{equation}
 \\}
+\vspace*{-1em}
 \subsection{Genetic Operators}
 \label{sec:operators}
- The original NSGA-II uses a simulated 
-binary crossover (SBX) \cite{930314} and polynomial mutation \cite{Raghuwanshi04} 
-to cope with continuous problems. 
-However, our problem is discretized, therefore we use the regular GA mutation and crossover operations.
+Our problem is discretized, therefore we use the binary GA mutation and crossover operations.
 
 The selection operator is the tournament selection \cite{Xie:2008:AMI:1389095.1389347}, which allows the highest probability 
 of being reproduced to next generation.
@@ -356,9 +407,9 @@ of being reproduced to next generation.
 Then, this location is replaced by its inverse value, e.g., change 1 to 0 or change 0 to 1.
 In this study, a chromosome in a population will be selected based on mutation possibility $P_{m}$, which is 
 a parameter predefined and fixed.
-\end{flushleft}
+%\end{flushleft}
 %As shown in below, a random position will be selected and replaced by a reversed number.
-%\vspace{-1mm}
+%\vspace*{-1em}
 %\begin{figure}[ht]
 %\centering
 	%\includegraphics[width=0.5\textwidth]{pics/mutation.png}
@@ -368,21 +419,22 @@ a parameter predefined and fixed.
 \begin{flushleft}\textbf{Crossover} The crossover operator in this paper is the single point crossover. 
 The crossover is controlled by crossover probability $P_{c}$, is a parameter predefined and fixed.
 The crossover point is created randomly within the length of the chromosome. 
-\end{flushleft}
+%\end{flushleft}
 %\begin{figure}[ht]
 %\centering
 	%\includegraphics[width=0.7\textwidth]{pics/crossover.png}
 %\caption{Crossover}
 %\label{graph2}
 %\end{figure}
-
-%\vspace{-1mm}
+%
+%\vspace*{-1em}
 \subsubsection{Fitness Function}
 \label{sec:fitness_functions}
 \begin{flushleft}In order to accomplish these two objectives, we design two fitness functions to evaluate 
 how good each chromosome meets the objectives. We use \emph{CostFitness} to calculate the overall cost of deploying services under an allocation plan\end{flushleft}
 %\subsubsection{Cost fitness function}
 
+%\vspace*{-1em}
 \begin{equation}
 	CostFitness = \sum\limits_{s \in S} \sum\limits_{j \in J} c_{sj} \times a_{sj}
 \end{equation}
@@ -404,6 +456,7 @@ e.g., $l_{ij} = l_{ji}$
 		LatencyFitness = \sum\limits_{i \in I} \sum\limits_{s \in S} r_{is} \times f_{is}
 	\end{equation}
 
+\vspace*{-1em}
 \subsubsection{Normalise function}
 To indicate the goodness of an allocation solution we normalise \emph{CostFitness} and \emph{LatencyFitness} according to the largest and minimum values of
 \emph{CostFitness} and \emph{LatencyFitness}. Normalised fitness values can also be used to compare results from different approaches.
@@ -438,7 +491,6 @@ comparing with the original NSGA-II our  proposed algorithm has two new features
 	\textbf{Inputs:}
 		Cost Matrix $C$,
 		Server network latency matrix $L$, 
-		Service location matrix $A$, 
 		Service invocation frequency matrix $F$
 
 	\textbf{Outputs:}
@@ -491,8 +543,15 @@ possible infeasible solutions.
 \label{sec:GA}
 
 In order to show the advantages of our multi-objective NSGA-II based approach, we extend the single-objective GA based approach in \cite{Huang} to consider two objectives. 
-The extended GA-based approach is shown as Algorithm 2. A weight $w$ needs to be predefined in GA, for 
-measuring the importance of objectives. Conventionally, the weight is in the range of $[0, 1]$. In our approach, we define the weight equals 0.5.
+The extended GA-based approach is shown as Algorithm 2. We employ integer scalarization technique \cite{scalarization} to transform the multi-objective problem into a single objective problem.
+A weight $w$ needs to be predefined in GA. The weight measures the importance of 
+objectives. Therefore, it is used to balance which objective is more favourable to the 
+service provider. Conventionally, the weight is in the range of $[0, 1]$. 
+For example, if we define the weight equals 0.7. It denotes that we consider cost outweigh 
+network latency.
+
+In our approach, we define the weight equals 0.5 since we consider both objectives equally
+important.
 
 As in Section \ref{sec:model} we model an allocation matrix as a chromosome. Crossover and mutation operators are same as defined in Section \ref{sec:operators}.
 To evaluate the chromosomes of population.
@@ -510,7 +569,6 @@ We use Integer Scalarization technique to calculate the fitness value.
 	\textbf{Inputs:}
 		Cost Matrix $C$,
 		Server network latency matrix $L$, 
-		Service location matrix $A$, 
 		Service invocation frequency matrix $F$, 
 		weight parameter $w$
 
@@ -599,6 +657,7 @@ We use Integer Scalarization technique to calculate the fitness value.
 
 
 
+\vspace{-1mm}
 
 \section{Experiment Evaluation}
 \label{sec:experiment}
@@ -624,6 +683,7 @@ desktop computer with 8 GB RAM. Four different service location-allocation probl
 %To compare with IPGO, four different datasets were used, the problem instance was generated as follows:
 	A cost matrix is randomly generated from a normal distribution with mean as 100 and standard deviation as 20. In addition, a frequency matrix, is randomly generated from a uniform distribution over [1, 120].
 
+\vspace{-1mm}
 
 In each dataset, algorithms are run under four different levels of cost constraints: Sufficient condition (indicating 100\% the expected total cost), 
 good condition (70\%), pool condition (40\%) and minimum budget condition (0\%). We try to stimulated a real world budget condition with these four 
@@ -667,19 +727,19 @@ Experimental results show that fewer different cost constraints leads to similar
 
 \begin{figure}[H]
 	\centering
-	\begin{subfigure}[b]{0.45\textwidth}
+	\begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_3_times_3_sufficient_initialisation.png}
 		\caption{3 $\times$ 3}
 	\end{subfigure}%
-	\begin{subfigure}[b]{0.45\textwidth}
+	\begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_5_times_5_sufficient_initialisation.png}
 		\caption{5 $\times$ 5}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
+	\begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_10_times_10_sufficient_initialisation.png}
 		\caption{10 $\times$ 10}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.45\textwidth}
+	\begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{pics/pop_50_gen_50_15_times_15_sufficient_initialisation.png}
 		\caption{15 $\times$ 15}
 	\end{subfigure}
