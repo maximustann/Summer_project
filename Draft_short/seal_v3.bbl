@@ -1,0 +1,142 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+
+\bibitem{Aboolian}
+Aboolian, R., Sun, Y., Koehler, G.J.: A location–allocation problem for a web
+  services provider in a competitive market. European Journal of Operational
+  Research  194(1),  64 -- 77 (2009)
+
+\bibitem{Multiobjective}
+Caramia, M.: Multi-objective optimization. In: Multi-objective Management in
+  Freight Logistics, pp. 11--36. Springer London (2008)
+
+\bibitem{996017}
+Deb, K., Pratap, A., Agarwal, S., Meyarivan, T.: A fast and elitist
+  multiobjective genetic algorithm: {NSGA-II}. Evolutionary Computation, IEEE
+  Transactions on  6(2),  182--197 (2002)
+
+\bibitem{Deb}
+Deb, K., Mohan, M., Mishra, S.: Evaluating the epsilon-domination based
+  multi-objective evolutionary algorithm for a quick computation of
+  pareto-optimal solutions. Evol. Comput.  13(4),  501--525 (2005)
+
+\bibitem{Deb06referencepoint}
+Deb, K., Sundar, J., N, U.B.R., Chaudhuri, S.: Reference point based
+  multi-objective optimization using evolutionary algorithms. In: International
+  Journal of Computational Intelligence Research. pp. 635--642 (2006)
+
+\bibitem{key:article}
+Desai, S., Bahadure, S., Kazi, F., Singh, N.: Article: Multi-objective
+  constrained optimization using discrete mechanics and {NSGA-II} approach.
+  International Journal of Computer Applications  57(20),  14--20 (2012), full
+  text available
+
+\bibitem{scalarization}
+Ehrgott, M.: A discussion of scalarization techniques for multiple objective
+  integer programming. Annals of Operations Research  147(1),  343--360 (2006)
+
+\bibitem{He}
+He, K., Fisher, A., Wang, L., Gember, A., Akella, A., Ristenpart, T.: Next
+  stop, the cloud: Understanding modern web service deployment in ec2 and
+  azure. In: Proceedings of the 2013 Conference on Internet Measurement
+  Conference. pp. 177--190. IMC '13, ACM (2013)
+
+\bibitem{EnhancedGenetic}
+Huang, H., Ma, H., Zhang, M.: An enhanced genetic algorithm for web service
+  location-allocation. In: Decker, H., Lhotská, L., Link, S., Spies, M.,
+  Wagner, R. (eds.) Database and Expert Systems Applications, Lecture Notes in
+  Computer Science, vol. 8645, pp. 223--230. Springer International Publishing
+  (2014)
+
+\bibitem{Huang}
+Huang, V.L., Suganthan, P.N., Liang, J.J.: Comprehensive learning particle
+  swarm optimizer for solving multiobjective optimization problems: Research
+  articles. Int. J. Intell. Syst.  21(2),  209--226 (2006)
+
+\bibitem{Hwang11aninteger}
+Hwang, J., Park, S., Kong, I.Y.: An integer programming-based local search for
+  large-scale maximal covering problems. International Journal on Computer
+  Science and Engineering pp. 837--843 (2011)
+
+\bibitem{1688438}
+Ishibuchi, H., Nojima, Y., Doi, T.: Comparison between single-objective and
+  multi-objective genetic algorithms: Performance comparison and performance
+  measures. In: Evolutionary Computation, 2006. CEC 2006. IEEE Congress on. pp.
+  1143--1150 (2006)
+
+\bibitem{916684}
+Jamin, S., Jin, C., Kurc, A., Raz, D., Shavitt, Y.: Constrained mirror
+  placement on the internet. In: INFOCOM 2001. Twentieth Annual Joint
+  Conference of the IEEE Computer and Communications Societies. Proceedings.
+  IEEE. vol.~1, pp. 31--40 vol.1 (2001)
+
+\bibitem{Johansson}
+Johansson, J.M.: On the impact of network latency on distributed systems
+  design. Inf. Technol. and Management  1(3),  183--194 (2000)
+
+\bibitem{OptimizationElectrical}
+Kanagarajan, D., Karthikeyan, R., Palanikumar, K., Davim, J.: Optimization of
+  electrical discharge machining characteristics of wc/co composites using
+  non-dominated sorting genetic algorithm ({NSGA-II}). The International
+  Journal of Advanced Manufacturing Technology  36(11-12),  1124--1132 (2008)
+
+\bibitem{kemps2012dynamic}
+Kemps-Snijders, M., Brouwer, M., Kunst, J.P., Visser, T.: Dynamic web service
+  deployment in a cloud environment  (2012)
+
+\bibitem{man1996genetic}
+Man, K.F., Tang, K.S., Kwong, S.: Genetic algorithms: concepts and
+  applications. IEEE Transactions on Industrial Electronics  43(5),  519--534
+  (1996)
+
+\bibitem{Mitchell:1998:IGA:522098}
+Mitchell, M.: An Introduction to Genetic Algorithms. MIT Press (1998)
+
+\bibitem{Morandat:2012:EDR:2367163.2367172}
+Morandat, F., Hill, B., Osvald, L., Vitek, J.: Evaluating the design of the {R
+  Language}: Objects and functions for data analysis. In: Proceedings of the
+  26th European Conference on Object-Oriented Programming. pp. 104--131.
+  ECOOP'12 (2012)
+
+\bibitem{Ran}
+Ran, S.: A model for web services discovery with {QoS}. SIGecom Exch.  4(1),
+  1--10 (2003)
+
+\bibitem{Sun}
+Sun, Y., Koehler, G.J.: A location model for a web service intermediary. Decis.
+  Support Syst.  42(1),  221--236 (2006)
+
+\bibitem{Vanrompay}
+Vanrompay, Y., Rigole, P., Berbers, Y.: Genetic algorithm-based optimization of
+  service composition and deployment. In: Proceedings of the 3rd International
+  Workshop on Services Integration in Pervasive Environments. pp. 13--18. SIPE
+  '08, ACM (2008)
+
+\bibitem{Xie:2008:AMI:1389095.1389347}
+Xie, H., Zhang, M., Andreae, P., Johnson, M.: An analysis of multi-sampled
+  issue and no-replacement tournament selection. In: Proceedings of the 10th
+  Annual Conference on Genetic and Evolutionary Computation. pp. 1323--1330.
+  GECCO '08, ACM (2008)
+
+\bibitem{Xue}
+Xue, B., Zhang, M., Browne, W.N.: Multi-objective particle swarm optimisation
+  (pso) for feature selection. In: Proceedings of the 14th Annual Conference on
+  Genetic and Evolutionary Computation. pp. 81--88. GECCO '12, ACM (2012)
+
+\bibitem{6381531}
+Xue, B., Zhang, M., Browne, W.: Particle swarm optimization for feature
+  selection in classification: A multi-objective approach. Cybernetics, IEEE
+  Transactions on  43(6),  1656--1671 (2013)
+
+\bibitem{6076756}
+Zhang, Y., Zheng, Z., Lyu, M.: Exploring latent features for memory-based {QoS}
+  prediction in cloud computing. In: Reliable Distributed Systems (SRDS), 2011
+  30th IEEE Symposium on. pp. 1--10 (2011)
+
+\bibitem{5552800}
+Zheng, Z., Zhang, Y., Lyu, M.: Distributed {QoS} evaluation for real-world web
+  services. In: Web Services (ICWS), 2010 IEEE International Conference on. pp.
+  83--90 (2010)
+
+\end{thebibliography}

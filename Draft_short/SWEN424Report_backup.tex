@@ -1,0 +1,693 @@
+%% $RCSfile: proj_proposal.tex,v $
+%% $Revision: 1.2 $
+%% $Date: 2010/04/23 02:40:16 $
+%% $Author: kevin $
+
+\documentclass[11pt, a4paper, oneside, openright]{article}
+
+\usepackage{float} % lets you have non-floating floats
+\usepackage{url} % for typesetting urls
+\usepackage{graphicx} % for including images
+
+\newfloat{fig}{thp}{lof}[section]
+\floatname{fig}{Figure}
+
+
+\title{A Domain-Customised Business Process Model for Postal Services}
+\author{Ashleigh Cains (300198169) \\ Alexandre Sawczuk da Silva (300193950)}
+
+\usepackage[font,ecs]{vuwproject}
+
+% Unless you've used the bschonscomp or mcompsci
+%  options above use
+   \otherdegree{SWEN424 --- Model-Driven Development}
+% here to specify degree
+
+% Comment this out if you want the date printed.
+%\date{}
+
+\begin{document}
+
+% Make the page numbering roman, until after the contents, etc.
+\frontmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstract}
+This report details a project which explored the concept of Model-driven
+Development (MDD). This was done by creating a visual language that enabled the
+modelling of business processes in a mail delivery company. To that end, a tool
+called Generic Modelling Environment (GME) was used, and a metamodel describing
+the language was created. Subsequently, the sample business process of
+requesting a delivery was modelled in the newly created language. Finally, an
+interpreter was developed and the model was translated into a Java structure
+using the interface provided by GME. The proof-of-concept developed in this
+project demonstrates the usefulness of the MDD paradigm, which enables greater
+involvement of non-technical users and  leads to faster production of code.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\maketitle
+
+%\tableofcontents
+
+% we want a list of the figures we defined
+%\listof{fig}{Figures}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mainmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+
+This report presents the worked performed and the knowledge gained during the
+team project for SWEN424, the Software Engineering course on Model-Driven
+Development offered by Victoria University of Wellington in 2013. In this
+project, the team developed the proof-of-concept for a visual modelling language
+intended to be applied when creating Business Process Models (BPMs) for the
+domain of a mail delivery company.
+
+First the concepts of Model-Driven Development and Business Process Models
+are introduced. Then the business case used as the basis for this project is
+explained and the development process of the proof-of-concept is examined, with
+a focus on the modelling tool employed. Finally, the conclusions reached by the
+team about the development process are laid out.
+
+
+\section{Model-Driven Development}
+
+Before the project can be discussed, the concept of Model-Driven development
+must be explained. Model-driven development is the notion that a system can be
+described in terms of a model that is later transformed into the system
+\cite{mdd}.
+Essentially, this allows users to build systems by modelling them in an
+intuitive, visual language and then transforming them into a working textual
+representation. The transformation step generates some or all of the system
+implementation in the target language/representation. When the right balance
+between abstraction and simplification is struck, it is possible to reduce the
+complexity of the problem being modeled without overlooking any of its critical
+aspects, a goal that has motivated computer scientists and software engineers
+for many decades \cite{goodBadUgly}.
+
+An invaluable benefit of successful model-driven development is the
+automation it allows, which translates to much higher levels of productivity
+and more accurate end-results \cite{mddPragmatics}. Specifically, this automation has to do
+with the generation of programs from models, as well as the verification of
+model correctness. These techniques are growing in maturity and as a result
+are being increasingly used by the software engineering community, leading
+to the development of industry standards.
+
+\section{Business Process Models}
+
+Another fundamental concept in this project is that of a Business Process Model.
+A Business Process Model, often shortened to a BPM, is a graphical way of
+displaying the processes utilised by a business. From the simple flow charts
+used at the beginning of the 20th century, BPMs later motivated the creation of
+a dedicated notation, the BPMN (Business Process modelling and Notation) \cite{bpmSim}.
+
+A BPM is a valuable technique for many reasons, including the following:
+
+\begin{enumerate}
+  \item It provides a straightforward visual representation of the processes
+  within a business.
+  \item The visual notation, in its turn, enables the identification of common
+  patterns found in business processes \cite{bpmImp}, leading to better business
+  understanding and potentially better decision-making.
+  \item BPMs provide stakeholders with a communication tool that does not
+  require technical knowledge in order to be used, yet is precise enough to
+  convey meaningful specifications to the developers in charge of constructing
+  the system.
+\end{enumerate}
+
+The point regarding stakeholder communication is especially important. As
+shown by Al-Rawas and Eastbrook \cite{communication}, communication problems among stakeholders
+are the greatest causes for failures and delays in engineering projects. More
+specifically, their study shows that one area of difficulty is the translation
+of natural language requirements into some form of representational objects. The
+problem is that once the requirements are translated into the new
+representation, many of the stakeholders are no longer able to understand the
+notations employed by business analysts. It is in this context that the
+advantages of utilising models become apparent.
+
+A model that is understandable to non-technical stakeholders allows them to
+participate in the process of formalising requirements for business processes.
+This first-hand involvement, in its turn, increases the likelihood of creating
+specifications that are based on correctly interpreted requirements. Ultimately,
+achieving accurate specifications earlier in the analysis period of a project
+may lead to increased productivity, since models are likely to need less
+reworking.
+
+The benefits of employing BPMs are evidenced by the increased number of
+companies across the world seeking to employ this technique as a core
+business practice \cite{bpmBenefits}. Despite the necessity to configure BPMs for each
+particular business, which can be costly, research is being done towards
+less labour-intensive solutions \cite{bpmCorrectness}. BPMs can be applied in a wide variety
+of domains, including the one discussed next.
+
+
+\section{Selected Domain and Idea Being Modelled}
+
+The domain selected for this project was that of a postal company, more
+specifically the server-side of the online services provided by the company.
+These services are not typically large, so it is quite feasible to model them.
+Additionally, they operate on source code that can be generated based on a BPM
+model, making them ideal candidates for the Model-Driven Development approach.
+
+The New Zealand Post was chosen as an example company for this project, since it
+offers a myriad of services, both online and offline. A visit to the company’s
+website \cite{nzPost} reveals that the following online services are offered, among
+others:
+
+\begin{itemize}
+  \item Online shopping
+  \item Requesting a delivery online
+  \item Setting up mail redirection
+  \item Applying for a Post Office box
+  \item Booking an urgent/overnight courier
+  \item Sending money within New Zealand
+  \item Sending money internationally
+  \item Applying for 18+ (proof of age) cards
+  \item Submitting United Kingdom passport applications
+\end{itemize}
+
+The modelling language created in this project was intended to be applicable to
+the definition of any online service offered by a postal company. However, the
+proof-of-concept model developed in this project was that of an online delivery
+request performed by a post service user. The delivery request process starts by
+requesting that the user specify the pickup and drop-off locations for the item
+to be delivered. Then, that information is validated and the user proceeds to
+pay for the delivery. Once the payment transaction is complete, the system
+proceeds to determine which transportation mode should be employed for
+delivering the item at the drop-off location (it is assumed that items are
+picked up always using the same transportation mode). The final step is to
+schedule the delivery according to its transportation mode. Once the domain was
+selected for modelling, the next steps were to select an adequate modelling
+tool, as discussed in the following section.
+
+\section{Selected Modelling Tool}
+
+The modelling tool selected for this project was the Generic modelling Environment
+(GME), developed by the Institute for Software Integrated Systems at Vanderbilt
+University (TN, United States). This tool was chosen by the team because it was
+perceived to be a stable and well-established program with a wealth of online
+documentation and an intuitive user interface. The installation process is
+straightforward, as it consists of simply downloading the installer from the GME
+website \cite{gmeSite} according to your version of Windows (32 or 64-bit), running it and
+following the wizard instructions.
+
+GME provides an environment that enables the customisation of modelling languages
+for multiple domains \cite{gmePaper}. This is achieved by first defining metamodels that
+encode the domain-specific limitations of a given modelling language, then
+defining the actual models choosing the metamodel with the appropriate base
+concepts. Any additional constraints that cannot be visually modeled are
+represented as Object Constraint Language (OCL) statements, as GME provides
+constraint-checking capabilities.
+
+Notably, GME is capable of synthesizing output code from a model due to its
+architecture based on COM (Component Object Model) technology, an interface
+standard created by Microsoft for software components \cite{gmeJava}. This
+language-agnostic interface is supported by major programming languages such as
+C++ and Java, enabling different types of code artifacts to be generated from a
+GME model according to the user’s needs.
+
+This tool was chosen by the team because it was perceived to be a stable and
+well-established program with a wealth of online documentation and an intuitive
+user interface. Screenshots showing the functionality of the tool are presented
+in the following sections. The installation process is straightforward, as it
+consists of simply downloading the installer from the GME website \cite{gmeSite}, running
+it and following the wizard instructions.
+
+GME is intended to be used for all stages of model-driven development, from the
+definition of a modelling language to the creation of a mechanism to translate
+models into the desired output. More specifically, GME supports the following
+steps:
+
+\begin{itemize}
+  \item The creation of a \textit{metamodel}, which establishes the features,
+  notation and constraints of the language to be used in the creation of models
+  for a given domain. This is accomplished through GME's metamodel perspective.
+  \item The creation of a \textit{model}, which is intended to represent a
+  conceptual abstraction of a chosen domain. The modelling process can be
+  accomplished through GME's model perspective, the first step being the
+  selection of the modelling language to be employed (i.e. a metamodel
+  previously created using GME).
+  \item The creation of an \textit{interpreter}, which is used to convert the
+  visual model into a textual representation such as XML, SQL, or a programming
+  language. The interpreter is meant to be created using a programming language,
+  translating the visual models created in GME through one of the two standard
+  interfaces provided (BON or COM -- BON is discussed in more detail later). While GME
+  provides the capability of registering an interpreter so that it can be
+  invoked from within it, GME itself does not provide a development environment
+  for writing the interpreter code.
+\end{itemize}
+
+However, before proceeding to the first step (the creation of a metamodel), it
+was imperative to select a modelling language. The language was based on the
+Business Process Modelling Notation, an industry standard visual language
+explained in the next section.
+
+\section{The Business Process Modelling Notation}
+
+BPMN (Business Process modelling and Notation) was selected as the visual
+notation for the models in this project. The introductory BPM guide published by
+IBM \cite{bpmnIntro} presents the concepts behind this notation in a very structured and
+detailed fashion, therefore this section is based on the information
+contained in that document.
+
+In the last decade, a non-profit organisation of software industry leaders
+called BPMI (Business Process Management Initiative) developed a standard BPM
+graphical notation that incorporates elements of traditional flowcharts. The
+objective of this standardisation is to unify the understanding of business
+analysts and developers involved in this specific field of modelling. Once the
+common understanding exists, process owners are capable of following the
+evolution of the models and assist in the correction of mistakes.
+
+The visual elements in BPMN were intentionally designed to be similar to a
+flowchart diagram, since that is a well-known notation to business analysts and
+other modelers. The four types of elements offered by this notation are \textit{flow
+objects}, \textit{connecting objects}, \textit{swimlanes} and \textit{artifacts}:
+
+\begin{itemize}
+  \item \textbf{Flow objects} are the core objects in a business process, and
+  include events (they happen during the course of a business process, and
+  affect the process flow), activities (represent the tasks and sub-processes a
+  company generally performs) and gateways (control the process flow,
+  traditional path decisions, and the merging of paths). Visual representations
+  for events, activities and gateways are shown in figures~\ref{fig:eventTypes},
+  ~\ref{fig:activityTypes}, and~\ref{fig:gatewayTypes}, respectively.
+
+  \begin{figure}[!ht]
+  \centerline{\fbox{\includegraphics[scale=0.15]{eventTypes.png}}}
+  \caption{Representation of BPMN event types \cite{bpmWiki}.}
+  \label{fig:eventTypes}
+  \end{figure}
+
+  \begin{figure}[!ht]
+  \centerline{\fbox{\includegraphics[scale=0.5]{activityTypes.png}}}
+  \caption{Representation of BPMN activity types \cite{bpmWiki}.}
+  \label{fig:activityTypes}
+  \end{figure}
+
+  \begin{figure}[!ht]
+  \centerline{\fbox{\includegraphics[scale=0.5]{gatewayTypes.png}}}
+  \caption{Representation of BPMN gateway types \cite{bpmWiki}.}
+  \label{fig:gatewayTypes}
+  \end{figure}
+
+  \item \textbf{Connecting objects} are responsible for actually linking the
+  flow objects into a process. They can be sequence flows (for showing the order
+  of activities), message flows (shows messages exchanged between separate
+  business participants), and associations (show input/output of activities).
+  Visual representations for connecting objects are shown in figure~\ref{fig:connectionTypes}.
+
+  \begin{figure}[!ht]
+  \centerline{\fbox{\includegraphics[scale=0.5]{connectionTypes.png}}}
+  \caption{Representation of BPMN connecting object types \cite{bpmWiki}.}
+  \label{fig:connectionTypes}
+  \end{figure}
+
+  \item \textbf{Swimlanes} enable the organisation of activities into different
+  groups, according to their meaning or functionality. They can be pools (basic
+  container) or lanes (sub-partitions of pools for further organisation).
+  \item \textbf{Artifacts} are diagram extensions that are used depending on the
+  context of the process being modeled. They can be data objects (to model
+  required data for activities), groups (for documentation purposes), and
+  annotations (additional text information or comments).
+
+\end{itemize}
+
+Even though BPMN is compact, the combination of all its standardised elements
+results in a rich and expressive modelling language. The time restriction of this
+project did not allow for the full coverage of BPMN concepts, therefore the team
+concentrated on the utilisation of a subset of this notation which was smaller
+but still expressive enough for a proof-of-concept. The next section describes
+this subset in more detail.
+
+\section{Selected Notation Subset}
+
+The notation elements presented in this section are a BPMN subset chosen for
+this particular project. The meaning of each element type is explained in the
+hierarchical outline that follows. The reader might find it useful to refer to
+figures~\ref{fig:eventTypes},~\ref{fig:activityTypes},~\ref{fig:gatewayTypes} and
+~\ref{fig:connectionTypes} when examining this section:
+\\\\
+
+\begin{itemize}
+  \item \textbf{Flow Objects}
+  \begin{itemize}
+    \item \textbf{Event Types}
+    \begin{itemize}
+      \item \textbf{Start:} acts as a process trigger, indicated by a single
+      narrow bordered circle.
+      \item \textbf{Intermediate:} represents something that happens between the
+      start and end events; is indicated by a double bordered circle. For
+      example, a task could flow to an event that throws a message across to
+      another pool, where a subsequent event waits to catch the response before
+      continuing.
+      \item \textbf{End:} represents the result of a process. It is indicated by a
+      single thick or bold bordered circle.
+    \end{itemize}
+    \item \textbf{Activity Types}
+    \begin{itemize}
+      \item \textbf{Task:} is a unit of work, the job to be performed.
+      \item \textbf{Sub-process:} used to hide or reveal additional levels of
+      business process detail. Has its own self-contained start and end events;
+      flow objects; connecting objects; and artifacts.
+      \item \textbf{Transaction:} is a set of activities that logically belong
+      together; it might follow a specified transaction protocol (involves
+      messaging).
+    \end{itemize}
+    \item \textbf{Gateway Types}
+    \begin{itemize}
+      \item \textbf{Exclusive:} when splitting, it routes the sequence flow to
+      exactly one of the outgoing branches. When merging, it awaits one incoming
+      branch to complete before triggering the outgoing flow.
+      \item \textbf{Inclusive:} when splitting, one or more branches are
+      activated. All active incoming branches must complete before merging.
+      \item \textbf{Event-based:} is always followed by catching events or
+      receive tasks. Sequence flow is routed to the subsequent event/task which
+      happens first.
+      \item \textbf{Exclusive event-based:} each occurrence of a subsequent
+      event starts a new process instance.
+    \end{itemize}
+  \end {itemize}
+  \item \textbf{Connecting Objects}
+  \begin{itemize}
+    \item \textbf{Message Flows:} symbolize information flow across
+    organizational boundaries and can be attached to pools, activities, or
+    message events.
+    \item \textbf{Sequence Flows:} define the order of execution of activities.
+  \end{itemize}
+\end{itemize}
+
+Some of the elements in the generic hierarchy above were then customised by the
+team to meet the necessities of a model that abstracts postal company services.
+The following outline presents descriptions only for the customised elements:
+
+\begin{itemize}
+  \item \textbf{Event Types}
+  \begin{itemize}
+    \item \textbf{End}
+    \begin{itemize}
+      \item \textbf{Error:} a specialised version of the end event was created
+      to denote an error in the execution of the process which leads to its
+      termination.
+    \end{itemize}
+  \end{itemize}
+  \item \textbf{Activity Types}
+  \begin{itemize}
+    \item \textbf{Task}
+    \begin{itemize}
+      \item \textbf{Delivery:} represents the task of scheduling the delivery of
+      an item to a certain address. Deliveries offer different transportation
+      mode options: by car, by boat, by bike, and by plane.
+    \end{itemize}
+    \item \textbf{Transaction}
+    \begin{itemize}
+      \item \textbf{Input:} an input retrieval transaction. It can be as simple
+      as retrieving content from one field or as complex as retrieving large
+      forms and uploaded documents.
+      \item \textbf{Payment:} a payment transaction. It debits a certain amount
+      of money from the customer account using the credit card information
+      provided.
+      \item \textbf{Money Transfer:} a money transfer transaction. Sends a
+      certain amount of money from one bank account to another.
+      \item \textbf{Third-Party Transaction:} an exchange between the post
+      company and a third-party service.
+    \end{itemize}
+  \end{itemize}
+  \item \textbf{Gateway Types}
+  \begin{itemize}
+    \item \textbf{Exclusive}
+    \begin{itemize}
+      \item \textbf{Determine Transportation Mode:} determines how an item
+      should be transported for delivery.
+      \item \textbf{Validate Input:} determines whether the input provided by
+      the user was valid.
+      \item \textbf{Validate Payment:} determines whether a user payment was
+      valid.
+      \item \textbf{Validate Money Transfer:} determines whether a money
+      transfer was valid.
+      \item \textbf{Validate Third-Party Transaction:} determines whether a
+      transaction that depends on a third-party service was valid.
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+These notation elements were incorporated into the metamodel, as discussed next.
+
+\section{Creating the Metamodel}
+The metamodel was created in GME by starting a new project using the MetaGME
+paradigm, which is especially designed for the definition of modelling
+languages. It was structured following the BPM notation described in the
+previous section, resulting in the class diagram shown in figure~\ref{fig:metamodel}.
+
+\begin{figure}[!ht]
+\centerline{\fbox{\includegraphics[scale=0.6]{metamodel.png}}}
+\caption{Screenshot BPMN metamodel.}
+\label{fig:metamodel}
+\end{figure}
+
+The picture shows the metamodel was developed according to the BPM hierarchy
+described earlier. Fundamentally, a model contains connections and flow objects.
+Connections can either show the general flow of a process or the path of event
+messages, while flow objects can be the activities, gateways and events (e.g.
+start, end) described earlier. Once developed, the metamodel was interpreted and
+registered using the MetaGME interpreter (done by clicking on the cog icon).
+This is a necessary step for making this paradigm -- the modelling language --
+available in GME for the subsequent creation of models.
+
+\section{Addition of Model Constraints}
+In addition to the metamodel, rules can be written to ensure a model's validity.
+These rules are expressed in a rich language called OCL (Object Constraint
+Language) which is defined as part of the standard UML notation. OCL is based on
+sentences that are either true or false and must evaluate to "true" in order to
+satisfy a constraint. For this project, the team has included constraints using
+GME, as it supports OCL 2.0. An OCL expression becomes a constraint when it is
+specified in the metamodel attached to the metaobject it applies to.
+
+To add constraints in GME, the ParadigmSheet that contains the metamodel must be
+open. From there the “Constraints” aspect needs to be selected and a constraint
+inserted into the metamodel. An association needs to be made between the
+constraint and the metaobject by drawing a connection between the two so a
+context can be given to the OCL expression. In the attributes panel, a name,
+description and the expression can be added to the constraint. From there the
+metamodel can be reinterpreted and registered to test the constraint in the
+model \cite{gmeSite}.
+
+An example of a constraint used in the project was based on the BPMN rules of:
+\begin{enumerate}
+  \item A start event cannot have an incoming connecting object.
+  \item A start event must have an outgoing connecting object.
+\end{enumerate}
+
+These rules can be translated into an OCL constraint attached to the “Start”
+metaobject in the metamodel and can be described by this expression:
+
+\begin{center}
+	\textit{self.attachingConnections("dst",Start)-\textgreater size==0 \&\& \\
+            self.attachingConnections("src",Start)-\textgreater size==1}
+\end{center}
+
+In plain english, this expression evaluates to the set of all connections
+attached to “Start” objects and have “Start” as the destination of the
+connection, must have a size of zero. This satisfies the first of the two BPMN
+rules stated above. The second part of the OCL expression states that the set of
+all connections attached to “Start” objects and have “Start” as the source of
+the connection, must have a size of 1.
+
+This process of adding constraints has been repeated for a subset of BPMN rules
+that apply to the selected notation subset discussed earlier. These rules have
+been selected to ensure the basic structure of a model based on BMPN is valid.
+
+\section{Creating the Model}
+
+As a proof-of-concept for the customised BPM language, a sample online delivery
+request was created. As shown in figure~\ref{fig:model}, it uses transactions for the
+retrieval of input and the collection of payment, as well as delivery scheduling
+tasks. Decisions on which transport mode to be used when delivering an item are
+made using a gateway, and so it the validation of input. If there are any errors
+when making these decisions, the process is terminated with an Error event;
+otherwise, it successfully reaches the End event.
+
+\begin{figure}[!ht]
+\centerline{\fbox{\includegraphics[scale=0.7]{model.png}}}
+\caption{Screenshot of online delivery request model.}
+\label{fig:model}
+\end{figure}
+
+An interesting feature of GME is that it allows custom icons to be used when
+representing each entity in a model. This can be accomplished by providing an
+icon path and name to each entity through the preferences panel. The icons
+presented earlier were incorporated into this model, making it more easily
+interpretable.
+
+\section{Model Translation}
+Java was selected as the target language for the code implementation of the
+customised BPM framework. Classes and interfaces were defined to mirror the BPM
+hierarchy created in the metamodel, except for the connections, which were
+implemented as references from one object to the next. In order to translate the
+GME model into a correspondent Java structure, an interpreter was written.
+
+As mentioned earlier, GME offers the Builder Object Network (BON) interface, a
+standardised representation of models that is supported in both C and Java. This
+interface enables code access to all entities in a model, as shown in figure~\ref{fig:bon},
+including their instance names and attribute values. In order to run an interpreter
+from GME and translate the model from the BON interface to the code
+representation, it is necessary to register an interpreter. This is accomplished
+by ensuring that the main class of the the Java interpreter implements the
+BONComponent interface and by running JavaCompRegister.exe. Once that is done, the
+interpreter can be run from GME by clicking on the coffee cup icon that will
+appear on the top bar.
+
+\begin{figure}[!ht]
+\centerline{\fbox{\includegraphics[scale=0.6]{bon.png}}}
+\caption{Classes in the Builder Object Network [14].}
+\label{fig:bon}
+\end{figure}
+
+Implementing the interpreter was generally straightforward but there were some
+challenges. For instance, debugging was somewhat challenging because the code
+had to be run from within GME, so no sophisticated debugging tools were
+available. However, that issue was solved by showing debugging statements using
+programmatically-created dialogs. Another difficulty was in the implementation
+of the BPM gateways in Java, as they may lead to several different process paths
+depending on the execution of the decision logic. This was solved by
+implementing gateways to initially hold a list of all possible paths, then
+providing setters that get invoked during the execution of the decision logic
+and determine which path should actually be taken.
+
+In terms of achievements, the current version of the interpreter supports the
+translation of all elements defined in the metamodel. The resulting Java code is
+also completely runnable, even though it lacks the actual decision logic. The
+interpreter immediately executes the generated Java code after translation, but
+this behaviour could be extended to enable the code to be serialized and saved
+for later loading and execution.
+
+\section{Critical Evaluation of GME}
+Throughout the project the team had a chance to analyse the advantages and
+disadvantages of GME from a more informed point of view. One one hand, GME is a
+very stable tool and throughout the project not a single bug was observed in it. The
+user interface is well organised and responsive, and the concept of dragging
+elements from the left-hand panel into the modelling area to create new
+instances made model assembly fast and intuitive. Learning how to use
+GME can be slightly complicated, but the tool is well documented in tutorials and
+also in the user manual.
+
+On the other hand, GME needs a better integration between the metamodel and the
+model. For example, they cannot be simultaneously open in the same instance of
+GME, which makes it cumbersome to update inconsistencies or details in the
+metamodel that are noticed while creating a model. Another problem experienced
+by the team was that the automatic model update that happens as a result of
+changes to the metamodel often did not work, which meant that the model had to
+be manually updated via an XML importing operation. This turned out to be a
+nuisance even when performing relatively small metamodel changes.
+
+There were several websites for the different versions of GME, which meant that
+it was quite easy to accidentally refer to outdated documentation. It would be
+nice if those responsible for the GME project could group all of the
+documentation and downloads under the same website, organised by version.
+Finally, the customisation of icons did not work for the team, even after
+carefully following the tutorial. The mechanism for incorporating
+icons into the metamodel should be improved, since the team had to resort to
+manually setting the icons for each entity type in the model. Overall, the team
+considered GME to be a reliable and flexible modelling tool which offers good
+features and is intuitive to use, despite some minor inconveniences.
+
+\section{Critical Evaluation of Project Results}
+In this section the team insights regarding the work performed in this project
+are presented, organised by deliverable:
+
+\begin{itemize}
+  \item \textbf{Metamodel:} the metamodel produced is a good starting point for a
+  customised BPM language, but further analysis of the business model of a
+  postal company is needed to develop a comprehensive solution. This analysis, however,
+  would depend on having access to the inner workings of a large postal company
+  such as NZ post. Another aspect of the metamodel which needs more work is the
+  implementation of constraints. Even though basic constraints were added to the
+  metamodel, more are required to guarantee that the order and combination
+  of BPM elements always makes sense.
+  \item \textbf{Model:} the model produced was expressive, but also a simplified version
+  of what a real-life delivery request would entail. For instance, the current
+  model does not recover from errors in validation or when choosing a
+  transportation mode, instead ending the process with an error. In a real process,
+  there should be recovery routines to provide the user with an opportunity to
+  correct any problems. Another limitation of the model is that it exists in
+  isolation, when in reality each process is likely to communicate with others
+  by using the messaging capabilities offered by a BPM.
+  \item \textbf{Java code:} the Java code created to represent the BPM is a flexible and
+  extensible framework, but it is currently void of real functionality. This structure
+  would have to be extended to support the needs of a
+  real business process. Additionally, since this framework is meant to
+  represent a service that is offered online, its design should incorporate some
+  elements of web technologies. It must be noted that any major redesign of
+  the Java BPM implementation would incur a redesign of the
+  interpreter as well.
+\end{itemize}
+
+\section{Work Distribution in Team}
+The work distribution of this project was even, with both team members
+participating in most tasks. The following table documents which team member has
+participated in which project activity:
+
+\begin{table}[H]
+\begin{tabular}{|l|l|}
+\hline
+\multicolumn{1}{|c|}{\textbf{Activity}}                    & \multicolumn{1}{c|}{\textbf{Responsible Team Member}} \\
+\hline
+Decision of tool, language and concept to be modelled.     & Ashleigh and Alex                                    \\
+\hline
+Design of metamodel.                                       & Ashleigh and Alex                                    \\
+\hline
+Creation of metamodel.                                     & Ashleigh                                             \\
+\hline
+Design and implementation of OCL constraints in metamodel. & Ashleigh                                             \\
+\hline
+Creation of model.                                         & Alex                                                 \\
+\hline
+Design and creation of Java code.                          & Alex                                                 \\
+\hline
+Implementation of interpreter.                             & Alex                                                 \\
+\hline
+Writing and editing of report.                             & Ashleigh and Alex									  \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Conclusion}
+This project clearly shows that model-driven development is useful because
+it enables non-technical users to directly record their knowledge of business
+requirements details using a standardised and non-technical language. Since each
+entity in the model corresponds to an already-implemented customised
+functionality module, the use of a BPM reduces the amount of code that has to be
+rewritten each time a process is created and updated.
+
+By its very definition, the efficacy of the model-driven development
+approach is dependent on the flexibility of the modelling tool used. While
+GME is a good tool, it is geared towards users who understand the abstract
+concepts and intricacies of the field of modelling. This means that there
+exist opportunities for creating a tool that is geared towards non-technical users,
+but which also integrates with the work of technical users. Such a tool would be
+commercially viable, as it would improve stakeholder communication and
+reduce the amount of work needed during development.
+
+The deliverables produced for this project are part of a proof-of-concept,
+but the framework built in Java could easily be populated with complex
+logic. Additionally, the Java data structure produced by the translation process
+is currently immediately executed, but this behaviour could be modified by adding the
+ability to save it for later execution. This project
+illustrates the relevance of the model-driven development paradigm, and evidences the
+productivity gains to be had from applying this technique to complex systems.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\backmatter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\bibliographystyle{ieeetr}
+\bibliographystyle{acm}
+\bibliography{SWEN424ReportBibliography}
+\end{document}

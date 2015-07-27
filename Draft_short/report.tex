@@ -1,0 +1,229 @@
+%% $RCSfile: proj_proposal.tex,v $
+%% $Revision: 1.2 $
+%% $Date: 2010/04/23 02:40:16 $
+%% $Author: kevin $
+
+\documentclass[11pt, a4paper, oneside, openright]{article}
+
+\usepackage{float} % lets you have non-floating floats
+\usepackage{url} % for typesetting urls
+\usepackage{graphicx} % for including images
+\usepackage{caption}
+\usepackage{program}
+\usepackage{tabularx}
+\usepackage{colortbl}
+
+\usepackage{amsmath}
+\usepackage{etoolbox}
+\usepackage{hhline}
+\usepackage{subcaption}
+\newfloat{fig}{thp}{lof}[section]
+\floatname{fig}{Figure}
+\let\bbordermatrix\bordermatrix
+\patchcmd{\bbordermatrix}{8.75}{4.75}{}{}
+\patchcmd{\bbordermatrix}{\left(}{\left[}{}{}
+\patchcmd{\bbordermatrix}{\right)}{\right]}{}{}
+\title{Optimization of Location Allocation of Web Service using non-dominated sorting algorithm(NSGA-II)}
+\author{Boxiong Tan}
+
+\usepackage[font,ecs]{vuwproject}
+
+% Unless you've used the bschonscomp or mcompsci
+%  options above use
+   \otherdegree{}
+% here to specify degree
+
+% Comment this out if you want the date printed.
+%\date{}
+
+\begin{document}
+
+% Make the page numbering roman, until after the contents, etc.
+\frontmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{abstract}
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\maketitle
+
+%\tableofcontents
+
+% we want a list of the figures we defined
+%\listof{fig}{Figures}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\mainmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+Web Services are considered as self-contained, self-describing, modular applications that can be published, located, and invoked across the Web \cite{Ran:2003:MWS:844357.844360}. 
+In recent years, web services technology is becoming increasingly popular because the convenience, low cost and capacity to be composed into high-level business processes \cite{Aboolian200964}.
+
+
+With the ever increasing number of functional similar web services being available on the Internet, the web service providers (WSPs) are trying to improve the quality of service (QoS) to become competitive in the market.  
+QoS also known as non-functional requirements to  web services, is the degree to which a service meets specified requirements or user needs \cite{4061431}, such as response time, security and availability. 
+Among numerous QoS measurements, service response time is a critical factor for many real-time services, e.g. traffic service or finance service. 
+Service response time has two components: transmission time (variable with message size) and network latency \cite{Johansson:2000:INL:595252.595281}. 
+Study \cite{Johansson:2000:INL:595252.595281, 916684} has shown that network latency is a significant component of service response delay.
+Ignoring network latency will underestimate response time by more than 80 percent. Since network latency is related to network topology as well as physical distance \cite{distanceMetrics}. 
+The network latency could also vary with the network topology changes.
+The only way to reduce the network latency is move the service to a location where has smaller network latency to the user center. 
+Hence, the WSPs need to consider which physical location to deploy their services so that it could minimize the cost as well as ensure the QoS.
+
+The Web service location-allocation problem is essentially a multiobjective optimization problem \cite{Multiobjective}.
+Because of the confliction between service quality and deployment cost. 
+Ideally, WSP could deploy their services to each user center in order to provide the best quality.
+That is, the more services deployed, the better the quality and the higher cost. 
+This problem is considered as an NP-hard due to the fact that the combinatorial explosion of the search space \cite{Vanrompay:2008:GAO:1387309.1387313}. 
+
+
+Very few researches \cite{Aboolian200964, Sun:2006:LMW:1217741.1217754} study this problem.
+Both studies try to solve the problem by integer linear programming techniques.
+However, integer programming techniques do not scale well, so that no satisfactory results can be obtained for large-scale datasets. 
+
+Evolutionary algorithms (EAs) have been used in solving multi objective optimization problems in recent years. 
+EAs are ideal for solving multi objective optimization problems \cite{key:article}, since EA works with a population of solutions, a simple EA can be extended to maintain a diverse set of solutions.
+With an emphasis for moving toward the true Pareto-optimal region, an EA can be used to find multiple Pareto-optimal solutions in one single simulation run \cite{OptimizationElectrical}.
+
+Hai \cite{EnhancedGenetic} proposed an enhanced genetic algorithm-based approach which make use of the integer scalarization technique to solve the multiobjective problem.
+The genetic algorithm (GA) is an EA that uses genetic operators to obtain optimal solutions without any assumptions about the search space.
+This algorithm solve the scalability problem in the dataset, however the integer scalarization technique \cite{Multiobjective} has some disadvantages: 
+
+\begin{enumerate}
+	\item The decision maker needs to choose an appropriate weights for the objectives to retrieve a satisfactorily solution.
+	\item The algorithm does not produce an uniform spread of points on the Pareto curve. That is, all points are grouped in certain parts of the Pareto front.
+	\item Non-convex parts of the Pareto set cannot be reached by minimizing convex combinations of the object functions.
+\end{enumerate}
+
+Evolutionary multi objective optimization (EMO) methodologies on the other hand, successfully avoid the above mentioned problems and demonstrated their usefulness in find a well-distributed set of near Pareto optimal solutions \cite{Aboolian200964}. Non-dominated sorting GA (NSGA-II) \cite{996017}, Strength Pareto Evolutionary Algorithm 2 (SPEA-2) \cite{Deb:2005:EED:1109044.1109049} have become standard approaches. 
+Some schemes based on particle swarm optimization approaches \cite{Elhossini:2010:SPP:1739146.1739151, Huang:2006:CLP:1108677.1108683} are also important. 
+Among numerous EA approaches, NSGA-II is one of the most widely used methods for generating the Pareto frontier. 
+NSGA-II implements elitism and uses a phenotype crowd comparison operator that keeps diversity without specifying any additional parameters \cite{Deb06referencepoint}.
+In our approach, we apply a modified version of NSGA-II since the web service location-allocation is a discrete problem. 
+
+In this paper we consider the problem faced by a WSP who has existing facilities but wishes to use the collected data to re-allocate their services in order to maximum their profit.
+The WSP must decide on facility locations from a finite set of possible locations. 
+In order to make the decision, the WSP must first analyze the data which were collected from current services. 
+The collected data should includes the records of invocation from each unique IP address.
+Therefore, based on these data, the WSP could summarize several customer demand concentrated at \textit{n} discrete nodes \cite{Aboolian200964}, namely user centers. 
+We assume the WSP has already done this step and list of user centers and candidate service deployment locations are given.
+In addition to decide which location to re-allocate the services, a dataset which contains the network latency between demand user center and candidate location are critical. 
+The WSP could collect the data or use existed dataset \cite{5552800, 6076756}. 
+Then, the service provider could use the algorithm which proposed by this paper, to select an optimal plan based on their funds. 
+The algorithm will produce a near optimal solution which indicate the services deployment locations with a minimum cost and best service quality.
+The main objectives are:
+\begin{itemize}
+	\item To model the web service location-allocation problem so that it can be tackled with NSGA-II
+	\item To develop a modified NSGA-II approach for the web service location-allocation problem
+	\item To evaluate our approach by comparing it to a GA approach which use integer scalarization technique.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+\section{Problem Description}
+\subsection{Model formulation}
+The problem is determine which facility locations that could maximus WSPs’ profit as well as ensure low network latency. 
+Let $S = \{ 1, 2, ..., s\}$ be the set of services. We assume that the demand for service is concentrated at $i$ 
+demand nodes $I = \{ 1, 2, ..., i \}$. Let $J = \{ 1, 2, ..., j \}$ be the set of $j$ candidate facility locations.
+To model the service location-allocation problem we use four matrices: service network latency matrix $L$, service location
+matrix $A$, service invocation frequency matrix $F$ and cost matrix $C$.
+
+The server network latency matrix $L = [l_{ij}]$, is used to record network latency from user centers to 
+candidate locations, where $l_{ij}$ is a real number denotes the network latency from user center $i$ to candidate 
+location $j$. 
+These data could be retrieved from implementing a network latency experiment or using existed datasets \cite{5552800, 6076756}.
+\begin{center}
+$
+L = \bbordermatrix{~ & j_{1} & j_{2} & j_{3} & j_{4} \cr
+					i_{1}	&5.09 &2.37 &4.01	&3.9	\cr
+					i_{2}	&0.8  &2.9 &3.2	&1.2 \cr
+					i_{3}	&2.74 &1.2 &5.3	&0.95 \cr} 
+$
+\end{center}
+These data could be retrieved from implementing a network latency experiment or using existed dataset \cite{5552800, 6076756}.
+The service location matrix $A = [y_{sj}]$ represents the actual service location-allocation, where $y_{sj}$  is a binary value ( i.e., 1 or 0) shows whether a service $s$ is deployed in candidate location $j$ or not.
+\begin{center}
+$
+A = \bbordermatrix{~ & j_{1} & j_{2} & j_{3} & j_{4} \cr
+					s_{1}	&0 &1 &0	&0	\cr
+					s_{2}	&0  &0 &1	&1 \cr
+					s_{3}	&1 &1 &0	&0 \cr} 
+$
+\end{center}
+
+The service invocation frequency matrix $F= [f_{is}]$, is used to record services invocation frequency from user centers, which $f_{is}$ is an integer that indicate the number of invocation in a period of time from user center $i$ to service s. e.g. 120 invocations per day from user center $i_{1}$ to $s_{1}$.
+\begin{center}
+$
+F = \bbordermatrix{~ & s_{1} & s_{2} & s_{3}  \cr
+					i_{1}	&120 &35 &56	\cr
+					i_{2}	&14  &67 &24 \cr
+					i_{3}	&85 &25 &74 \cr} 
+$
+\end{center}
+
+The cost matrix $C = [c_{sj}]$, is used to record the cost of deployment of services from candidate locations, 
+which $c_{sj}$ is an integer that indicate the cost of the deployment fee from a candidate location. 
+e.g 130 \$ to deploy $s_{1}$ from $j_{1}$.
+\begin{center}
+$
+C = \bbordermatrix{~ & j_{1} & j_{2} & j_{3} & j_{4} \cr
+					s_{1}	&130 &80 &60	&68	\cr
+					s_{2}	&96  &52 &86	&78 \cr
+					s_{3}	&37 &25 &54	&46 \cr} 
+$
+\end{center}
+
+Consider the following key modeling assumptions:
+\begin{enumerate}
+	\item The new WSP decides where to locate his facilities regardless if there is existed functional similar services from other WSPs.
+	\item This choice is made only consider two factors: total network latency and total cost.
+	\item We assume a fixed customer allocation policy for WSPs. In practice, Web Services typically offer clients persistent and interactive services, which often span over multiple sessions. Therefore, a dynamic reallocation scheme is not practical as it may disrupt the continuity of the services.
+\end{enumerate}
+
+\subsection{Discreted NSGA-2 algorithm}
+NSGA-2 belong to the larger class of evolutionary algorithms (EAs), which generate approximate solutions to 
+optimization and search problems by using techniques inspired by the principles of natural 
+evolution: selection, crossover and mutation.
+
+The steps involved in the solution of optimization problem using NSGA-II are summarized as follows.
+\begin{itemize}
+	\item Population initialization
+	\item Non-dominated sort
+	\item Crowding distance
+	\item Selection
+	\item Genetic operators
+	\item Recombination and selection
+\end{itemize}
+
+\subsection{Chromosome Representation}
+In our problem, the chromosome is the service location matrix A that we mentioned in the previous section. 
+\subsection{Chromosome Representation}
+The objective functions of this entire problem are following:
+\begin{itemize}
+	\item Minimize the total cost of services. n is the number of service, m is the number of candidate location.
+	\item Minimize the network total latency of the services.
+\end{itemize}
+\section{}
+\section{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\backmatter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\bibliographystyle{ieeetr}
+\bibliographystyle{acm}
+\bibliography{report}
+\end{document}

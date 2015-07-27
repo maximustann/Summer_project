@@ -1,0 +1,3 @@
+library(foreach)
+library(doMC)
+registerDoMC(8)

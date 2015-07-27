@@ -1,0 +1,149 @@
+\begin{thebibliography}{}
+
+\bibitem[Aboolian et~al., 2009]{Aboolian200964}
+Aboolian, R., Sun, Y., and Koehler, G.~J. (2009).
+\newblock A location–allocation problem for a web services provider in a
+  competitive market.
+\newblock {\em European Journal of Operational Research}, 194(1):64 -- 77.
+
+\bibitem[Beyer and Deb, 2001]{930314}
+Beyer, H.-G. and Deb, K. (2001).
+\newblock On self-adaptive features in real-parameter evolutionary algorithms.
+\newblock {\em Evolutionary Computation, IEEE Transactions on}, 5(3):250--270.
+
+\bibitem[Caramia, 2008]{Multiobjective}
+Caramia, M. (2008).
+\newblock Multi-objective optimization.
+\newblock In {\em Multi-objective Management in Freight Logistics}, pages
+  11--36. Springer London.
+
+\bibitem[Deb et~al., 2005]{Deb:2005:EED:1109044.1109049}
+Deb, K., Mohan, M., and Mishra, S. (2005).
+\newblock Evaluating the \&epsi;-domination based multi-objective evolutionary
+  algorithm for a quick computation of pareto-optimal solutions.
+\newblock {\em Evol. Comput.}, 13(4):501--525.
+
+\bibitem[Deb et~al., 2002]{996017}
+Deb, K., Pratap, A., Agarwal, S., and Meyarivan, T. (2002).
+\newblock A fast and elitist multiobjective genetic algorithm: Nsga-ii.
+\newblock {\em Evolutionary Computation, IEEE Transactions on}, 6(2):182--197.
+
+\bibitem[Deb et~al., 2006]{Deb06referencepoint}
+Deb, K., Sundar, J., N, U. B.~R., and Chaudhuri, S. (2006).
+\newblock Reference point based multi-objective optimization using evolutionary
+  algorithms.
+\newblock In {\em International Journal of Computational Intelligence
+  Research}, pages 635--642. Springer-Verlag.
+
+\bibitem[Desai et~al., 2012]{key:article}
+Desai, S., Bahadure, S., Kazi, F., and Singh, N. (2012).
+\newblock Article: Multi-objective constrained optimization using discrete
+  mechanics and nsga-ii approach.
+\newblock {\em International Journal of Computer Applications}, 57(20):14--20.
+\newblock Full text available.
+
+\bibitem[Elhossini et~al., 2010]{Elhossini:2010:SPP:1739146.1739151}
+Elhossini, A., Areibi, S., and Dony, R. (2010).
+\newblock Strength pareto particle swarm optimization and hybrid ea-pso for
+  multi-objective optimization.
+\newblock {\em Evol. Comput.}, 18(1):127--156.
+
+\bibitem[Huang et~al., 2014]{EnhancedGenetic}
+Huang, H., Ma, H., and Zhang, M. (2014).
+\newblock An enhanced genetic algorithm for web service location-allocation.
+\newblock In Decker, H., Lhotská, L., Link, S., Spies, M., and Wagner, R.,
+  editors, {\em Database and Expert Systems Applications}, volume 8645 of {\em
+  Lecture Notes in Computer Science}, pages 223--230. Springer International
+  Publishing.
+
+\bibitem[Huang et~al., 2006]{Huang:2006:CLP:1108677.1108683}
+Huang, V.~L., Suganthan, P.~N., and Liang, J.~J. (2006).
+\newblock Comprehensive learning particle swarm optimizer for solving
+  multiobjective optimization problems: Research articles.
+\newblock {\em Int. J. Intell. Syst.}, 21(2):209--226.
+
+\bibitem[Huffaker et~al., 2002]{distanceMetrics}
+Huffaker, B., Fomenkov, M., Plummer, D., Moore, D., and claffy, k. (2002).
+\newblock {Distance Metrics in the Internet}.
+\newblock In {\em IEEE International Telecommunications Symposium (ITS)}, pages
+  200--202, Brazil. IEEE.
+
+\bibitem[Ishibuchi et~al., 2006]{1688438}
+Ishibuchi, H., Nojima, Y., and Doi, T. (2006).
+\newblock Comparison between single-objective and multi-objective genetic
+  algorithms: Performance comparison and performance measures.
+\newblock In {\em Evolutionary Computation, 2006. CEC 2006. IEEE Congress on},
+  pages 1143--1150.
+
+\bibitem[Jamin et~al., 2001]{916684}
+Jamin, S., Jin, C., Kurc, A., Raz, D., and Shavitt, Y. (2001).
+\newblock Constrained mirror placement on the internet.
+\newblock In {\em INFOCOM 2001. Twentieth Annual Joint Conference of the IEEE
+  Computer and Communications Societies. Proceedings. IEEE}, volume~1, pages
+  31--40 vol.1.
+
+\bibitem[Johansson, 2000]{Johansson:2000:INL:595252.595281}
+Johansson, J.~M. (2000).
+\newblock On the impact of network latency on distributed systems design.
+\newblock {\em Inf. Technol. and Management}, 1(3):183--194.
+
+\bibitem[Kanagarajan et~al., 2008]{OptimizationElectrical}
+Kanagarajan, D., Karthikeyan, R., Palanikumar, K., and Davim, J. (2008).
+\newblock Optimization of electrical discharge machining characteristics of
+  wc/co composites using non-dominated sorting genetic algorithm (nsga-ii).
+\newblock {\em The International Journal of Advanced Manufacturing Technology},
+  36(11-12):1124--1132.
+
+\bibitem[Raghuwanshi and Kakde, 2004]{Raghuwanshi04}
+Raghuwanshi, M.~M. and Kakde, O.~G. (2004).
+\newblock {Survey on multiobjective evolutionary and real coded genetic
+  algorithms}.
+\newblock In {\em Proceedings of the 8th Asia Pacific symposium on intelligent
+  and evolutionary systems}, pages 150--161.
+
+\bibitem[Ran, 2003]{Ran:2003:MWS:844357.844360}
+Ran, S. (2003).
+\newblock A model for web services discovery with qos.
+\newblock {\em SIGecom Exch.}, 4(1):1--10.
+
+\bibitem[Sun and Koehler, 2006]{Sun}
+Sun, Y. and Koehler, G.~J. (2006).
+\newblock A location model for a web service intermediary.
+\newblock {\em Decis. Support Syst.}, 42(1):221--236.
+
+\bibitem[Vanrompay et~al., 2008]{Vanrompay:2008:GAO:1387309.1387313}
+Vanrompay, Y., Rigole, P., and Berbers, Y. (2008).
+\newblock Genetic algorithm-based optimization of service composition and
+  deployment.
+\newblock In {\em Proceedings of the 3rd International Workshop on Services
+  Integration in Pervasive Environments}, SIPE '08, pages 13--18, New York, NY,
+  USA. ACM.
+
+\bibitem[Xue et~al., 2012]{Xue:2012:MPS:2330163.2330175}
+Xue, B., Zhang, M., and Browne, W.~N. (2012).
+\newblock Multi-objective particle swarm optimisation (pso) for feature
+  selection.
+\newblock In {\em Proceedings of the 14th Annual Conference on Genetic and
+  Evolutionary Computation}, GECCO '12, pages 81--88, New York, NY, USA. ACM.
+
+\bibitem[Zhang et~al., 2011]{6076756}
+Zhang, Y., Zheng, Z., and Lyu, M. (2011).
+\newblock Exploring latent features for memory-based qos prediction in cloud
+  computing.
+\newblock In {\em Reliable Distributed Systems (SRDS), 2011 30th IEEE Symposium
+  on}, pages 1--10.
+
+\bibitem[Zheng et~al., 2010]{5552800}
+Zheng, Z., Zhang, Y., and Lyu, M. (2010).
+\newblock Distributed qos evaluation for real-world web services.
+\newblock In {\em Web Services (ICWS), 2010 IEEE International Conference on},
+  pages 83--90.
+
+\bibitem[Zhou and Niemela, 2006]{4061431}
+Zhou, J. and Niemela, E. (2006).
+\newblock Toward semantic qos aware web services: Issues, related studies and
+  experience.
+\newblock In {\em Web Intelligence, 2006. WI 2006. IEEE/WIC/ACM International
+  Conference on}, pages 553--557.
+
+\end{thebibliography}

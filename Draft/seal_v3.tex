@@ -44,9 +44,9 @@ Optimization of Location Allocation of Web Services Using A Modified Non-dominat
 \maketitle
 
 \begin{abstract}
-In recent years, web services technology is becoming increasingly popular because of the convenience, 
+In recent years, Web services technology is becoming increasingly popular because of the convenience, 
 low cost and capacity to be composed into high-level business processes. 
-The service location-allocation problem for a web service provider is critical and urgent,
+The service location-allocation problem for a Web service provider is critical and urgent,
 because some factors such as network latency can make serious effect on the quality of service (QoS). 
 This paper presents a multi-objective optimization algorithm based on NSGA-II to solve the service location-allocation problem. 
 A stimulated experiment is conducted using the WS-DREAM dataset. 
@@ -56,10 +56,10 @@ It shows NSGA-II based algorithm can provide a set of best solutions that outper
 
 \section{Introduction}
 Web Services are considered as self-contained, self-describing, modular applications that can be published, located, and invoked across the Web \cite{Ran}. 
-In recent years, web services technology is becoming increasingly popular because of the convenience, low cost \cite{Aboolian} and capacity to be composed into high-level business processes.
+In recent years, Web services technology is becoming increasingly popular because of the convenience, low cost \cite{Aboolian} and capacity to be composed into high-level business processes.
 
-With the ever increasing number of functional similar web services being available on the Internet, the web service providers (WSPs) are trying to improve the quality of service (QoS) to become competitive in the market.  
-QoS is the degree to which a service meets specified requirements or web service users' needs \cite{4061431}, such as response time, security and availability. 
+With the ever increasing number of functional similar Web services being available on the Internet, the Web service providers (WSPs) are trying to improve the quality of service (QoS) to become competitive in the market.  
+QoS is the degree to which a service meets specified requirements or Web service users' needs \cite{4061431}, such as response time, security and availability. 
 Service response time is a critical measurement for many real-time services, e.g. traffic service or finance service. 
 Service response time has two components: transmission time and network latency \cite{Johansson}. 
 Study \cite{916684} shows that network latency is a significant component of service response delay.
@@ -68,7 +68,7 @@ To reduce the network latency WSPs need to allocate services location where has 
 access the services. 
 User center denotes a geometric location (e.g., a city) that is encompassed by a service area. 
 %Service area, also known as trade area, 
-%is a region where web service users concentrated at. 
+%is a region where Web service users concentrated at. 
 %There are many ways to identify service
 %areas such as using IP information or user generated location data \cite{Qu}.
 Ideally, WSPs could deploy their services to each user center in order to provide the best quality.
@@ -76,7 +76,7 @@ However, the more services deployed, the better the quality and the higher cost.
 
 
 The Web service location-allocation problem is essentially a multi-objective optimization problem \cite{Multiobjective}, for which there are two conflict objectives,
-to provide optimal QoS to web service users and to consume minimal deployment cost.
+to provide optimal QoS to Web service users and to consume minimal deployment cost.
 This problem can be classified as a multidimensional knapsack problem (MKP), therefore, it is
 considered NP-hard due to the fact that the combinatorial explosion of the search space 
 \cite{Vanrompay}.
@@ -103,7 +103,7 @@ one single simulation run \cite{OptimizationElectrical}. Among numerous EMO algo
 Non-dominated sorting GA (NSGA-II) \cite{996017}, Strength Pareto Evolutionary Algorithm 2 (SPEA-2) \cite{Deb} have become standard approaches. 
 Some schemes based on particle swarm optimization (PSO) approaches are also proposed \cite{Elhossini} \cite{Huang}.
 NSGA-II is one of the most widely used methods for generating the Pareto frontier, because it can keep diversity without specifying any additional parameters \cite{Deb06referencepoint}.
-In this paper, we propose to use NSGA-II to solve the web service 
+In this paper, we propose to use NSGA-II to solve the Web service 
 location-allocation problem, which has two objectives, to minimize
 cost and deployment network latency.
 
@@ -112,8 +112,8 @@ The aim of this project is to propose a NSGA-II based approach to produce a set 
 close to minimum. Then, the WSPs could use the algorithm which proposed by this paper, to select an optimal plan based on their funds. 
 The main objectives are:
 \begin{itemize}
-	\item To model the web service location-allocation problem so that it can be tackled by NSGA-II.
-	\item To develop a NSGA-II based approach to the web service location-allocation problem.
+	\item To model the Web service location-allocation problem so that it can be tackled by NSGA-II.
+	\item To develop a NSGA-II based approach to the Web service location-allocation problem.
 	\item To evaluate our proposed approach using some existing datasets.
 	%\item To evaluate our approach by comparing it to a linear assignment with greedy optimization (IPGO) algorithm.
 \end{itemize}
@@ -188,7 +188,7 @@ The selection is based on rank and the on crowding distance on the last front.
 %In this section, we first describe the service location-allocation problem, then we will present models for the services location allocation problem.
 
 \subsection{Problem Description and Assumptions}
-Web service location-allocation problem is to determine reasonable locations for web services so that the deployment cost of WSP can be minimized while service performance can be optimized.
+Web service location-allocation problem is to determine reasonable locations for Web services so that the deployment cost of WSP can be minimized while service performance can be optimized.
 In this paper, to optimize service performance we consider to minimize network latency.
 
 The task of service location allocation has two objectives:
@@ -204,10 +204,12 @@ The task of service location allocation has two objectives:
 	%\item A static allocation policy is used by WSPs. In practice, Web services typically offer clients persistent and interactive services, which often span over multiple sessions. Therefore, a dynamic reallocation scheme is not practical as it may disrupt the continuity of the services.
 %\end{enumerate}
 \subsubsection{Stakeholder Web Service Providers}
-We consider the problem faced by a WSP who has existing facilities but wishes to 
-use the collected data to re-allocate their services in order to maximum their profit.
+Assume the historical information of Web service usage has been collected.
+WSPs wish to allocate services to serves in candidate locations in order to 
+maximum their profit.
 
-The WSP must decide on facility locations from a finite set of possible locations. 
+
+The WSP must decide on services locations from a finite set of possible locations. 
 In order to make a decision, the WSP must first analyze the data collected from current use of services. 
 The collected data should include the records of invocations from each unique IP address.
 Therefore, based on these data, the WSP could summarize several customer demands concentrated on \textit{n} discrete nodes \cite{Aboolian}, namely user centers. 
@@ -215,18 +217,18 @@ We assume that the WSP has already done this step and a list of user centers and
 locations are given. Candidate location is the geometric location that is suitable to 
 deploy services. Candidate locations are selected based on other criterions such as 
 facilities or deployment cost. User centers and candidate locations are very likely overlapping since 
-web serivce users receive best QoS services if the web serivces are deployed locally.
+Web serivce users receive best QoS services if the Web serivces are deployed locally.
 In addition to deciding locations to of the services, information about network latency between user centers and candidate locations are needed. 
 
 
 The list below shows some critical information that should be providered by the WSPs. 1. A list of user centers.
 	2. A list of candidate locations
-	3. Service invocation frequency from user centers to services
+	3. Service invocation frequencies from user centers to services
 	4. Average network latency from user centers to candidate locations
 	5. Web service deployment cost for each candidate location
 %\end{enumerate}
 
-Worth noting that service invocation frequency are changing over time. For example, a 
+Worth noting that service invocation frequencies are changing over time. For example, a 
 service was popular in some regions may be unfrequented after a few months. That's the 
 main reason for WSPs re-allocate their services. Network latency highly depends on the 
 network traffic and may be very different during periods of a day. However, as long as 
@@ -239,9 +241,9 @@ these input data and modeling are introduced in Section \ref{sec:model}.
 
 \subsubsection{Static deployment vs. Dynamic deployment}
 As virtual machine technology and infrastracture-as-a-service (IaaS) are becoming
-more and more popular. Dynamic web service deployment become possible \cite{kemps2012dynamic}. On the other hand, static deployment is still the mainstream because of a majority
-of web serivce are deployed on local infrastracture \cite{He}. In this paper, we made an
-assumption that WSPs periodicaly change the web service deployment since the user centers
+more and more popular. Dynamic Web service deployment become possible \cite{kemps2012dynamic}. On the other hand, static deployment is still the mainstream because of a majority
+of Web serivce are deployed on local infrastracture \cite{He}. In this paper, we made an
+assumption that WSPs periodicaly change the Web service deployment since the user centers
 are changing over time.
 
 \subsection{Model Formulation}
@@ -355,7 +357,7 @@ $
 %\begin{flushleft}\textbf{Input}:\end{flushleft}
 %\begin{itemize}
 	%\item \emph{L}: network latency from user centers to candidate locations
-	%\item \emph{F}: service invocation frequency from user centers to web services
+	%\item \emph{F}: service invocation frequency from user centers to Web services
 	%\item \emph{C}: deployment cost for services in different candidate locations
 %\end{itemize}
 
@@ -456,6 +458,13 @@ e.g., $l_{ij} = l_{ji}$
 		LatencyFitness = \sum\limits_{i \in I} \sum\limits_{s \in S} r_{is} \times f_{is}
 	\end{equation}
 
+	%\begin{flushleft}For example, we use the above mentioned matrices F and R.\end{flushleft}
+
+	%$
+	%LatencyFitness &= f_{11} * r_{11} + f_{12} * r_{12} + f_{13} * r_{13} + ... + f_{33} * r_{33} \\
+	%&= 120 * 5.776 + 6.984 * 35 + 0 * 56 + ... + 0.984 * 74\\
+	%&= 1300.696
+	%$
 \vspace*{-1em}
 \subsubsection{Normalise function}
 To indicate the goodness of an allocation solution we normalise \emph{CostFitness} and \emph{LatencyFitness} according to the largest and minimum values of
@@ -473,13 +482,7 @@ locations.
 		\label{eq:latency_prime}
 		LatencyFitness^\prime = \frac{LatencyFitness - Latency_{min}}{Latency_{max} - Latency_{min}}
 	\end{equation}
-%\begin{flushleft}For example, we use the above mentioned matrices F and R.\end{flushleft}
 
-	%$
-	%LatencyFitness &= f_{11} * r_{11} + f_{12} * r_{12} + f_{13} * r_{13} + ... + f_{33} * r_{33} \\
-	%&= 120 * 5.776 + 6.984 * 35 + 0 * 56 + ... + 0.984 * 74\\
-	%&= 1300.696
-	%$
 
 \subsection{NSGA-II based algorithm for service location-allocation}
 %Algorithm \ref{NSGA2} shows the precedure of NSGA-II applied on service location-allocation problem.
@@ -663,7 +666,7 @@ We use Integer Scalarization technique to calculate the fitness value.
 \label{sec:experiment}
 To evaluate the effectiveness and efficiency of our proposed NSGA-II based approach to service location-allocation. We compare our approach with the GA-based single objective approach in Section \ref{sec:GA}
 using an existing dataset, WS-DREAM \cite{6076756} \cite{5552800}, which is a historical dataset on QoS of Web services from different locations. It contains the data of latencies
-from 339 different user locations invoked 5824 web services scattered over different locations.
+from 339 different user locations invoked 5824 Web services scattered over different locations.
 The algorithm was coded in R \cite{Morandat:2012:EDR:2367163.2367172} using existed package: NSGA2R. The program was run on a 3.40GHz 
 desktop computer with 8 GB RAM. Four different service location-allocation problems are designed with different complexities.
 \begin{table}[h]
@@ -808,12 +811,12 @@ non-dominated solutions instead of one solution, which provide WSPs with more op
 
 \section{Conclusion}
 \label{sec:conclusion}
-In this paper, we proposed a NSGA-II based approach to web service location-allocation problem. 
+In this paper, we proposed a NSGA-II based approach to Web service location-allocation problem. 
 %Our approach utilizes a memory pool so that
 %greatly reduces the evaluation time while the diversity of the population gradually decreases. 
 Our approach consider two objectives, minimizing cost  and minimizing network latency at the same time.
 We have conducted a full experimental evaluation using the public WS-DREAM dataset to compare our approach to single-objective GA-based approach.
-The experimental results shows the NSGA-II based approach is effective to produce a set near-optima solutions for the web service location-allocation problem.
+The experimental results shows the NSGA-II based approach is effective to produce a set near-optima solutions for the Web service location-allocation problem.
 Also, NSGA-II based approach are more efficient than GA-based approach for problem with big number of user centers and server locations. Future work will investigate the scalability of 
 our proposed approaches for big datasets.
 

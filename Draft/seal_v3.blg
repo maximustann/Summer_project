@@ -3,44 +3,46 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: seal_v3.aux
 The style file: splncs03.bst
 Database file #1: llncs.bib
-You've used 26 entries,
+Warning--empty journal in kemps2012dynamic
+You've used 30 entries,
             2785 wiz_defined-function locations,
-            773 strings with 9777 characters,
-and the built_in function-call counts, 16646 in all, are:
-= -- 1445
-> -- 448
-< -- 41
-+ -- 189
-- -- 157
-* -- 1027
-:= -- 2047
-add.period$ -- 43
-call.type$ -- 26
-change.case$ -- 181
+            806 strings with 11200 characters,
+and the built_in function-call counts, 19543 in all, are:
+= -- 1689
+> -- 553
+< -- 45
++ -- 233
+- -- 195
+* -- 1231
+:= -- 2411
+add.period$ -- 51
+call.type$ -- 30
+change.case$ -- 215
 chr.to.int$ -- 0
-cite$ -- 26
-duplicate$ -- 1467
-empty$ -- 1467
-format.name$ -- 180
-if$ -- 3737
+cite$ -- 31
+duplicate$ -- 1713
+empty$ -- 1707
+format.name$ -- 223
+if$ -- 4370
 int.to.chr$ -- 0
-int.to.str$ -- 26
-missing$ -- 286
-newline$ -- 83
-num.names$ -- 54
-pop$ -- 486
+int.to.str$ -- 30
+missing$ -- 339
+newline$ -- 95
+num.names$ -- 64
+pop$ -- 579
 preamble$ -- 1
-purify$ -- 128
+purify$ -- 154
 quote$ -- 0
-skip$ -- 530
+skip$ -- 607
 stack$ -- 0
-substring$ -- 1090
-swap$ -- 890
-text.length$ -- 41
+substring$ -- 1260
+swap$ -- 1032
+text.length$ -- 45
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 104
-warning$ -- 0
-while$ -- 143
-width$ -- 28
-write$ -- 275
+type$ -- 120
+warning$ -- 1
+while$ -- 164
+width$ -- 32
+write$ -- 323
+(There was 1 warning)

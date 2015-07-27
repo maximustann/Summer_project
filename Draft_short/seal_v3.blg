@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (Web2C 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: seal_v3.aux
+The style file: splncs03.bst
+Database file #1: llncs.bib
+Warning--empty journal in kemps2012dynamic
+You've used 27 entries,
+            2785 wiz_defined-function locations,
+            776 strings with 10255 characters,
+and the built_in function-call counts, 16975 in all, are:
+= -- 1463
+> -- 480
+< -- 39
++ -- 205
+- -- 169
+* -- 1049
+:= -- 2109
+add.period$ -- 43
+call.type$ -- 27
+change.case$ -- 187
+chr.to.int$ -- 0
+cite$ -- 28
+duplicate$ -- 1486
+empty$ -- 1486
+format.name$ -- 192
+if$ -- 3788
+int.to.chr$ -- 0
+int.to.str$ -- 27
+missing$ -- 295
+newline$ -- 86
+num.names$ -- 56
+pop$ -- 506
+preamble$ -- 1
+purify$ -- 136
+quote$ -- 0
+skip$ -- 536
+stack$ -- 0
+substring$ -- 1090
+swap$ -- 887
+text.length$ -- 39
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 106
+warning$ -- 1
+while$ -- 145
+width$ -- 29
+write$ -- 284
+(There was 1 warning)

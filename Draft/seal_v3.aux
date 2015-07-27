@@ -1,4 +1,5 @@
 \relax 
+\providecommand\hyper@newdestlabel[2]{}
 \providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
 \HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
 \global\let\oldcontentsline\contentsline
@@ -14,23 +15,25 @@
 \global\let\hyper@last\relax 
 \gdef\HyperFirstAtBeginDocument#1{#1}
 \providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
 \citation{Ran}
 \citation{Aboolian}
 \citation{4061431}
 \citation{Johansson}
 \citation{916684}
+\citation{Sun}
 \citation{distanceMetrics}
 \citation{Multiobjective}
 \citation{Vanrompay}
-\@writefile{toc}{\contentsline {title}{ Optimization of Location Allocation of Web Service using non-dominated sorting algorithm(NSGA-II) }{1}{chapter.1}}
+\@writefile{toc}{\contentsline {title}{ Optimization of Location Allocation of Web Services Using A Modified Non-dominated Sorting Genetic Algorithm }{1}{chapter.1}}
 \@writefile{toc}{\authcount {1}}
 \@writefile{toc}{\contentsline {author}{Boxiong Tan, Hui Ma, Mengjie Zhang}{1}{chapter.1}}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1.1}}
 \citation{Aboolian}
 \citation{Sun}
 \citation{Sun}
+\citation{Hwang11aninteger}
 \citation{EnhancedGenetic}
-\citation{man1996genetic}
 \citation{Multiobjective}
 \citation{key:article}
 \citation{OptimizationElectrical}
@@ -39,112 +42,90 @@
 \citation{Elhossini}
 \citation{Huang}
 \citation{Deb06referencepoint}
-\citation{Aboolian}
-\citation{6076756}
-\citation{5552800}
-\citation{5961695}
-\citation{Aboolian}
-\citation{Sun}
-\citation{Aboolian}
-\citation{Sun}
-\citation{EnhancedGenetic}
-\citation{Multiobjective}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Related Works and Background}{3}{section.1.2}}
-\newlabel{sec:Background}{{2}{3}{Related Works and Background\relax }{section.1.2}{}}
-\citation{996017}
 \citation{man1996genetic}
-\citation{lawler1963quadratic}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}NSGA-II}{4}{subsection.1.2.1}}
-\citation{Sun}
-\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Integer programming with Greedy Optimaization (IPGO)}{5}{subsection.1.2.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Problem Description and Modeling}{5}{section.1.3}}
-\newlabel{sec:problem}{{3}{5}{Problem Description and Modeling\relax }{section.1.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem Description}{5}{subsection.1.3.1}}
+\citation{Multiobjective}
+\citation{nsga2_cri}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Background}{3}{section.1.2}}
+\newlabel{sec:Background}{{2}{3}{Background}{section.1.2}{}}
+\citation{Aboolian}
+\citation{kemps2012dynamic}
+\citation{He}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Problem Description and Modeling}{4}{section.1.3}}
+\newlabel{sec:problem}{{3}{4}{Problem Description and Modeling}{section.1.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem Description and Assumptions}{4}{subsection.1.3.1}}
+\@writefile{toc}{\contentsline {subsubsection}{Stakeholder Web Service Providers}{4}{subsubsection*.2}}
+\citation{6076756}
+\citation{5552800}
+\@writefile{toc}{\contentsline {subsubsection}{Static deployment vs. Dynamic deployment}{5}{subsubsection*.3}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Model Formulation}{5}{subsection.1.3.2}}
-\citation{6076756}
-\citation{5552800}
-\@writefile{toc}{\contentsline {section}{\numberline {4}NSGA-II For Web Services Location Allocation}{7}{section.1.4}}
-\newlabel{sec:algorithm_des}{{4}{7}{NSGA-II For Web Services Location Allocation\relax }{section.1.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Chromosome Representation and Constraints}{7}{subsection.1.4.1}}
-\citation{930314}
-\citation{Raghuwanshi04}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Genetic Operators}{8}{subsection.1.4.2}}
-\newlabel{sec:operators}{{4.2}{8}{Genetic Operators\relax }{subsection.1.4.2}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Mutation}{8}{section*.2}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \relax }}{8}{figure.caption.3}}
+\newlabel{sec:model}{{3.2}{5}{Model Formulation}{subsection.1.3.2}{}}
+\citation{Xie:2008:AMI:1389095.1389347}
+\@writefile{toc}{\contentsline {section}{\numberline {4}NSGA-II for Web Services Location Allocation}{6}{section.1.4}}
+\newlabel{sec:algorithm_des}{{4}{6}{NSGA-II for Web Services Location Allocation}{section.1.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Chromosome Representation and Constraints}{6}{subsection.1.4.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Genetic Operators}{6}{subsection.1.4.2}}
+\newlabel{sec:operators}{{4.2}{6}{Genetic Operators}{subsection.1.4.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Fitness Function}{7}{subsubsection*.4}}
+\newlabel{sec:fitness_functions}{{4.2}{7}{Fitness Function}{subsubsection*.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Normalise function}{7}{subsubsection*.5}}
+\newlabel{eq:cost_prime}{{6}{7}{Normalise function}{equation.1.4.6}{}}
+\newlabel{eq:latency_prime}{{7}{7}{Normalise function}{equation.1.4.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}NSGA-II based algorithm for service location-allocation}{7}{subsection.1.4.3}}
+\citation{Huang}
+\citation{scalarization}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces NSGA-II for service location-allocation\relax }}{8}{algorithm.1}}
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{graph1}{{1}{8}{\relax \relax }{figure.caption.3}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Crossover}{8}{section*.4}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \relax }}{8}{figure.caption.5}}
-\newlabel{graph2}{{2}{8}{\relax \relax }{figure.caption.5}{}}
-\@writefile{toc}{\contentsline {subsubsection}{Fitness Function}{9}{section*.6}}
-\@writefile{toc}{\contentsline {subsubsection}{Cost fitness function}{9}{section*.7}}
-\@writefile{toc}{\contentsline {subsubsection}{Network latency fitness function}{9}{section*.8}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}NSGA-II based algorithm for service location-allocation}{10}{subsection.1.4.3}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces NSGA-II for service location-allocation\relax }}{10}{algorithm.1}}
-\newlabel{NSGA2}{{1}{10}{NSGA-II for service location-allocation\relax \relax }{algorithm.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}IPGO for Web Service Location Allocation}{11}{section.1.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Experiment Design}{11}{section.1.6}}
-\newlabel{sec:experiment}{{6}{11}{Experiment Design\relax }{section.1.6}{}}
+\newlabel{NSGA2}{{1}{8}{NSGA-II for service location-allocation\relax }{algorithm.1}{}}
+\newlabel{alg:1}{{0}{8}{NSGA-II for service location-allocation\relax }{algorithm.1}{}}
 \citation{6076756}
 \citation{5552800}
+\citation{Morandat:2012:EDR:2367163.2367172}
+\@writefile{toc}{\contentsline {section}{\numberline {5}GA for Web Service Location Allocation}{9}{section.1.5}}
+\newlabel{sec:GA}{{5}{9}{GA for Web Service Location Allocation}{section.1.5}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces GA for service location-allocation\relax }}{9}{algorithm.2}}
 \citation{Xue}
+\citation{6381531}
 \citation{1688438}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces NSGA-II Parameters\relax }}{12}{table.caption.9}}
-\newlabel{table:para}{{1}{12}{NSGA-II Parameters\relax \relax }{table.caption.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Case Study}{12}{subsection.1.6.1}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Four cases of the relation between a IPGO solution and a NSGA-II solution set of non-dominated solutions\relax }}{13}{figure.caption.10}}
-\newlabel{fig:Pareto}{{3}{13}{Four cases of the relation between a IPGO solution and a NSGA-II solution set of non-dominated solutions\relax \relax }{figure.caption.10}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Experimental results}{14}{section.1.7}}
-\newlabel{sec:results}{{7}{14}{Experimental results\relax }{section.1.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Efficiency comparison}{14}{subsection.1.7.1}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Efficiency Test\relax }}{14}{table.caption.11}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Sufficient condition\relax }}{14}{table.caption.11}}
-\newlabel{table:sufficient}{{2}{14}{Efficiency Test\relax \relax }{table.caption.11}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Good condition\relax }}{14}{table.caption.11}}
-\newlabel{table:good}{{2}{14}{Efficiency Test\relax \relax }{table.caption.11}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Poor condition\relax }}{14}{table.caption.11}}
-\newlabel{table:poor}{{2}{14}{Efficiency Test\relax \relax }{table.caption.11}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Minimum condition\relax }}{14}{table.caption.11}}
-\newlabel{table:minimum}{{2}{14}{Efficiency Test\relax \relax }{table.caption.11}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Effective comparison}{15}{subsection.1.7.2}}
-\newlabel{sec:comparison}{{7.2}{15}{Effective comparison\relax }{subsection.1.7.2}{}}
-\newlabel{fig:3_3}{{4a}{15}{$3 \times 3$\relax \relax }{figure.caption.12}{}}
-\newlabel{sub@fig:3_3}{{a}{15}{$3 \times 3$\relax \relax }{figure.caption.12}{}}
-\newlabel{fig:5_5}{{4b}{15}{$5 \times 5$\relax \relax }{figure.caption.12}{}}
-\newlabel{sub@fig:5_5}{{b}{15}{$5 \times 5$\relax \relax }{figure.caption.12}{}}
-\newlabel{fig:10_10}{{4c}{15}{$10 \times 10$\relax \relax }{figure.caption.12}{}}
-\newlabel{sub@fig:10_10}{{c}{15}{$10 \times 10$\relax \relax }{figure.caption.12}{}}
-\newlabel{fig:15_15}{{4d}{15}{$15 \times 15$\relax \relax }{figure.caption.12}{}}
-\newlabel{sub@fig:15_15}{{d}{15}{$15 \times 15$\relax \relax }{figure.caption.12}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \relax }}{15}{figure.caption.12}}
-\newlabel{fig:condition}{{4}{15}{\relax \relax }{figure.caption.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Experiment Evaluation}{10}{section.1.6}}
+\newlabel{sec:experiment}{{6}{10}{Experiment Evaluation}{section.1.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Test Cases\relax }}{10}{table.caption.6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Effectiveness comparison}{11}{subsection.1.6.1}}
+\newlabel{sec:comparison}{{6.1}{11}{Effectiveness comparison}{subsection.1.6.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Comparisons Between NSGA-II, GA, initialized-NSGA-II and initialized-GA\relax }}{11}{figure.caption.7}}
+\newlabel{fig:c1}{{1}{11}{Comparisons Between NSGA-II, GA, initialized-NSGA-II and initialized-GA\relax }{figure.caption.7}{}}
 \bibdata{llncs}
 \bibcite{Aboolian}{1}
-\bibcite{930314}{2}
-\bibcite{Multiobjective}{3}
-\bibcite{996017}{4}
-\bibcite{Deb}{5}
-\bibcite{Deb06referencepoint}{6}
-\bibcite{key:article}{7}
-\bibcite{Elhossini}{8}
-\bibcite{5961695}{9}
-\bibcite{EnhancedGenetic}{10}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{16}{section.1.8}}
-\bibcite{Huang}{11}
-\bibcite{distanceMetrics}{12}
-\bibcite{1688438}{13}
-\bibcite{916684}{14}
-\bibcite{Johansson}{15}
-\bibcite{OptimizationElectrical}{16}
-\bibcite{lawler1963quadratic}{17}
-\bibcite{man1996genetic}{18}
-\bibcite{Raghuwanshi04}{19}
-\bibcite{Ran}{20}
-\bibcite{Sun}{21}
-\bibcite{Vanrompay}{22}
-\bibcite{Xue}{23}
-\bibcite{6076756}{24}
-\bibcite{5552800}{25}
-\bibcite{4061431}{26}
+\bibcite{Multiobjective}{2}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Efficiency comparison}{12}{subsection.1.6.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Execution Time (s)\relax }}{12}{table.caption.8}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{12}{section.1.7}}
+\newlabel{sec:conclusion}{{7}{12}{Conclusion}{section.1.7}{}}
+\bibcite{996017}{3}
+\bibcite{Deb}{4}
+\bibcite{Deb06referencepoint}{5}
+\bibcite{key:article}{6}
+\bibcite{nsga2_cri}{7}
+\bibcite{scalarization}{8}
+\bibcite{Elhossini}{9}
+\bibcite{He}{10}
+\bibcite{EnhancedGenetic}{11}
+\bibcite{Huang}{12}
+\bibcite{distanceMetrics}{13}
+\bibcite{Hwang11aninteger}{14}
+\bibcite{1688438}{15}
+\bibcite{916684}{16}
+\bibcite{Johansson}{17}
+\bibcite{OptimizationElectrical}{18}
+\bibcite{kemps2012dynamic}{19}
+\bibcite{man1996genetic}{20}
+\bibcite{Morandat:2012:EDR:2367163.2367172}{21}
+\bibcite{Ran}{22}
+\bibcite{Sun}{23}
+\bibcite{Vanrompay}{24}
+\bibcite{Xie:2008:AMI:1389095.1389347}{25}
+\bibcite{Xue}{26}
+\bibcite{6381531}{27}
+\bibcite{6076756}{28}
+\bibcite{5552800}{29}
+\bibcite{4061431}{30}
 \bibstyle{splncs03}
